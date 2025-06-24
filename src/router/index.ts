@@ -14,12 +14,8 @@ const routes = [
         component: HomeIndex,
         name: "home"
     },
-    topicToVueRoute(meta.cs),
-    topicToVueRoute(meta.math),
-    topicToVueRoute(meta.thoughts),
-    ...(meta.cs.posts.map(it => postToVueRoute(it, meta.cs))),
-    ...(meta.math.posts.map(it => postToVueRoute(it, meta.math))),
-    ...(meta.thoughts.posts.map(it => postToVueRoute(it, meta.thoughts))),
+    topicToVueRoute(meta.blog),
+    ...(meta.blog.posts.map(it => postToVueRoute(it, meta.blog))),
 ]
 
 const router = createRouter({

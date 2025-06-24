@@ -1,9 +1,7 @@
 import type {RouteRecordRaw} from "vue-router";
 
 export interface MetaInformation {
-    cs: Topic
-    math: Topic
-    thoughts: Topic
+    blog: Topic
 }
 
 interface Topic {

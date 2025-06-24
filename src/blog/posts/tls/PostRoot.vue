@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Diagram from "@/cs/posts/tls/Diagram.vue";
+import Diagram from "@/blog/posts/tls/Diagram.vue";
 </script>
 
 <template>

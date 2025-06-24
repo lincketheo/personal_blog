@@ -6,19 +6,9 @@ import {meta} from "@/meta"
 
 const blog_links = [
   {
-    title: meta.cs.nav_title,
-    link: meta.cs.route,
-    name: meta.cs.name,
-  },
-  {
-    title: meta.math.nav_title,
-    link: meta.math.route,
-    name: meta.math.name,
-  },
-  {
-    title: meta.thoughts.nav_title,
-    link: meta.thoughts.route,
-    name: meta.thoughts.name,
+    title: meta.blog.nav_title,
+    link: meta.blog.route,
+    name: meta.blog.name,
   },
 ]
 

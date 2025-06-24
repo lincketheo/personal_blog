@@ -4,7 +4,7 @@ import {meta} from "@/meta"
 
 <template>
   <div class="mt-10">
-    <div class="mb-5" v-for="post in meta.cs.posts" :key="post.name">
+    <div class="mb-5" v-for="post in meta.blog.posts" :key="post.name">
       <hr class="rounded">
       <a class="font-bold" :href="post.route">{{ post.title }}</a>
       <p>
