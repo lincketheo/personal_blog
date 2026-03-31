@@ -9,6 +9,19 @@ export const meta: MetaInformation = {
     name: "blog",
     posts: [
       {
+        title: "A Simple UNDO based Java Database in an hour",
+        date: new Date("2026-03-30"),
+        entry: () => import("@/blog/posts/a-simple-database-in-java/SimpleDatabaseJava.vue"),
+        route: "/blog/simple-java-database",
+        description: "I was playing around with some ideas for a new database I'm working on and I put together a little play database in java for fun and I thought I'd share",
+        name: "simple-java-database",
+        popular: true,
+        tags: [
+          "Databases",
+          "Java"
+        ]
+      },
+      {
         title: "On Pattern Recognition and Closed Systems",
         date: new Date("2023-05-22"),
         entry: () => import("@/blog/posts/pattern-recognition/PatternRecognition.vue"),
@@ -66,7 +79,7 @@ export const meta: MetaInformation = {
         route: "/blog/kotlin-error-handling",
         description: "Handling errors cleanly in Kotlin. Which layer do I handle my exceptions and how do I prevent try catch hell?",
         name: "kotlin-error-handling",
-        popular: true,
+        popular: false,
         tags: [
           "Error Handling",
           "Kotlin"

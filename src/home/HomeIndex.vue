@@ -13,31 +13,61 @@ const popular = all.filter(it => it.popular)
     <!-- Intro & Avatar ------------------------------------------------------>
     <section class="grid lg:grid-cols-3 gap-16">
       <!-- Intro copy --------------------------------------------------------->
-      <div class="lg:col-span-2 space-y-8 p-10">
+      <div class="lg:col-span-3 space-y-8 p-10">
         <p class="indent-5">
-          Hello, I'm a Software Engineer from the Virginia DC area. I worked a little bit in digital signal processing and
-          full‑stack development, and I enjoy building secure, reliable software. Technically, I subscribe to certain
-          aspects of the Unix philosophy (keeping things simple, and building software tools that work in tandem with
-          one another), but I concede that users are the most important thing. Unix isn't very user‑friendly. It's
-          always a balance and trade‑off.
-          <br /><br />
-          Outside of work, I stay active — country‑swing dancing at Clarendon Ballroom in Arlington, hiking and camping
-          off‑grid, and spending time lifting or riding my bike on the Washington & Old Dominion Trail or C&O.
-          <br />
-          This is a website for me to talk about software engineering, math, and philosophy. Please keep in mind that any
+          Hello, I'm a Software Engineer from the Virginia DC area.
+          <br>
+          <br>
+          I started this blog because I want to highlight some of the traditional software engineering techniques that
+          we use to build really reliable software.
+          <br>
+          <br>
+          In the past, some of these algorithms and techniques were seen as really challenging to implement,
+          particularly because the landscape of software engineering was such that you had to balance a hundred
+          variables on top of the algorithm that you're choosing. Building a database in C is really hard, but that's
+          not necessarily because the algorithms and the concepts behind databases are hard. It has to do with the
+          complexity of the C programming language and manual memory management. But the principles behind database
+          management systems are actually not that hard to wrap your head around. They're actually very simple.
+          <br>
+          <br>
+          I think there's a stigma that there are some hard problems — like operating systems, databases, embedded
+          software — and that these concepts are really hard to wrap your head around, and that we shouldn't even try to
+          use principles from them in our code. But that's not necessarily true.
+          <br>
+          <br>
+          One common example I want to give is the implementation of a transaction. The idea goes back to Jim Gray's
+          work in the 1970s and 80s — the ACID properties (atomicity, consistency, isolation, durability) that every
+          database textbook covers. In C, where we don't have access to higher level paradigms like automatic memory
+          management, implementing a correct transaction used to be really challenging. You had to reason carefully
+          about failure modes, about what happens if the process crashes halfway through a write. Techniques like
+          write-ahead logging (WAL) and ARIES-style recovery were developed precisely to solve this — to give you a
+          principled way to guarantee that either all of a transaction's effects are visible, or none of them are. The
+          thing is, those techniques have been implemented. They exist. Modern databases give us those guarantees, and
+          more importantly, the ideas behind them are ones we can use in our own software without building a full
+          storage engine from scratch.
+          <br>
+          <br>
+          Anyways, I started this blog because I want to talk about some of the concepts that we learn in computer
+          science that might seem complicated or complex but are actually really easy, and are great ways of exercising
+          your muscles as a software engineer. You may not implement any of these patterns directly, but understanding
+          them changes how you think about reliability, correctness, and failure.
+          <br>
+          I don't want this to be an academic blog. I want this to be an easy to grasp blog about concepts that are easy
+          to understand — as a database developer, or as any type of developer, not just a database developer. I want
+          you to feel like you can go out and build a basic transactional system on your own, using just software
+          engineering principles.
+          <br/><br/>
+          Who am I? Outside of work, I stay active — country‑swing dancing at Clarendon Ballroom in Arlington, hiking
+          and camping off‑grid, and spending time lifting or riding my bike on the Washington & Old Dominion Trail or
+          C&O.
+          <br/>
+          <br/>
+          Please keep in mind that
+          any
           opinions and/or thoughts represented on this website are purely my own and do not reflect the opinion of my
           employer.
         </p>
       </div>
-
-      <!-- Avatar ------------------------------------------------------------->
-      <aside class="flex items-center justify-center">
-        <img
-            src="@/assets/theo-avatar.webp"
-            alt="Theo avatar"
-            class="w-64 h-64 object-cover rounded-full shadow-lg"
-        />
-      </aside>
 
       <!-- North Stars (full width) ------------------------------------------->
       <div class="lg:col-span-3 space-y-4 px-10">
@@ -110,7 +140,7 @@ const popular = all.filter(it => it.popular)
             class="bg-surface dark:bg-surface-dark text-on-surface dark:text-on-surface-dark p-5 rounded-lg space-y-4"
         >
           <h2 class="text-xl font-semibold">Recent</h2>
-          <hr class="border-on-surface/20 dark:border-on-surface-dark/20" />
+          <hr class="border-on-surface/20 dark:border-on-surface-dark/20"/>
           <div v-for="post in recent" :key="post.name" class="space-y-2">
             <a :href="post.route" class="font-bold underline hover:text-primary">{{ post.title }}</a>
             <p class="text-sm italic">{{ post.date.toLocaleDateString() }}</p>
