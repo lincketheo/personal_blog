@@ -52,11 +52,13 @@ const popular = all.filter(it => it.popular)
           your muscles as a software engineer. You may not implement any of these patterns directly, but understanding
           them changes how you think about reliability, correctness, and failure.
           <br>
+          <br>
           I don't want this to be an academic blog. I want this to be an easy to grasp blog about concepts that are easy
           to understand — as a database developer, or as any type of developer, not just a database developer. I want
           you to feel like you can go out and build a basic transactional system on your own, using just software
           engineering principles.
-          <br/><br/>
+          <br/>
+          <br/>
           Who am I? Outside of work, I stay active — country‑swing dancing at Clarendon Ballroom in Arlington, hiking
           and camping off‑grid, and spending time lifting or riding my bike on the Washington & Old Dominion Trail or
           C&O.
