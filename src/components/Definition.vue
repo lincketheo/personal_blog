@@ -7,7 +7,7 @@
   </aside>
 </template>
 
-<script setup>
+<script setup lang="ts">
 defineProps({
   term: {
     type: String,

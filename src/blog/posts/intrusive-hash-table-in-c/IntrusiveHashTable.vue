@@ -389,7 +389,7 @@ int main (void)
   </article>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Definition from '@/components/Definition.vue'
 </script>
 
