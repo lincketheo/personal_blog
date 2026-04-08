@@ -9,6 +9,19 @@ export const meta: MetaInformation = {
     name: "blog",
     posts: [
       {
+        title: "An intrusive hash table in C",
+        date: new Date("2026-04-08"),
+        entry: () => import("@/blog/posts/intrusive-hash-table-in-c/IntrusiveHashTable.vue"),
+        route: "/blog/intrusive-hash-table-in-c",
+        description: "I wanted to write a blog post about implementing a lock table because I thought it would help me understand them better - I'm currently tracking down some bugs in",
+        name: "intrusive-hash-table-in-c",
+        popular: true,
+        tags: [
+          "Databases",
+          "C"
+        ]
+      },
+      {
         title: "A Simple UNDO based Java Database in an hour",
         date: new Date("2026-03-30"),
         entry: () => import("@/blog/posts/a-simple-database-in-java/SimpleDatabaseJava.vue"),

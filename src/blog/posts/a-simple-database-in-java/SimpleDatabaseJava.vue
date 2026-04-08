@@ -185,7 +185,7 @@
 </template>
 
 <script setup>
-import Definition from './Definition.vue'
+import Definition from '@/components/Definition.vue'
 </script>
 
 <style scoped>
