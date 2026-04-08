@@ -6,7 +6,7 @@
         I wanted to write a blog post about implementing a lock table because I thought it would help
         me debug some of my problems - I'm currently tracking down some bugs in
         numstore with my lock table - particularly upgrading locks - but I realized there's a lot of boilerplate I need to walk through
-        first. If you're curious to see how this is used in Numstore, take a look <a href="https://github.com/lincketheo/Numstore/blob/main/lib/core/hash_table.c">here</a>. Anyways, I always enjoy stepping back and re-examining data structures I wrote previously.
+        first. If you're curious to see how this is used in Numstore, take a look <a href="https://github.com/lincketheo/Numstore/blob/main/lib/core/hash_table.c"><u>here</u></a>. Anyways, I always enjoy stepping back and re-examining data structures I wrote previously.
         Reloading old code into your head is almost always worth it. So let's talk about hash tables
         first, and more specifically, intrusive data structures. Stay tuned for the lock table post -
         that (might be) next depending on what I want to write.
