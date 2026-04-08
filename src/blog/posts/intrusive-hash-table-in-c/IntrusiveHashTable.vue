@@ -4,7 +4,7 @@
       <h1>Intrusive Hash Tables in C</h1>
       <p class="post-intro">
         I wanted to write a blog post about implementing a lock table because I thought it would help
-        me understand them better - I'm currently tracking down some bugs in
+        me debug some of my problems - I'm currently tracking down some bugs in
         numstore with my lock table - particularly upgrading locks - but I realized there's a lot of boilerplate I need to walk through
         first. I always enjoy stepping back and re-examining data structures I wrote previously.
         Reloading old code into your head is almost always worth it. So let's talk about hash tables
