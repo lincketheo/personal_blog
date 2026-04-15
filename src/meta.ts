@@ -22,6 +22,19 @@ export const meta: MetaInformation = {
         ]
       },
       {
+        title: "Ethics",
+        date: new Date("2026-03-30"),
+        entry: () => import("@/blog/posts/ethics/Ethics.vue"),
+        route: "/blog/ethics",
+        description: "I was playing around with some ideas for a new database I'm working on and I put together a little play database in java for fun and I thought I'd share",
+        name: "simple-java-database",
+        popular: false,
+        tags: [
+          "Databases",
+          "Java"
+        ]
+      },
+      {
         title: "A Simple UNDO based Java Database in an hour",
         date: new Date("2026-03-30"),
         entry: () => import("@/blog/posts/a-simple-database-in-java/SimpleDatabaseJava.vue"),

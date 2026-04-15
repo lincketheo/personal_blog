@@ -2,11 +2,7 @@ import {createRouter, createWebHistory} from 'vue-router'
 import HomeIndex from '@/home/HomeIndex.vue'
 import { meta } from "@/meta"
 import {postToVueRoute, topicToVueRoute} from "@/models";
-
-/**
- * All the meta information about the blog
- * TODO - add typing
- */
+import AboutIndex from "@/about/AboutIndex.vue";
 
 const routes = [
     {
@@ -14,7 +10,11 @@ const routes = [
         component: HomeIndex,
         name: "home"
     },
-    topicToVueRoute(meta.blog),
+    {
+        path: '/about',
+        component: AboutIndex,
+        name: "about",
+    },
     ...(meta.blog.posts.map(it => postToVueRoute(it, meta.blog))),
 ]
 

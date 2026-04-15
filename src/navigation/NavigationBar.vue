@@ -4,21 +4,17 @@
 import {computed} from "vue";
 import {meta} from "@/meta"
 
-const blog_links = [
-  {
-    title: meta.blog.nav_title,
-    link: meta.blog.route,
-    name: meta.blog.name,
-  },
-]
-
 const links = [
   {
     title: "Home",
     link: '/',
     name: "home"
   },
-  ...blog_links
+  {
+    title: "About",
+    link: '/about',
+    name: "about"
+  },
 ]
 
 const router = useRouter()
