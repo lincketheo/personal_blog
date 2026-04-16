@@ -4,7 +4,7 @@ import Code from "@/components/Code.vue";
 </script>
 
 <template>
-  <article class="max-w-2xl mx-auto px-6 py-12 font-serif">
+  <article class="w-full min-w-0 max-w-2xl mx-auto px-4 sm:px-6 py-12 font-serif">
     <header class="mb-10">
       <h1 class="text-4xl font-bold text-text leading-tight mb-4">
         Releasing c_specx

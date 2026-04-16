@@ -23,7 +23,7 @@ function close() {
 </script>
 
 <template>
-  <nav class="bg-surface px-8 py-5">
+  <nav class="bg-surface px-4 sm:px-8 py-5">
     <div class="max-w-2xl mx-auto flex items-center justify-between">
 
       <!-- Left: social icons + site name -->

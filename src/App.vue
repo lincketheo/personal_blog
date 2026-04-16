@@ -7,7 +7,7 @@ import NavigationBar from "@/navigation/NavigationBar.vue";
   <div class="font-mono">
     <NavigationBar />
     <div class="flex flex-row justify-center bg-bg text-text min-h-screen">
-      <div class="w-[1024px]">
+      <div class="w-full max-w-4xl px-4 sm:px-6">
         <RouterView />
       </div>
     </div>
