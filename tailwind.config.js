@@ -8,11 +8,11 @@ module.exports = {
 		extend: {
 			colors: {
 				// Page background — near-black with a hint of green
-				bg:        '#12140A',
+				bg:        '#111111',
 				// Card / raised surface
-				surface:   '#1C1F10',
+				surface:   '#222222',
 				// Subtle borders and dividers
-				border:    '#2E3118',
+				border:    '#000000',
 
 				// Body text — warm off-white
 				text:      '#EDE9D0',
