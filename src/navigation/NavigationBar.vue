@@ -1,60 +1,48 @@
 <script setup lang="ts">
-
-  import {useRouter} from "vue-router";
-import {computed} from "vue";
-import {meta} from "@/meta"
+import {useRouter} from 'vue-router'
+import {computed} from 'vue'
 
 const links = [
-  {
-    title: "Home",
-    link: '/',
-    name: "home"
-  },
-  {
-    title: "About",
-    link: '/about',
-    name: "about"
-  },
+  {title: 'Home', link: '/', name: 'home'},
+  {title: 'About', link: '/about', name: 'about'},
+  {title: 'Programs', link: '/programs', name: 'programs'},
 ]
 
 const router = useRouter()
-const currentLink = computed(() => {
-  return router.currentRoute.value.name
-})
-
+const currentLink = computed(() => router.currentRoute.value.name)
 </script>
 
 <template>
-  <nav class="bg-surface dark:bg-surface-dark p-16">
-    <div class="flex flex-wrap items-center justify-between">
-      <div class="text-on-surface dark:text-on-surface flex items-center justify-between">
-        <a href="https://github.com/lincketheo">
-          <font-awesome-icon class="text-3xl pr-10" :icon="['fab', 'github']"/>
+  <nav class="bg-surface px-8 py-5">
+    <div class="max-w-2xl mx-auto flex items-center justify-between">
+
+      <div class="flex items-center gap-6">
+        <a href="https://github.com/lincketheo" class="text-muted hover:text-text transition-colors">
+          <font-awesome-icon class="text-xl" :icon="['fab', 'github']"/>
         </a>
-        <a href="https://www.linkedin.com/in/theo-lincke/">
-          <font-awesome-icon class="text-3xl pr-10" :icon="['fab', 'linkedin']"/>
+        <a href="https://www.linkedin.com/in/theo-lincke/" class="text-muted hover:text-text transition-colors">
+          <font-awesome-icon class="text-xl" :icon="['fab', 'linkedin']"/>
         </a>
-        <a href="/">
-          <span class="text-2xl font-bold text-primary dark:text-primary-dark">theolincke-blog.com</span>
+        <a href="/" class="font-mono text-sm font-bold tracking-tight text-text hover:text-red transition-colors">
+          theolincke.com
         </a>
       </div>
-      <ul class="flex flex-row space-x-8">
+
+      <ul class="flex gap-8">
         <li v-for="link in links" :key="link.name">
-          <a v-if="currentLink === link.name"
-             :href="link.link"
-             class="text-primary dark:text-primary-dark"
-             aria-current="page">
-            {{ link.title }}
-          </a>
-          <a v-else
-             :href="link.link"
-             class="text-on-surface dark:text-on-surface-dark"
-             aria-current="page">
+          <a
+              :href="link.link"
+              :aria-current="currentLink === link.name ? 'page' : undefined"
+              :class="currentLink === link.name
+              ? 'text-red font-semibold'
+              : 'text-muted hover:text-text transition-colors'"
+              class="text-sm font-mono tracking-wide"
+          >
             {{ link.title }}
           </a>
         </li>
       </ul>
+
     </div>
   </nav>
 </template>
-

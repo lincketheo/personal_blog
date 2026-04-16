@@ -1,12 +1,3 @@
-<template>
-  <aside class="definition">
-    <div class="definition-term">{{ term }}</div>
-    <div class="definition-body">
-      <slot />
-    </div>
-  </aside>
-</template>
-
 <script setup lang="ts">
 defineProps({
   term: {
@@ -16,45 +7,13 @@ defineProps({
 })
 </script>
 
-<style scoped>
-.definition {
-  margin: 1.25rem 0;
-  border-left: 3px solid #2563eb;
-  background: #f0f5ff;
-  padding: 0.9rem 1.25rem;
-  border-radius: 0 4px 4px 0;
-  font-family: system-ui, sans-serif;
-  font-size: 0.95rem;
-  line-height: 1.6;
-}
-
-.definition-term {
-  font-weight: 700;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #2563eb;
-  margin-bottom: 0.4rem;
-}
-
-.definition-body {
-  color: #1e293b;
-}
-
-.definition-body ul {
-  margin: 0.5rem 0 0.5rem 1.25rem;
-  padding: 0;
-}
-
-.definition-body li {
-  margin-bottom: 0.3rem;
-}
-
-.definition-body code {
-  font-family: 'Fira Code', 'Courier New', monospace;
-  font-size: 0.875em;
-  background: #dbeafe;
-  padding: 0.1em 0.3em;
-  border-radius: 3px;
-}
-</style>
+<template>
+  <aside class="my-5 border-l-4 border-red bg-surface rounded-r pl-5 pr-5 pt-4 pb-4">
+    <div class="font-mono text-xs font-semibold uppercase tracking-widest text-red mb-1.5">
+      {{ term }}
+    </div>
+    <div class="text-text/80 text-sm leading-relaxed [&_ul]:mt-2 [&_ul]:ml-5 [&_ul]:list-disc [&_li]:mb-1 [&_code]:font-mono [&_code]:text-[0.875em] [&_code]:bg-border [&_code]:text-amber [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded">
+      <slot />
+    </div>
+  </aside>
+</template>

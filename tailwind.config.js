@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-
 module.exports = {
 	content: [
 		'./public/**/*.html',
@@ -8,70 +7,33 @@ module.exports = {
 	theme: {
 		extend: {
 			colors: {
-				primary: {
-					light: '#D52429',
-					DEFAULT: '#D52429',
-					dark: '#D52429',
-				},
-				'primary-variant': {
-					light: '#F1602C',
-					DEFAULT: '#F1602C',
-					dark: '#F1602C',
-				},
-				secondary: {
-					light: '#EC8922',
-					DEFAULT: '#EC8922',
-					dark: '#EC8922',
-				},
-				'secondary-variant': {
-					light: '#EC8922',
-					DEFAULT: '#EC8922',
-					dark: '#EC8922',
-				},
-				background: {
-					light: '#FEFAE5',
-					DEFAULT: '#FEFAE5',
-					dark: '#F1E6C7',
-				},
-				surface: {
-					light: '#191B0E',
-					DEFAULT: '#191B0E',
-					dark: '#191B0E',
-				},
-				error: {
-					light: '#B00020',
-					DEFAULT: '#B00020',
-					dark: '#B00020',
-				},
-				'on-primary': {
-					light: '#FFFFFF',
-					DEFAULT: '#FFFFFF',
-					dark: '#FFFFFF',
-				},
-				'on-secondary': {
-					light: '#000000',
-					DEFAULT: '#000000',
-					dark: '#000000',
-				},
-				'on-background': {
-					light: '#000000',
-					DEFAULT: '#000000',
-					dark: '#000000',
-				},
-				'on-surface': {
-					light: '#FEFAE5',
-					DEFAULT: '#FEFAE5',
-					dark: '#FEFAE5',
-				},
-				'on-error': {
-					light: '#FFFFFF',
-					DEFAULT: '#FFFFFF',
-					dark: '#FFFFFF',
-				},
+				// Page background — near-black with a hint of green
+				bg:        '#12140A',
+				// Card / raised surface
+				surface:   '#1C1F10',
+				// Subtle borders and dividers
+				border:    '#2E3118',
+
+				// Body text — warm off-white
+				text:      '#EDE9D0',
+				// Muted text — dates, captions, labels
+				muted:     '#7A7B62',
+
+				// Accent red — links, CTAs
+				red:       '#D52429',
+				// Hover state for red
+				'red-hot': '#F1602C',
+				// Amber — secondary accent if needed
+				amber:     '#EC8922',
+			},
+			fontFamily: {
+				sans:  ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+				serif: ['Georgia', 'Times New Roman', 'serif'],
+				mono:  ['ui-monospace', 'Cascadia Code', 'Source Code Pro', 'monospace'],
 			},
 		},
 	},
 	plugins: [
 		require('@tailwindcss/typography'),
 	],
-};
+}

@@ -1,7 +1,7 @@
 <template>
-  <main class="max-w-2xl mx-auto px-6 py-12">
+  <main class="max-w-2xl mx-auto px-6 py-12 font-serif">
 
-    <section class="prose-section">
+    <section class="space-y-4 mb-12 text-text/75 leading-relaxed text-base">
       <p>
         Software engineer based in the Virginia / DC area. This blog covers practical software engineering —
         the algorithms, patterns, and systems thinking behind reliable software, written for working developers,
@@ -20,112 +20,50 @@
       </p>
     </section>
 
-    <section class="principles-section">
-      <h2>Engineering principles</h2>
-      <ol>
+    <section class="mb-12">
+      <h2 class="font-mono text-xs tracking-widest uppercase text-muted border-b border-border pb-2 mb-6">
+        Engineering principles
+      </h2>
+      <ol class="list-decimal list-outside pl-5 space-y-4 text-base text-text/75 leading-relaxed">
         <li>
-          <strong>Prioritize the user and the use case.</strong>
+          <strong class="text-text font-bold">Prioritize the user and the use case.</strong>
           Technology serves a purpose. Don't lose sight of user experience, utility, and the real constraints
           of time, capital, and energy.
         </li>
         <li>
-          <strong>Default to simplicity.</strong>
+          <strong class="text-text font-bold">Default to simplicity.</strong>
           Abstract and automate only when it improves the product. Complexity without purpose is a liability.
         </li>
         <li>
-          <strong>Data ethics matter in AI.</strong>
+          <strong class="text-text font-bold">Data ethics matter in AI.</strong>
           AI depends on data quality and transparency. Build tools that make data practices visible, not hidden.
         </li>
         <li>
-          <strong>Skilled engineers are the multiplier.</strong>
+          <strong class="text-text font-bold">Skilled engineers are the multiplier.</strong>
           Frameworks provide structure; engineers drive outcomes. Raise the technical floor, keep the ego low.
         </li>
         <li>
-          <strong>Be selective about what you keep current on.</strong>
+          <strong class="text-text font-bold">Be selective about what you keep current on.</strong>
           Not every new tool deserves attention. Focus on what's genuinely valuable and prune aggressively.
         </li>
         <li>
-          <strong>Stay in the box 98% of the time.</strong>
-          Most engineering work is incremental. Discipline and clarity in the routine work creates space for
-          real creativity in the problems that actually call for it.
+          <strong class="text-text font-bold">Stay in the box 98% of the time.</strong>
+          Discipline and clarity in routine work creates space for real creativity where it actually matters.
         </li>
       </ol>
     </section>
 
-    <section class="prose-section">
-      <h2>About this site</h2>
-      <p>
+    <section>
+      <h2 class="font-mono text-xs tracking-widest uppercase text-muted border-b border-border pb-2 mb-6">
+        About this site
+      </h2>
+      <p class="text-base text-text/75 leading-relaxed mb-3">
         Built with Vue 3, served as static content via Nginx.
       </p>
-      <p class="disclaimer">
+      <p class="text-sm text-muted/70 italic">
         Opinions here are my own and do not reflect the views of my employer.
       </p>
     </section>
 
   </main>
 </template>
-
-<style scoped>
-main {
-  font-family: Georgia, 'Times New Roman', serif;
-}
-
-.prose-section,
-.principles-section {
-  margin-bottom: 3rem;
-}
-
-.prose-section p,
-.principles-section p {
-  font-size: 1rem;
-  line-height: 1.75;
-  color: rgba(25, 27, 14, 0.85);
-  margin-bottom: 1.25rem;
-}
-
-h2 {
-  font-size: 1.125rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
-  color: #191B0E;
-  border-bottom: 1px solid rgba(25, 27, 14, 0.15);
-  padding-bottom: 0.5rem;
-  margin-bottom: 1.25rem;
-}
-
-ol {
-  list-style: decimal;
-  padding-left: 1.5rem;
-  counter-reset: none;
-}
-
-ol li {
-  font-size: 1rem;
-  line-height: 1.7;
-  color: rgba(25, 27, 14, 0.85);
-  margin-bottom: 1rem;
-  padding-left: 0.25rem;
-}
-
-ol li strong {
-  color: #191B0E;
-  font-weight: 700;
-}
-
-.disclaimer {
-  font-size: 0.875rem;
-  color: rgba(25, 27, 14, 0.45);
-  font-style: italic;
-}
-
-@media (prefers-color-scheme: dark) {
-  h2 { color: #FEFAE5; border-bottom-color: rgba(254, 250, 229, 0.12); }
-  .prose-section p,
-  .principles-section p,
-  ol li { color: rgba(254, 250, 229, 0.8); }
-  ol li strong { color: #FEFAE5; }
-  .disclaimer { color: rgba(254, 250, 229, 0.4); }
-}
-</style>

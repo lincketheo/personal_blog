@@ -40,89 +40,34 @@ function formatDate(date: Date | string) {
   <main class="max-w-2xl mx-auto px-6 py-12">
 
     <article
-        v-for="post in visiblePosts"
+        v-for="(post, i) in visiblePosts"
         :key="post.route"
-        class="post-entry"
+        :class="['py-10', i !== 0 && 'border-t border-border']"
     >
-      <time class="post-date">{{ formatDate(post.date) }}</time>
-      <h2 class="post-title">
-        <a :href="post.route">{{ post.title }}</a>
+      <time class="block font-mono text-xs tracking-widest uppercase text-muted mb-2">
+        {{ formatDate(post.date) }}
+      </time>
+
+      <h2 class="font-serif text-2xl font-bold leading-snug mb-3">
+        <a :href="post.route" class="text-text no-underline hover:text-red-hot transition-colors duration-150">
+          {{ post.title }}
+        </a>
       </h2>
-      <p class="post-excerpt">{{ post.description }}</p>
-      <a :href="post.route" class="post-read-more">Continue reading →</a>
+
+      <p class="text-base leading-relaxed text-text/70 mb-4">
+        {{ post.description }}
+      </p>
+
+      <a :href="post.route" class="text-sm font-semibold text-red hover:text-red-hot hover:underline">
+        Continue reading →
+      </a>
     </article>
 
     <div ref="sentinel" class="h-4" />
 
-    <p v-if="!hasMore" class="text-center text-sm text-on-background/40 py-8">
+    <p v-if="!hasMore" class="text-center font-mono text-xs text-muted/50 py-8">
       — end —
     </p>
 
   </main>
 </template>
-
-<style scoped>
-.post-entry {
-  padding: 2.5rem 0;
-  border-top: 1px solid rgba(25, 27, 14, 0.15);
-}
-
-.post-entry:first-child {
-  border-top: none;
-  padding-top: 0;
-}
-
-.post-date {
-  display: block;
-  font-size: 0.8125rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: rgba(25, 27, 14, 0.45);
-  margin-bottom: 0.5rem;
-  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
-}
-
-.post-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  line-height: 1.25;
-  margin-bottom: 0.75rem;
-  font-family: 'Georgia', 'Times New Roman', serif;
-}
-
-.post-title a {
-  color: #191B0E;
-  text-decoration: none;
-}
-
-.post-title a:hover {
-  color: #D52429;
-}
-
-.post-excerpt {
-  font-size: 1rem;
-  line-height: 1.7;
-  color: rgba(25, 27, 14, 0.75);
-  margin-bottom: 1rem;
-}
-
-.post-read-more {
-  font-size: 0.875rem;
-  color: #D52429;
-  text-decoration: none;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-}
-
-.post-read-more:hover {
-  text-decoration: underline;
-}
-
-@media (prefers-color-scheme: dark) {
-  .post-date { color: rgba(254, 250, 229, 0.4); }
-  .post-title a { color: #FEFAE5; }
-  .post-title a:hover { color: #F1602C; }
-  .post-excerpt { color: rgba(254, 250, 229, 0.7); }
-  .post-entry { border-top-color: rgba(254, 250, 229, 0.12); }
-}
-</style>
