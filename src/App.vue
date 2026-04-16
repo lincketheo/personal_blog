@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import {RouterView} from 'vue-router'
+import { RouterView } from "vue-router";
 import NavigationBar from "@/navigation/NavigationBar.vue";
 </script>
 
 <template>
   <div class="font-mono">
-    <NavigationBar/>
+    <NavigationBar />
     <div class="flex flex-row justify-center bg-bg text-text min-h-screen">
       <div class="w-[1024px]">
-        <RouterView/>
+        <RouterView />
       </div>
     </div>
   </div>

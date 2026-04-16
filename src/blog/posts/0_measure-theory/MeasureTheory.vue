@@ -3,5 +3,5 @@ import MarkdownBlogPost from "@/components/MarkdownBlogPost.vue";
 </script>
 
 <template>
-  <MarkdownBlogPost mathjaxmsg route="/metric-spaces.md"/>
+  <MarkdownBlogPost mathjaxmsg route="/metric-spaces.md" />
 </template>

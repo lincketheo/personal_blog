@@ -3,5 +3,5 @@ import MarkdownBlogPost from "@/components/MarkdownBlogPost.vue";
 </script>
 
 <template>
-  <MarkdownBlogPost mathjaxmsg route="/paradoxes.md"/>
+  <MarkdownBlogPost mathjaxmsg route="/paradoxes.md" />
 </template>

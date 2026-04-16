@@ -3,5 +3,5 @@ import MarkdownBlogPost from "@/components/MarkdownBlogPost.vue";
 </script>
 
 <template>
-  <MarkdownBlogPost route="/building-a-bootloader.md"/>
+  <MarkdownBlogPost route="/building-a-bootloader.md" />
 </template>
