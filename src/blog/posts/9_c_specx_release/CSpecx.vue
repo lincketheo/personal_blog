@@ -27,7 +27,7 @@ import Code from "@/components/Code.vue";
       <h3 class="text-base font-bold text-text mb-2">Chunk allocator</h3>
       <p class="text-text/75 leading-relaxed mb-4">
         An arena allocator that grows by chaining heap-allocated chunks. The hot
-        path is a bump pointer inside the current chunk — no per-object
+        path is a bump pointer inside the current chunk - no per-object
         <Code>free</Code>. Call <Code>chunk_alloc_reset_all</Code> to reuse
         memory without freeing, or <Code>chunk_alloc_free_all</Code> to tear it
         down entirely. Use case is "I want to allocate a bunch of stuff together
@@ -59,14 +59,14 @@ chunk_alloc_free_all (&ca);  /* tear down */</code></pre>
         class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
       ><code class="font-mono text-sm text-text/85 leading-relaxed">struct malloc_plan p = malloc_plan_create ();
 
-/* Pass 1 — planning: just accumulates sizes */
+/* Pass 1 - planning: just accumulates sizes */
 malloc_plan_memcpy (&p, header, header_len);
 malloc_plan_memcpy (&p, body,   body_len);
 
 error e = error_create();
 malloc_plan_alloc (&p, &e); /* single malloc */
 
-/* Pass 2 — allocing: fills the buffer */
+/* Pass 2 - allocing: fills the buffer */
 malloc_plan_memcpy (&p, header, header_len);
 malloc_plan_memcpy (&p, body,   body_len);</code></pre>
 
@@ -102,7 +102,7 @@ slab_alloc_destroy (&sa);</code></pre>
         Circular buffer (<Code>cbuffer</Code>)
       </h3>
       <p class="text-text/75 leading-relaxed mb-4">
-        A ring buffer over a caller-supplied backing array — no heap allocation.
+        A ring buffer over a caller-supplied backing array - no heap allocation.
         Typed read/write/peek/pop in both single-element and bulk forms, direct
         file I/O helpers, and cbuffer-to-cbuffer move and copy. Most operations
         have an <Code>_expect</Code> macro variant that <Code>ASSERT</Code>s on
@@ -165,11 +165,11 @@ dblb_free (&db);</code></pre>
 
       <h3 class="text-base font-bold text-text mb-2">Robin Hood hash table</h3>
       <p class="text-text/75 leading-relaxed mb-4">
-        An open-addressing hash table using Robin Hood displacement — on insert,
+        An open-addressing hash table using Robin Hood displacement - on insert,
         if the incoming entry has traveled further from its home slot than the
         incumbent, they swap. This keeps probe length variance low and
         worst-case lookup predictable. Instantiate it with three macros and an
-        include — you get a fully typed API with no void pointers or casting.
+        include - you get a fully typed API with no void pointers or casting.
         Backing storage is caller-supplied so there's no hidden allocation. This
         is useful if you're hashing really small objects and you have a fixed
         sized hash table. This is more common than you think. Large hash tables
@@ -205,7 +205,7 @@ ht_delete_u32 (&ht, 42);</code></pre>
     <section class="mb-10">
       <h2 class="text-xl font-bold text-text mt-10 mb-2">Stream</h2>
       <p class="text-text/75 leading-relaxed mb-4">
-        A polymorphic byte I/O interface — a vtable of <Code>pull</Code>,
+        A polymorphic byte I/O interface - a vtable of <Code>pull</Code>,
         <Code>push</Code>, and <Code>close</Code> function pointers plus an
         atomic <Code>done</Code> flag. Concrete implementations: a read-only
         buffer source (<Code>stream_ibuf</Code>), a write-only buffer sink
@@ -327,7 +327,7 @@ latch_unlock (&l);</code></pre>
       ><code class="font-mono text-sm text-text/85 leading-relaxed">sx_latch l;
 spx_latch_init (&l);
 
-spx_lock_s (&l);       /* shared — multiple readers OK */
+spx_lock_s (&l);       /* shared - multiple readers OK */
 /* ... read ... */
 spx_upgrade_s_x (&l);  /* promote to exclusive */
 /* ... write ... */
@@ -338,7 +338,7 @@ spx_unlock_x (&l);</code></pre>
       </h3>
       <p class="text-text/75 leading-relaxed mb-4">
         A mutex-backed lock supporting all five SQL-style modes: IS, IX, S, SIX,
-        and X. Waiters are allocated on the stack and linked into a queue — no
+        and X. Waiters are allocated on the stack and linked into a queue - no
         heap allocation per lock operation. Incompatible requests block on a
         condition variable.
       </p>
@@ -360,7 +360,7 @@ gr_lock_destroy (&l);</code></pre>
       <Definition term="Lock modes (IS, IX, S, SIX, X)">
         These are the five granularity lock modes from Gray's hierarchy. IS
         (intent shared) and IX (intent exclusive) signal intent to lock at a
-        finer granularity below — they allow other intent locks to coexist. S
+        finer granularity below - they allow other intent locks to coexist. S
         (shared) allows concurrent reads. X (exclusive) requires sole access.
         SIX (shared + intent exclusive) holds a shared lock on the current node
         while signaling intent to exclusively lock something below it. The
@@ -431,7 +431,7 @@ TEST (randu32r)
         Assertions are documentation
       </h2>
       <p class="text-text/75 leading-relaxed mb-4">
-        <Code>ASSERT</Code> is not error handling — it's a statement of
+        <Code>ASSERT</Code> is not error handling - it's a statement of
         invariants that must be true. If an <Code>ASSERT</Code> fires, the
         program is already in an undefined state and should crash loudly. In
         release builds (<Code>NDEBUG</Code> defined) they compile away entirely,
@@ -442,7 +442,7 @@ TEST (randu32r)
       ><code class="font-mono text-sm text-text/85 leading-relaxed">u32
 randu32r (const u32 lower, const u32 upper)
 {
-  ASSERT (upper >= lower); /* precondition — caller's fault if violated */
+  ASSERT (upper >= lower); /* precondition - caller's fault if violated */
   /* ... */
 }</code></pre>
       <p class="text-text/75 leading-relaxed mb-4">
@@ -467,7 +467,7 @@ cbuffer_push_back (const void *src, u32 size, struct cbuffer *b)
 }</code></pre>
       <p class="text-text/75 leading-relaxed">
         <Code>ASSERT</Code> is for things that should never happen. Recoverable
-        errors — bad input, allocation failure, I/O problems — go through the
+        errors - bad input, allocation failure, I/O problems - go through the
         <Code>error *e</Code> mechanism instead.
       </p>
     </section>
@@ -478,8 +478,8 @@ cbuffer_push_back (const void *src, u32 size, struct cbuffer *b)
         Platform differences belong in one place
       </h2>
       <p class="text-text/75 leading-relaxed mb-4">
-        Platform-specific code lives in dedicated directories —
-        <Code>intf/os_posix/</Code> and <Code>intf/os_windows/</Code> — behind a
+        Platform-specific code lives in dedicated directories -
+        <Code>intf/os_posix/</Code> and <Code>intf/os_windows/</Code> - behind a
         common interface. The rest of the codebase calls
         <Code>i_log_info</Code>, <Code>i_mutex_lock</Code>,
         <Code>i_file_read</Code> and never sees a <Code>#ifdef _WIN32</Code>.
@@ -487,15 +487,15 @@ cbuffer_push_back (const void *src, u32 size, struct cbuffer *b)
       </p>
       <pre
         class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
-      ><code class="font-mono text-sm text-text/85 leading-relaxed">/* intf/os.h — what the rest of the codebase sees */
+      ><code class="font-mono text-sm text-text/85 leading-relaxed">/* intf/os.h - what the rest of the codebase sees */
 void i_log_info  (const char *fmt, ...);
 void i_log_error (const char *fmt, ...);
 void i_log_flush (void);
 
-/* intf/os_posix/logging.c  — POSIX impl  */
-/* intf/os_windows/logging.c — Windows impl */</code></pre>
+/* intf/os_posix/logging.c  - POSIX impl  */
+/* intf/os_windows/logging.c - Windows impl */</code></pre>
       <p class="text-text/75 leading-relaxed">
-        Scattered <Code>#ifdef</Code>s are a maintenance problem — every new
+        Scattered <Code>#ifdef</Code>s are a maintenance problem - every new
         platform means auditing the entire codebase. An interface layer means
         adding a platform is adding a directory.
       </p>
@@ -508,8 +508,8 @@ void i_log_flush (void);
           href="https://github.com/lincketheo/c_specx"
           class="text-red hover:text-red-hot underline"
           >GitHub</a
-        >. More posts on specific pieces — the Robin Hood table, the stream
-        interface, and the lock manager — coming as I use them in real projects.
+        >. More posts on specific pieces - the Robin Hood table, the stream
+        interface, and the lock manager - coming as I use them in real projects.
       </p>
     </footer>
   </article>

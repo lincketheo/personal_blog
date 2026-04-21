@@ -3,16 +3,16 @@
     <section class="space-y-4 mb-12 text-text/75 leading-relaxed text-base">
       <p>
         Software engineer based in the Virginia / DC area. This blog covers
-        practical software engineering — the algorithms, patterns, and systems
+        practical software engineering - the algorithms, patterns, and systems
         thinking behind reliable software, written for working developers, not
         academics.
       </p>
       <p>
         A lot of concepts from operating systems, databases, and distributed
         systems get a reputation for being hard. Some of that reputation comes
-        from the environments they were originally built in — C, manual memory
+        from the environments they were originally built in - C, manual memory
         management, bare metal. But the <em>ideas</em> themselves are usually
-        straightforward. Write-ahead logging, transactions, consensus — these
+        straightforward. Write-ahead logging, transactions, consensus - these
         are patterns you can understand, reason about, and apply without
         building a storage engine from scratch.
       </p>

@@ -38,7 +38,7 @@ import Code from "@/components/Code.vue";
         A transaction is a sequence of operations that is treated as a single
         unit of work. The database guarantees that either all of the operations
         in a transaction take effect, or none of them do. This is the "all or
-        nothing" property — formally called <em>atomicity</em> — and it's one of
+        nothing" property - formally called <em>atomicity</em> - and it's one of
         the four ACID properties that Jim Gray formalized in the late 1970s.
       </Definition>
     </section>
@@ -56,7 +56,7 @@ import Code from "@/components/Code.vue";
         Locking is how a database serializes access to shared data. When a
         transaction acquires a lock on a resource, other transactions have to
         wait. The simplest strategy is a single coarse-grained lock on the whole
-        database — nothing else can touch the data while a transaction is in
+        database - nothing else can touch the data while a transaction is in
         progress. A more sophisticated approach is
         <em>two-phase locking (2PL)</em>, where each resource is locked
         individually and locks are acquired in a growing phase and released in a
@@ -74,7 +74,7 @@ import Code from "@/components/Code.vue";
         <em>DO UNDO REDO</em> protocol. Before you modify anything, you save
         enough information to reverse the change (UNDO). After you commit, you
         save enough information to replay the change if needed (REDO). This
-        database only implements UNDO — which is enough for our purposes.
+        database only implements UNDO - which is enough for our purposes.
       </p>
       <Definition term="DO UNDO REDO">
         <ul>
@@ -117,7 +117,7 @@ import Code from "@/components/Code.vue";
       </ol>
       <Definition term="CRC (Cyclic Redundancy Check)">
         A CRC is a short checksum computed from a block of data. If the data
-        changes — or if a write is interrupted partway through — the checksum
+        changes - or if a write is interrupted partway through - the checksum
         won't match. We use it here to detect incomplete undo files: if the
         database crashes while writing an undo file, the CRC for that file won't
         be valid, and we know not to trust it during recovery.
@@ -139,7 +139,7 @@ import Code from "@/components/Code.vue";
       </ol>
       <Definition term="Commit Record">
         The commit record is the single point of truth for whether a transaction
-        succeeded. Writing it is an atomic operation at the filesystem level —
+        succeeded. Writing it is an atomic operation at the filesystem level -
         either it exists or it doesn't. This is the mechanism that makes the
         whole system work: if the process crashes before the commit file is
         written, recovery knows to roll back. If it crashes after, recovery
@@ -177,13 +177,13 @@ import Code from "@/components/Code.vue";
       <ol
         class="list-decimal list-outside pl-5 space-y-2 text-text/75 leading-relaxed mb-4"
       >
-        <li>If there's a commit record, just cleanup — we're done</li>
+        <li>If there's a commit record, just cleanup - we're done</li>
         <li>
           Otherwise, go through all the <Code>.undo</Code> files and replace the
           original files with them, then delete the <Code>.undo</Code> and
           <Code>.crc</Code> files. There may be one file that has an incomplete
           CRC, meaning our database crashed while writing a CRC. If there's more
-          than one — then our database is corrupt.
+          than one - then our database is corrupt.
         </li>
       </ol>
       <Definition term="Recovery">
@@ -215,7 +215,7 @@ import Code from "@/components/Code.vue";
         Write-ahead logs grow unboundedly if you keep every record. Log
         compaction is the process of collapsing multiple log entries for the
         same resource into one. For UNDO logs specifically, only the
-        <em>first</em> image matters — the state of the data before the
+        <em>first</em> image matters - the state of the data before the
         transaction touched it. Every subsequent modification to the same
         resource during the same transaction can be discarded, because the
         original is already saved. That's the shortcut this database takes:
@@ -223,7 +223,7 @@ import Code from "@/components/Code.vue";
         <Code>File1</Code> is the current working state.
       </Definition>
       <p class="text-text/75 leading-relaxed mt-4">
-        Also, we don't really need sequentiality because all logs are disjoint —
+        Also, we don't really need sequentiality because all logs are disjoint -
         each file has its own undo record and they don't depend on each other.
       </p>
     </section>

@@ -77,7 +77,7 @@ function formatDate(date: Date | string) {
     <div ref="sentinel" class="h-4" />
 
     <p v-if="!hasMore" class="text-center font-mono text-xs text-muted/50 py-8">
-      — end —
+      - end -
     </p>
   </main>
 </template>

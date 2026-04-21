@@ -11,9 +11,9 @@ import Code from "@/components/Code.vue";
       </h1>
       <p class="text-lg text-text/70 leading-relaxed">
         I wanted to write a blog post about implementing a lock table because I
-        thought it would help me debug some of my problems — I'm currently
+        thought it would help me debug some of my problems - I'm currently
         tracking down some bugs in Numstore with my lock table, particularly
-        upgrading locks — but I realized there's a lot of boilerplate I need to
+        upgrading locks - but I realized there's a lot of boilerplate I need to
         walk through first. If you're curious to see how this is used in
         Numstore, take a look
         <a
@@ -29,7 +29,7 @@ import Code from "@/components/Code.vue";
     <Definition term="Hash table">
       A hash table maps keys to values using a hash function. The hash function
       converts a key into a bucket index. Ideally each key maps to a unique
-      bucket, but in practice multiple keys can land in the same bucket — this
+      bucket, but in practice multiple keys can land in the same bucket - this
       is called a collision. There are two common strategies for handling
       collisions: open addressing (probe for an empty slot) and chaining (each
       bucket holds a linked list of entries). We're using chaining here.
@@ -51,7 +51,7 @@ import Code from "@/components/Code.vue";
         functions for dynamic memory allocation. <Code>malloc(n)</Code> requests
         <em>n</em> bytes from the heap and returns a pointer to them;
         <Code>free(ptr)</Code> hands those bytes back. Every
-        <Code>malloc</Code> must be paired with exactly one <Code>free</Code> —
+        <Code>malloc</Code> must be paired with exactly one <Code>free</Code> -
         too few frees is a memory leak, too many is undefined behavior. In
         garbage-collected languages this bookkeeping is done for you; in C it's
         your problem.
@@ -64,7 +64,7 @@ import Code from "@/components/Code.vue";
         Java has a pretty over-engineered memory management pipeline for both
         large and small objects, so you could think of it as
         <Code>malloc</Code> / <Code>free</Code> with extra fluff on top. Not
-        sure — just a thought.
+        sure - just a thought.
       </blockquote>
       <p class="text-text/75 leading-relaxed mb-4">
         Anyway, when I build C APIs for internal use and want to control memory,
@@ -77,7 +77,7 @@ import Code from "@/components/Code.vue";
       ><code class="font-mono text-sm text-text/85 leading-relaxed">struct foo *open_foo();</code></pre>
       <p class="text-text/75 leading-relaxed mb-4">
         where it's implicit that <Code>open_foo</Code> is going to
-        <Code>malloc</Code> somewhere — toward signatures like this:
+        <Code>malloc</Code> somewhere - toward signatures like this:
       </p>
       <pre
         class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
@@ -100,7 +100,7 @@ import Code from "@/components/Code.vue";
         class="list-decimal list-outside pl-5 space-y-3 text-text/75 leading-relaxed"
       >
         <li>
-          It should be <strong class="text-text">generic</strong> — reusable
+          It should be <strong class="text-text">generic</strong> - reusable
           across different data types without rewriting the table.
         </li>
         <li>
@@ -108,13 +108,13 @@ import Code from "@/components/Code.vue";
           <strong class="text-text"
             >limit <Code>malloc</Code> / <Code>free</Code></strong
           >
-          — mostly for debuggability, not speed. I respect that modern
+          - mostly for debuggability, not speed. I respect that modern
           allocators are fast and rarely the bottleneck. Still, a hash map that
           leans on <Code>malloc</Code> is going to be harder to reason about
           when something goes wrong.
         </li>
         <li>
-          It should be <strong class="text-text">unbounded</strong> — able to
+          It should be <strong class="text-text">unbounded</strong> - able to
           grow to accommodate many entries. As a general rule, be careful with
           this assumption. A lot of the time your hash table is actually
           bounded.
@@ -146,14 +146,14 @@ import Code from "@/components/Code.vue";
         example, if your hash function sums the ASCII values of a string's
         characters, "foo" and "oof" produce the same sum and collide. Collisions
         also happen when your hash function produces values larger than the
-        table size — a hash of 20 in a table of 10 buckets wraps to bucket 0,
+        table size - a hash of 20 in a table of 10 buckets wraps to bucket 0,
         potentially colliding with a hash of 10 that also wraps there.
       </Definition>
       <p class="text-text/75 leading-relaxed mb-4">
         In general, you can't assume hash indexes are unique.
       </p>
       <Definition term="O(n) vs. Θ(1)">
-        Technically, a hash table with chaining has <em>O(n)</em> lookup — if
+        Technically, a hash table with chaining has <em>O(n)</em> lookup - if
         every key hashes to the same bucket, you end up scanning a list of
         <em>n</em> items. But the average-case complexity is <em>Θ(1)</em>: with
         a reasonable hash function and load factor, lookups take constant time
@@ -186,8 +186,8 @@ import Code from "@/components/Code.vue";
       <Definition term="Flexible array member">
         A flexible array member (the trailing <Code>content[]</Code> above) is a
         C99 feature that lets a struct end with an array of unspecified length.
-        You allocate the struct with extra space —
-        <Code>malloc(sizeof(struct data) + payload_size)</Code> — and the array
+        You allocate the struct with extra space -
+        <Code>malloc(sizeof(struct data) + payload_size)</Code> - and the array
         covers the extra bytes. It avoids a separate allocation for the payload,
         but it forces you back into <Code>malloc</Code> territory and requires
         casting at the call site.
@@ -208,7 +208,7 @@ import Code from "@/components/Code.vue";
         <em>inside</em> the caller's own structs rather than alongside them.
         Instead of the container allocating node objects that point to your
         data, you embed a small "hook" node directly into your struct. The
-        container only ever manipulates these hooks — the rest of your data is
+        container only ever manipulates these hooks - the rest of your data is
         none of its business. The main payoff is zero extra allocations: nodes
         are part of the objects you already have. Linux's kernel linked list
         (<Code>struct list_head</Code>) is the canonical example.
@@ -236,7 +236,7 @@ import Code from "@/components/Code.vue";
           class="max-w-full border border-border rounded bg-surface/50 p-2 mx-auto"
         />
         <figcaption class="mt-2 text-sm text-muted italic text-center">
-          The list node lives inside your struct. No separate allocation — the
+          The list node lives inside your struct. No separate allocation - the
           hook is just a field.
         </figcaption>
       </figure>
@@ -263,7 +263,7 @@ import Code from "@/components/Code.vue";
         <Code>member</Code> within <Code>type</Code>. So
         <Code>offsetof(struct word_entry, node)</Code> tells you how many bytes
         from the start of a <Code>word_entry</Code> the embedded
-        <Code>hnode</Code> lives. The compiler computes this at compile time —
+        <Code>hnode</Code> lives. The compiler computes this at compile time -
         zero runtime cost.
       </Definition>
     </section>
@@ -271,7 +271,7 @@ import Code from "@/components/Code.vue";
     <section class="mb-8">
       <h2 class="text-xl font-bold text-text mt-10 mb-3">The Table</h2>
       <p class="text-text/75 leading-relaxed mb-4">
-        The table itself is an array of bucket heads — each bucket is just a
+        The table itself is an array of bucket heads - each bucket is just a
         pointer to the first
         <Code>hnode</Code> in its chain. We use a flexible array member so the
         bucket array lives contiguously with the table header in a single
@@ -298,7 +298,7 @@ htable_create (uint32_t n)
     return t;
 }</code></pre>
       <p class="text-text/75 leading-relaxed mb-4">
-        Insert prepends to the bucket's chain — O(1), no searching:
+        Insert prepends to the bucket's chain - O(1), no searching:
       </p>
       <pre
         class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
@@ -312,7 +312,7 @@ htable_insert (struct htable *t, struct hnode *node)
 }</code></pre>
       <p class="text-text/75 leading-relaxed mb-4">
         Lookup returns a <em>pointer to the pointer</em> that refers to the
-        matching node. The double pointer is what lets us delete in O(1) — we
+        matching node. The double pointer is what lets us delete in O(1) - we
         already have the exact slot to rewrite, so no second traversal is
         needed:
       </p>
@@ -346,7 +346,7 @@ htable_delete (struct htable *t, struct hnode **from)
         Returning <Code>struct hnode **</Code> instead of
         <Code>struct hnode *</Code> means the caller gets back the specific
         <Code>next</Code> field (or bucket head) that points to the found node.
-        To delete, you write <Code>*slot = (*slot)->next</Code> — one pointer
+        To delete, you write <Code>*slot = (*slot)->next</Code> - one pointer
         write, no re-traversal. If lookup returned a plain pointer, you'd need
         to walk the chain a second time to find the predecessor before you could
         unlink it.
@@ -359,7 +359,7 @@ htable_delete (struct htable *t, struct hnode **from)
       </h2>
       <p class="text-text/75 leading-relaxed mb-4">
         Here's the full example. The <Code>word_entry</Code> structs live on the
-        stack — no <Code>malloc</Code> required for the data itself. Only the
+        stack - no <Code>malloc</Code> required for the data itself. Only the
         table needs a heap allocation, and that's a single one for the whole
         structure.
       </p>
@@ -420,8 +420,8 @@ int main (void)
       <p class="text-text/75 leading-relaxed mt-4 mb-4">
         The hash table never needs to know the size or layout of your data. It
         only sees
-        <Code>hnode</Code> pointers. Your struct owns its own storage — stack,
-        static, or heap, your choice — and the table just threads hooks through
+        <Code>hnode</Code> pointers. Your struct owns its own storage - stack,
+        static, or heap, your choice - and the table just threads hooks through
         it.
       </p>
     </section>
@@ -440,7 +440,7 @@ int main (void)
               <strong class="text-text block mb-0.5"
                 >Zero allocations for the data.</strong
               >
-              Entries live wherever the caller puts them — stack, static
+              Entries live wherever the caller puts them - stack, static
               storage, or a slab. Only the table itself needs one
               <Code>malloc</Code>.
             </li>

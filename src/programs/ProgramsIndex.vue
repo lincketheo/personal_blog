@@ -20,7 +20,7 @@ const programs: Program[] = [
   {
     name: "c_specx",
     description:
-      "Common systems programming extensions and C utilities — custom allocators, data structures, streams, concurrency primitives, and a unit testing framework. My C standard library.",
+      "Common systems programming extensions and C utilities - custom allocators, data structures, streams, concurrency primitives, and a unit testing framework. My C standard library.",
     version: "0.0.1",
     repo: "https://github.com/lincketheo/c_specx",
     postRoute: "/blog/9_c_specx_release",

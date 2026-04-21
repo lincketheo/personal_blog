@@ -4,6 +4,16 @@ export const meta: MetaInformation = {
   blog: {
     posts: [
       {
+        title: "Releasing Smart Files",
+        date: new Date("2026-04-20"),
+        entry: () => import("@/blog/posts/10_smart_files_release/SmartFiles.vue"),
+        route: "/blog/10_smart_files_release",
+        description: "Numstore is a new kind of file. Numstore is a new kind of file. On the surface it looks like a FILE* - open it, read it, write it, close it. Under the hood it's a transactional database with a rope-backed storage engine. Two things fall out of that for free: inner mutations are Code>O(log n), and every operation is atomic.",
+        name: "smart_files_release",
+        popular: true,
+        tags: ["Databases", "C"],
+      },
+      {
         title: "Releasing CSpecx",
         date: new Date("2026-04-15"),
         entry: () => import("@/blog/posts/9_c_specx_release/CSpecx.vue"),
