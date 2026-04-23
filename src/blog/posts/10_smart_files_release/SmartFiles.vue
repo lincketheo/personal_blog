@@ -23,10 +23,12 @@ import GithubBanner from "@/components/GithubBanner.vue";
         Lots of programming has been built on top of the standard file.
         I personally use files all the time. Files are just collections of
         bytes that you can append, overwrite data, and read to. But there are
-        a lot of problems with the fact that you can insert data into the middle
+        a lot of problems with the fact that you cant insert data into the middle
         of a file without re writing the tail. I think in general, there are a lot
-        of obtuse wrap around in modern programming to work around this limiting problem.
-        The standard file has two fundamental problems:
+        of obtuse wrap arounds in modern programming to work around this limiting fact.
+        That's why we build in memory ropes or gap buffers in text editors,
+        and CRDT's for shared editing. You fundamentally can't write data into the middle
+        of a file efficiently. In my opinion, the standard file has two fundamental problems:
       </p>
       <p class="mt-6 mb-3 font-mono text-xs tracking-widest uppercase text-muted">
         The short comings of standard files
@@ -34,7 +36,7 @@ import GithubBanner from "@/components/GithubBanner.vue";
       <ol class="space-y-3 text-lg text-text/70 leading-relaxed list-decimal list-inside marker:text-muted marker:font-mono marker:text-sm">
         <li class="pl-4">
           <span class="text-text font-semibold">Not atomic.</span>
-          A call to <code>fwrite</code> does not guarantee that many bytes actually
+          A call to <code>fwrite</code> does not guarantee that any bytes actually
           landed on disk. A crash mid-write leaves your file in an unknown state
           with no way to recover. In programming, this is called atomicity. Does your operation
           succeed fully or fail and do nothing at all. You can try to write 100 bytes to a file
