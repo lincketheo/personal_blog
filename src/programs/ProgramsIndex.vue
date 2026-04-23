@@ -21,23 +21,23 @@ const programs: Program[] = [
     name: "Smart Files",
     description: "A new \"Smart\" file with first class transaction support and inner mutations",
     version: "0.0.3",
-    repo: "https://github.com/lincketheo/Smart-Files",
+    repo: "https://github.com/lincketheo/smartfiles",
     postRoute: "/blog/10_smart_files_release",
     releases: [
       {
         platform: "linux",
         label: "Linux x86_64",
-        url: "https://github.com/lincketheo/Smart-Files/releases/download/v0.0.3/smartfiles-0.0.3-Linux.tar.gz",
+        url: "https://github.com/lincketheo/smartfiles/releases/download/v0.0.3/smartfiles-0.0.3-Linux.tar.gz",
       },
       {
         platform: "macos",
         label: "macOS arm64",
-        url: "https://github.com/lincketheo/Smart-Files/releases/download/v0.0.3/smartfiles-0.0.3-Darwin.tar.gz",
+        url: "https://github.com/lincketheo/smartfiles/releases/download/v0.0.3/smartfiles-0.0.3-Darwin.tar.gz",
       },
       {
         platform: "windows",
         label: "Windows x64",
-        url: "https://github.com/lincketheo/Smart-Files/releases/download/v0.0.3/smartfiles-0.0.3-win64.zip",
+        url: "https://github.com/lincketheo/smartfiles/releases/download/v0.0.3/smartfiles-0.0.3-win64.zip",
       },
     ],
   },

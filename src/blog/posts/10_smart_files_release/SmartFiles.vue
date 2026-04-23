@@ -10,7 +10,7 @@ import GithubBanner from "@/components/GithubBanner.vue";
       <h1 class="text-4xl font-bold text-text leading-tight mb-4">
         Announcing Smart Files
       </h1>
-      <GithubBanner name="Smart Files" owner="lincketheo" url="https://github.com/lincketheo/Smart-Files" language="C" license="Apache 2.0" version="v0.0.3"/>
+      <GithubBanner name="Smart Files" owner="lincketheo" url="https://github.com/lincketheo/smartfiles" language="C" license="Apache 2.0" version="v0.0.3"/>
 
       <p class="text-lg text-text/70 leading-relaxed">
         The concept of a file has had the same definition for the past 50
