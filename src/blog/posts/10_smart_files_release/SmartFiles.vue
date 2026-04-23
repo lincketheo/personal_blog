@@ -20,25 +20,41 @@ import GithubBanner from "@/components/GithubBanner.vue";
       </p>
       <br>
       <p class="text-lg text-text/70 leading-relaxed indent-10">
-        Lots of programming has been built on top of the standard file. All
-        programming languages use files. Files are arrays of bytes. They grow,
-        they shrink, and they seek. But the standard file has two fundamental
-        problems:
+        Lots of programming has been built on top of the standard file.
+        I personally use files all the time. Files are just collections of
+        bytes that you can append, overwrite data, and read to. But there are
+        a lot of problems with the fact that you can insert data into the middle
+        of a file without re writing the tail. I think in general, there are a lot
+        of obtuse wrap around in modern programming to work around this limiting problem.
+        The standard file has two fundamental problems:
       </p>
       <p class="mt-6 mb-3 font-mono text-xs tracking-widest uppercase text-muted">
         The short comings of standard files
       </p>
       <ol class="space-y-3 text-lg text-text/70 leading-relaxed list-decimal list-inside marker:text-muted marker:font-mono marker:text-sm">
         <li class="pl-4">
-          <span class="text-text font-semibold">Not transactional.</span>
+          <span class="text-text font-semibold">Not atomic.</span>
           A call to <code>fwrite</code> does not guarantee that many bytes actually
           landed on disk. A crash mid-write leaves your file in an unknown state
-          with no way to recover.
+          with no way to recover. In programming, this is called atomicity. Does your operation
+          succeed fully or fail and do nothing at all. You can try to write 100 bytes to a file
+          but the operating system only writes 10 due to an interrupt, a failed write, or because
+          your operating system felt like it. I can't count the number of times I've had to put an
+          fread / fwrite inside a for loop to ensure that I wrote all my bytes. But what if my program
+          crashes while I'm in that for loop!
+
         </li>
         <li class="pl-4">
           <span class="text-text font-semibold">No first-class inner mutations.</span>
           There is no standard way to insert or remove a chunk of bytes in the middle
-          of a file without rewriting everything after it.
+          of a file without rewriting everything after it. I feel like there are a lot of
+          programming problems that could easily be solved if I could just insert data in the
+          middle of a file without overridding data. For the less computer science savy, think
+          about how when you press your insert key on your keyboard. All files are constantly in
+          this insert mode. Files don't allow you to put a letter in between two other letters
+          without overwriting the second one. Text editors usually use gap buffers, or ropes in memory
+          to over come this fact (or else they would be re writing the entire file on every keystroke),
+          but nothing is really there for on disk representation. Those are both in memory.
         </li>
       </ol>
       <br>
@@ -49,18 +65,73 @@ import GithubBanner from "@/components/GithubBanner.vue";
         <li class="pl-4">
           <span class="text-text font-semibold">Transactions.</span>
           Smart files log modifications in a write ahead log so that every mutation commits fully or rolls back - a crash mid-write leaves nothing corrupt.
+          No matter what, if you request to write 10 bytes, you will write 10 bytes (or you'll write 0 bytes in the event of a crash).
+          I use <a href="https://cs.stanford.edu/people/chrismre/cs345/rl/aries.pdf">ARIES (Algorithm for Recovery and Isolation Exploiting Semantics)</a>
+          which is a pretty neat algorithm that has the unique property that it is fault tolerant even when it is in the process of recovering. (Other recovery
+          mechanisms at the time couldn't get that right).
         </li>
         <li class="pl-4">
           <span class="text-text font-semibold">Inner mutations.</span>
           Insert or remove bytes anywhere in the stream in O(log N) time
+          I think this is the main calling point to Smart Files. I spent a while devising the algorithm I used for Smart Files - which is just a
+          B+Tree that tracks byte counts instead of index values. It's a Rope, but with self balancing properties
+          and a really cool rebalancing algorithm (I'll probably write about most of these algorithms later).
+          For the non technical, that just means that Smart Files are algorithmically faster than
+          files for inner inserts / removes. In computer science, when you unlock a faster algorithm (going from
+          O(n) to O(log n), you cement further speed improvements down the line in the future.
+          I didn't really try to make it fast, I focused mostly on consistency. But speed is definitely going to
+          be a priority in the near future. I know I can speed it up by a factor of 10-100x. I just haven't really started
+          because I want the database to be correct and bug free first.
         </li>
         <li class="pl-4">
           <span class="text-text font-semibold">Stride access.</span>
-          Read, write, and remove at regular "strided" intervals without manual offset arithmetic.
+          Read, write, and remove at regular "strided" intervals without manual offset arithmetic. I think
+          another common drawback of files is that I can't down sample data. This operation is really useful when you're
+          storing numerical data. Think about how numpy arrays can access every 2nd element of an array. If you're
+          storing numerical data like floats in a file, you can access file[0:2:10] really easily in Smart Files.
         </li>
         <li class="pl-4">
           <span class="text-text font-semibold">Multiple named arrays.</span>
-          Store more than one named byte stream per file - no separate file handles, no embedded database.
+          Store more than one named byte stream per file. This was a neat feature I developed but put into my "power user api". I'm not sure if it will be useful or not.
+          Essentially there's just one upfront hash table to all the data sets in the file.
+        </li>
+      </ol>
+
+      <p class="mt-6 mb-3 font-mono text-xs tracking-widest uppercase text-muted">
+        How can Smart Files be applied today in industry?
+      </p>
+      <ol class="space-y-3 text-lg text-text/70 leading-relaxed list-decimal list-inside marker:text-muted marker:font-mono marker:text-sm">
+        <li class="pl-4">
+          <span class="text-text font-semibold">Genomics and bioinformatics.</span>
+          DNA sequence data is a massive byte stream that gets constantly edited - insertions, deletions, and substitutions at arbitrary positions. Today the industry uses FASTA/FASTQ flat files, BAM/CRAM formats, and tools like samtools to manage this. None of them are atomic or transactional so a crashed pipeline can silently corrupt an index with no way to recover. Smart Files are transactional and reliable.
+        </li>
+        <li class="pl-4">
+          <span class="text-text font-semibold">Seismic and geophysical data.</span>
+          Seismic surveys produce enormous interleaved arrays of sensor readings - one channel per sensor, generally sampled at a high frequency. The industry standard is SEG-Y, a flat binary format from 1975 that has no mutation primitives and no transactional guarantees. Reading a single channel means loading the whole file.
+        </li>
+        <li class="pl-4">
+          <span class="text-text font-semibold">Audio and video editing.</span>
+          Non-linear editors like DaVinci Resolve and Avid internally maintain edit decision lists and proxy formats to avoid rewriting raw media on every cut. This is an enormous amount of infrastructure to work around the fact that files don't support inner mutations.
+        </li>
+        <li class="pl-4">
+          <span class="text-text font-semibold">Collaborative document editing.</span>
+          Google Docs, Notion, and VS Code all implement operational transforms or CRDTs in memory to handle concurrent edits, then periodically flush diffs to a database. Other editors use ropes or gap buffers in memory to make inner mutations easy. The file on disk is always a snapshot, never the live structure. A text document is a byte stream - Smart Files make it a transactional, crash-safe one where every keystroke is an atomic inner mutation.
+        </li>
+        <li class="pl-4">
+          <span class="text-text font-semibold">Scientific computing and simulation.</span>
+          Climate models, fluid simulations, and particle physics experiments produce multi-dimensional arrays that are read in strides - every nth timestep, every other spatial slice. HDF5 and NetCDF are the current standard but neither is a database. A crashed simulation write can corrupt the output file with no recovery path.
+        </li>
+        <li class="pl-4">
+          <span class="text-text font-semibold">Financial market data.</span>
+          High-frequency trading systems record tick data as a continuous timestamped byte stream, then query it in strides - every nth tick, every other instrument. The industry uses custom binary formats and kdb+/q for this, both of which require significant infrastructure.
+        </li>
+        <li class="pl-4">
+          <span class="text-text font-semibold">AI training pipelines.</span>
+          Feature stores, embedding tables, and weight checkpoints are strided, byte-shaped, and enormous. The current stack is a patchwork - PyTorch uses custom checkpoint serialization, feature stores use Parquet or Redis, embeddings live in specialized vector databases. None of it is atomic at the file level.
+        </li>
+        <li class="pl-4">
+          <span class="text-text font-semibold">Medical imaging.</span>
+          DICOM is the standard format for MRI, CT, and ultrasound data - a decades-old format that stores multi-dimensional image arrays with no transactional semantics. A failed mid-write during acquisition or transfer can corrupt a scan.
         </li>
       </ol>
 
