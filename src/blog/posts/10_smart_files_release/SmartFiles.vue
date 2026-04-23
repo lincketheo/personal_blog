@@ -9,38 +9,78 @@ import Code from "@/components/Code.vue";
       <h1 class="text-4xl font-bold text-text leading-tight mb-4">
         Announcing Smart Files
       </h1>
+
       <p class="text-lg text-text/70 leading-relaxed">
-        The concept of a file has had the same obtuse definition for the past 50
+        The concept of a file has had the same definition for the past 50
         years. Today I'm announcing the launch of Smart Files, a new API that
         gets past the hurdles of old school linear, non-transactional system
         files.
       </p>
+      <br>
       <p class="text-lg text-text/70 leading-relaxed indent-10">
-        For about 50 years now, lots of programming has been built on top of the
-        standard file. All programming languages use files. Files are arrays of bytes.
-        They grow they shrink and they seek. That's really it, honestly. You can do
-        lots of things to a file, but they are always limited by the harsh constructs of
-        the read and write api. There's really no first class way to insert a big chunk
-        of data into the middle of a file or remove a big chunk of data in the middle
-        of the file.
+        Lots of programming has been built on top of the standard file. All
+        programming languages use files. Files are arrays of bytes. They grow,
+        they shrink, and they seek. But the standard file has two fundamental
+        problems:
       </p>
+      <p class="mt-6 mb-3 font-mono text-xs tracking-widest uppercase text-muted">
+        The short comings of standard files
+      </p>
+      <ol class="space-y-3 text-lg text-text/70 leading-relaxed list-decimal list-inside marker:text-muted marker:font-mono marker:text-sm">
+        <li class="pl-4">
+          <span class="text-text font-semibold">Not transactional.</span>
+          A call to <code>fwrite</code> does not guarantee that many bytes actually
+          landed on disk. A crash mid-write leaves your file in an unknown state
+          with no way to recover.
+        </li>
+        <li class="pl-4">
+          <span class="text-text font-semibold">No first-class inner mutations.</span>
+          There is no standard way to insert or remove a chunk of bytes in the middle
+          of a file without rewriting everything after it.
+        </li>
+      </ol>
+      <br>
+      <p class="mt-6 mb-3 font-mono text-xs tracking-widest uppercase text-muted">
+        Smart Files fixes both, and adds two more things:
+      </p>
+      <ol class="space-y-3 text-lg text-text/70 leading-relaxed list-decimal list-inside marker:text-muted marker:font-mono marker:text-sm">
+        <li class="pl-4">
+          <span class="text-text font-semibold">Transactions.</span>
+          Smart files log modifications in a write ahead log so that every mutation commits fully or rolls back - a crash mid-write leaves nothing corrupt.
+        </li>
+        <li class="pl-4">
+          <span class="text-text font-semibold">Inner mutations.</span>
+          Insert or remove bytes anywhere in the stream in O(log N) time
+        </li>
+        <li class="pl-4">
+          <span class="text-text font-semibold">Stride access.</span>
+          Read, write, and remove at regular "strided" intervals without manual offset arithmetic.
+        </li>
+        <li class="pl-4">
+          <span class="text-text font-semibold">Multiple named arrays.</span>
+          Store more than one named byte stream per file - no separate file handles, no embedded database.
+        </li>
+      </ol>
+
+
     </header>
 
     <!-- For the lazy ---------------------------------------------------------->
     <section class="mb-10">
-      <h2 class="text-xl font-bold text-text mt-10 mb-1">For the lazy</h2>
+      <h2 class="text-xl font-bold text-text mt-10 mb-1">Example</h2>
       <p class="text-muted font-mono text-xs tracking-widest uppercase mb-5">
         Here's a quick preview of what smart files do
       </p>
       <p class="text-text/75 leading-relaxed mb-4">
-        For comprehensive samples - see samples in the <a class="underline" href="">github repository</a>
+        For comprehensive samples - see samples in the <a class="underline" href="https://github.com/lincketheo/Smart-Files/tree/main/samples/smfile">github repository</a>
       </p>
       <p class="text-text/75 leading-relaxed mb-4">
         Insert in the middle:
       </p>
       <pre
           class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
-      ><code class="font-mono text-sm text-text/85 leading-relaxed">smfile_t *smf = smfile_open ("myfile");
+      ><code class="font-mono text-sm text-text/85 leading-relaxed">// Open a smart file by pointing it to the disk ("myfile")
+smfile_t *smf = smfile_open ("myfile");
 
 // Insert "The fox jumps" starting at offset 0, with 13 bytes
 smfile_insert (smf, "The fox jumps", 0, 13);
@@ -48,7 +88,7 @@ smfile_insert (smf, "The fox jumps", 0, 13);
 // Insert "quick " starting at index 4 (before "fox") with 6 bytes
 smfile_insert (smf, "quick ", 4, 6);
 
-// Read starting at 0 - and read everything
+// Read starting at 0 - and read everything (SMF_END)
 char buf[32];
 sb_size n = smfile_read (smf, buf, 0, SMF_END);
 buf[n] = '\0';
@@ -97,21 +137,28 @@ printf ("%s\n", buf);  // The cat jumps</code></pre>
       </p>
       <ol class="list-decimal list-outside pl-5 space-y-2 text-text/75 leading-relaxed mb-4">
         <li>
-          Inner mutations are first class operations - inserting and removing
-          chunks of data in the middle of a file are native, O(log n) operations.
+          Inner mutations are first class operations. I've written a novel algorithm that uses
+          Ropes to track file locations on disk. The index is a self balanced Rope with data nodes and
+          inner nodes storing more than 1 node each - the same concept as a B+Tree, but with byte count
+          instead of indexes. Inserting and removing chunks of data in the middle of a file are native, O(log n) operations.
         </li>
         <li>
           Operations are atomic - modern file systems notoriously can partially
-          write data. Smart Files are fully atomic, backed by a write-ahead log.
+          write data. Smart Files are fully atomic, backed by a write-ahead log. I use ARIES (Algorithm for
+          Recovery and Isolation Exploitation Semantics) to ensure that even if a transaction is rolling back
+          or committing or recovering, the database is consistent.
         </li>
         <li>
           Strided reads, writes, and removes - touch every nth element in a
           stream without reading the whole thing. Remove every 2nd byte from a
-          stream of n bytes in a single call.
+          stream of n bytes in a single call. This is useful if you're storing structured
+          array data like a float array and you want to down sample for instance.
         </li>
         <li>
           Multiple labeled datasets per file - store n independent named
-          variables inside a single file.
+          variables inside a single file. This project originally was a fully fledged database,
+          where it could store any number of "variables", but I pivoted to smart files. The
+          hash map of file -> data set remains though.
         </li>
       </ol>
     </section>
