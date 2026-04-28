@@ -13,50 +13,40 @@ import GithubBanner from "@/components/GithubBanner.vue";
       <GithubBanner name="Smart Files" owner="lincketheo" url="https://github.com/lincketheo/smartfiles" language="C" license="Apache 2.0" version="v0.0.3"/>
 
       <p class="text-lg text-text/70 leading-relaxed">
-        The concept of a file has had the same definition for the past 50
-        years. Today I'm announcing the launch of Smart Files, a new API that
-        gets past the hurdles of old school linear, non-transactional system
-        files.
+        Files have had the same definition for 50 years: an array of bytes that
+        grows, shrinks, and seeks. Smart Files extends that model with
+        transactions, O(log n) inner mutations, strided access, and multiple
+        named streams per file.
       </p>
       <br>
       <p class="text-lg text-text/70 leading-relaxed indent-10">
-        Lots of programming has been built on top of the standard file.
-        I personally use files all the time. Files are just collections of
-        bytes that you can append, overwrite data, and read to. But there are
-        a lot of problems with the fact that you cant insert data into the middle
-        of a file without re writing the tail. I think in general, there are a lot
-        of obtuse wrap arounds in modern programming to work around this limiting fact.
-        That's why we build in memory ropes or gap buffers in text editors,
-        and CRDT's for shared editing. You fundamentally can't write data into the middle
-        of a file efficiently. In my opinion, the standard file has two fundamental problems:
+        Text editors don't write directly to disk on every keystroke. They
+        maintain a rope or gap buffer in memory, then flush periodically —
+        because inserting a character into the middle of a flat file means
+        rewriting everything that follows it. Collaborative editors add CRDTs
+        on top of that to handle concurrent edits. All of this infrastructure
+        exists to paper over two gaps in the standard file model:
       </p>
       <p class="mt-6 mb-3 font-mono text-xs tracking-widest uppercase text-muted">
-        The short comings of standard files
+        The shortcomings of standard files
       </p>
       <ol class="space-y-3 text-lg text-text/70 leading-relaxed list-decimal list-inside marker:text-muted marker:font-mono marker:text-sm">
         <li class="pl-4">
           <span class="text-text font-semibold">Not atomic.</span>
-          A call to <code>fwrite</code> does not guarantee that any bytes actually
-          landed on disk. A crash mid-write leaves your file in an unknown state
-          with no way to recover. In programming, this is called atomicity. Does your operation
-          succeed fully or fail and do nothing at all. You can try to write 100 bytes to a file
-          but the operating system only writes 10 due to an interrupt, a failed write, or because
-          your operating system felt like it. I can't count the number of times I've had to put an
-          fread / fwrite inside a for loop to ensure that I wrote all my bytes. But what if my program
-          crashes while I'm in that for loop!
-
+          <code>fwrite</code> does not guarantee bytes hit disk. The kernel
+          flushes dirty pages on its own schedule, so a crash mid-write leaves
+          your file in a state that never legally existed — with no path to
+          recovery. Wrapping writes in a retry loop helps with short reads, but
+          it doesn't help if the process dies halfway through that loop.
         </li>
         <li class="pl-4">
-          <span class="text-text font-semibold">No first-class inner mutations.</span>
-          There is no standard way to insert or remove a chunk of bytes in the middle
-          of a file without rewriting everything after it. I feel like there are a lot of
-          programming problems that could easily be solved if I could just insert data in the
-          middle of a file without overridding data. For the less computer science savy, think
-          about how when you press your insert key on your keyboard. All files are constantly in
-          this insert mode. Files don't allow you to put a letter in between two other letters
-          without overwriting the second one. Text editors usually use gap buffers, or ropes in memory
-          to over come this fact (or else they would be re writing the entire file on every keystroke),
-          but nothing is really there for on disk representation. Those are both in memory.
+          <span class="text-text font-semibold">No inner mutations.</span>
+          There is no <code>finsert</code>. Splicing bytes into the middle of a
+          file means reading the tail into a buffer, writing your new bytes,
+          then writing the tail back. That's O(n) in the size of the tail, and
+          if the process dies between the second and third write, the file is
+          corrupt. Text editors use ropes and gap buffers in memory to hide this
+          cost. Nothing equivalent exists for the on-disk representation.
         </li>
       </ol>
       <br>
@@ -66,88 +56,103 @@ import GithubBanner from "@/components/GithubBanner.vue";
       <ol class="space-y-3 text-lg text-text/70 leading-relaxed list-decimal list-inside marker:text-muted marker:font-mono marker:text-sm">
         <li class="pl-4">
           <span class="text-text font-semibold">Transactions.</span>
-          Smart files log modifications in a write ahead log so that every mutation commits fully or rolls back - a crash mid-write leaves nothing corrupt.
-          No matter what, if you request to write 10 bytes, you will write 10 bytes (or you'll write 0 bytes in the event of a crash).
-          I use <a href="https://cs.stanford.edu/people/chrismre/cs345/rl/aries.pdf">ARIES (Algorithm for Recovery and Isolation Exploiting Semantics)</a>
-          which is a pretty neat algorithm that has the unique property that it is fault tolerant even when it is in the process of recovering. (Other recovery
-          mechanisms at the time couldn't get that right).
+          Every mutation goes through a write-ahead log. Each write either
+          commits fully or rolls back — a crash mid-write leaves nothing
+          corrupt. The recovery algorithm is
+          <a href="https://cs.stanford.edu/people/chrismre/cs345/rl/aries.pdf">ARIES</a>,
+          which has the unusual property of being fault-tolerant even while it
+          is itself recovering.
         </li>
         <li class="pl-4">
           <span class="text-text font-semibold">Inner mutations.</span>
-          Insert or remove bytes anywhere in the stream in O(log N) time
-          I think this is the main calling point to Smart Files. I spent a while devising the algorithm I used for Smart Files - which is just a
-          B+Tree that tracks byte counts instead of index values. It's a Rope, but with self balancing properties
-          and a really cool rebalancing algorithm (I'll probably write about most of these algorithms later).
-          For the non technical, that just means that Smart Files are algorithmically faster than
-          files for inner inserts / removes. In computer science, when you unlock a faster algorithm (going from
-          O(n) to O(log n), you cement further speed improvements down the line in the future.
-          I didn't really try to make it fast, I focused mostly on consistency. But speed is definitely going to
-          be a priority in the near future. I know I can speed it up by a factor of 10-100x. I just haven't really started
-          because I want the database to be correct and bug free first.
+          Insert or remove bytes anywhere in the stream in O(log n) time. The
+          index is a self-balancing rope — same concept as a B+Tree, but keyed
+          on byte count rather than index values. Insert and remove are native
+          operations, not workarounds.
         </li>
         <li class="pl-4">
           <span class="text-text font-semibold">Stride access.</span>
-          Read, write, and remove at regular "strided" intervals without manual offset arithmetic. I think
-          another common drawback of files is that I can't down sample data. This operation is really useful when you're
-          storing numerical data. Think about how numpy arrays can access every 2nd element of an array. If you're
-          storing numerical data like floats in a file, you can access file[0:2:10] really easily in Smart Files.
+          Read, write, and remove at regular intervals without manual offset
+          arithmetic. If you're storing float arrays and want every 2nd element,
+          one call handles it. No read-everything, discard-most-of-it loop.
         </li>
         <li class="pl-4">
-          <span class="text-text font-semibold">Multiple named arrays.</span>
-          Store more than one named byte stream per file. This was a neat feature I developed but put into my "power user api". I'm not sure if it will be useful or not.
-          Essentially there's just one upfront hash table to all the data sets in the file.
+          <span class="text-text font-semibold">Multiple named streams.</span>
+          A single Smart File can hold as many named byte streams as you want.
+          Each stream is independent. Default behavior looks exactly like a
+          plain file — the named streams are a power-user feature.
         </li>
       </ol>
 
       <p class="mt-6 mb-3 font-mono text-xs tracking-widest uppercase text-muted">
-        How can Smart Files be applied today in industry?
+        Where this matters
       </p>
       <ol class="space-y-3 text-lg text-text/70 leading-relaxed list-decimal list-inside marker:text-muted marker:font-mono marker:text-sm">
         <li class="pl-4">
           <span class="text-text font-semibold">Genomics and bioinformatics.</span>
-          DNA sequence data is a massive byte stream that gets constantly edited - insertions, deletions, and substitutions at arbitrary positions. Today the industry uses FASTA/FASTQ flat files, BAM/CRAM formats, and tools like samtools to manage this. None of them are atomic or transactional so a crashed pipeline can silently corrupt an index with no way to recover. Smart Files are transactional and reliable.
+          DNA sequence data is a large byte stream that gets edited at arbitrary
+          positions — insertions, deletions, substitutions. FASTA/FASTQ and
+          BAM/CRAM are flat formats with no transactional semantics. A crashed
+          pipeline can silently corrupt an index with no recovery path.
         </li>
         <li class="pl-4">
           <span class="text-text font-semibold">Seismic and geophysical data.</span>
-          Seismic surveys produce enormous interleaved arrays of sensor readings - one channel per sensor, generally sampled at a high frequency. The industry standard is SEG-Y, a flat binary format from 1975 that has no mutation primitives and no transactional guarantees. Reading a single channel means loading the whole file.
+          Seismic surveys produce interleaved arrays of sensor readings sampled
+          at high frequency. The industry standard is SEG-Y, a flat binary
+          format from 1975. Reading a single channel means loading the whole file.
         </li>
         <li class="pl-4">
           <span class="text-text font-semibold">Audio and video editing.</span>
-          Non-linear editors like DaVinci Resolve and Avid internally maintain edit decision lists and proxy formats to avoid rewriting raw media on every cut. This is an enormous amount of infrastructure to work around the fact that files don't support inner mutations.
+          Non-linear editors maintain edit decision lists and proxy formats
+          precisely to avoid rewriting raw media on every cut. That
+          infrastructure exists because files don't support inner mutations.
         </li>
         <li class="pl-4">
           <span class="text-text font-semibold">Collaborative document editing.</span>
-          Google Docs, Notion, and VS Code all implement operational transforms or CRDTs in memory to handle concurrent edits, then periodically flush diffs to a database. Other editors use ropes or gap buffers in memory to make inner mutations easy. The file on disk is always a snapshot, never the live structure. A text document is a byte stream - Smart Files make it a transactional, crash-safe one where every keystroke is an atomic inner mutation.
+          Google Docs and VS Code implement operational transforms or CRDTs in
+          memory to handle concurrent edits, then flush diffs to a database. The
+          file on disk is always a snapshot. A text document is a byte stream —
+          Smart Files make it a crash-safe one where every edit is an atomic
+          inner mutation.
         </li>
         <li class="pl-4">
-          <span class="text-text font-semibold">Scientific computing and simulation.</span>
-          Climate models, fluid simulations, and particle physics experiments produce multi-dimensional arrays that are read in strides - every nth timestep, every other spatial slice. HDF5 and NetCDF are the current standard but neither is a database. A crashed simulation write can corrupt the output file with no recovery path.
+          <span class="text-text font-semibold">Scientific computing.</span>
+          Climate models and fluid simulations produce multi-dimensional arrays
+          read in strides — every nth timestep, every other spatial slice. HDF5
+          and NetCDF are the current standard but neither is transactional. A
+          crashed simulation write can corrupt the output file with no recovery.
         </li>
         <li class="pl-4">
           <span class="text-text font-semibold">Financial market data.</span>
-          High-frequency trading systems record tick data as a continuous timestamped byte stream, then query it in strides - every nth tick, every other instrument. The industry uses custom binary formats and kdb+/q for this, both of which require significant infrastructure.
+          High-frequency trading systems record tick data as a continuous
+          timestamped byte stream, then query it in strides. The industry uses
+          custom binary formats and kdb+/q, both of which require significant
+          supporting infrastructure.
         </li>
         <li class="pl-4">
           <span class="text-text font-semibold">AI training pipelines.</span>
-          Feature stores, embedding tables, and weight checkpoints are strided, byte-shaped, and enormous. The current stack is a patchwork - PyTorch uses custom checkpoint serialization, feature stores use Parquet or Redis, embeddings live in specialized vector databases. None of it is atomic at the file level.
+          Feature stores, embedding tables, and weight checkpoints are strided,
+          byte-shaped, and large. PyTorch checkpoint serialization, Parquet,
+          Redis, and vector databases each solve one piece of this. None of it
+          is atomic at the file level.
         </li>
         <li class="pl-4">
           <span class="text-text font-semibold">Medical imaging.</span>
-          DICOM is the standard format for MRI, CT, and ultrasound data - a decades-old format that stores multi-dimensional image arrays with no transactional semantics. A failed mid-write during acquisition or transfer can corrupt a scan.
+          DICOM stores multi-dimensional image arrays with no transactional
+          semantics. A failed write during acquisition or transfer can corrupt a
+          scan.
         </li>
       </ol>
-
-
     </header>
 
     <!-- For the lazy ---------------------------------------------------------->
     <section class="mb-10">
       <h2 class="text-xl font-bold text-text mt-10 mb-1">Example</h2>
       <p class="text-muted font-mono text-xs tracking-widest uppercase mb-5">
-        Here's a quick preview of what smart files do
+        A quick preview of what Smart Files do
       </p>
       <p class="text-text/75 leading-relaxed mb-4">
-        For comprehensive samples - see samples in the <a class="underline" href="https://github.com/lincketheo/Smart-Files/tree/main/samples/smfile">github repository</a>
+        For more samples, see the <a class="underline" href="https://github.com/lincketheo/Smart-Files/tree/main/samples/smfile">github repository</a>.
       </p>
       <p class="text-text/75 leading-relaxed mb-4">
         Insert in the middle:
@@ -207,33 +212,29 @@ printf ("%s\n", buf);  // The cat jumps</code></pre>
       <p class="text-muted font-mono text-xs tracking-widest uppercase mb-5">
         What's actually new
       </p>
-      <p class="text-text/75 leading-relaxed mb-4">
-        Smart Files have four primary extensions on top of traditional files:
-      </p>
       <ol class="list-decimal list-outside pl-5 space-y-2 text-text/75 leading-relaxed mb-4">
         <li>
-          Inner mutations are first class operations. I've written a novel algorithm that uses
-          Ropes to track file locations on disk. The index is a self balanced Rope with data nodes and
-          inner nodes storing more than 1 node each - the same concept as a B+Tree, but with byte count
-          instead of indexes. Inserting and removing chunks of data in the middle of a file are native, O(log n) operations.
+          Inner mutations are first-class operations. The index is a
+          self-balancing rope on disk — same idea as a B+Tree, but keyed on byte
+          count rather than index values. Insert and remove are O(log n)
+          regardless of where in the stream the edit lands.
         </li>
         <li>
-          Operations are atomic - modern file systems notoriously can partially
-          write data. Smart Files are fully atomic, backed by a write-ahead log. I use ARIES (Algorithm for
-          Recovery and Isolation Exploitation Semantics) to ensure that even if a transaction is rolling back
-          or committing or recovering, the database is consistent.
+          Operations are atomic. Modern file systems can partially write data.
+          Smart Files are backed by a write-ahead log using ARIES (Algorithm for
+          Recovery and Isolation Exploiting Semantics), which keeps the database
+          consistent even during recovery.
         </li>
         <li>
-          Strided reads, writes, and removes - touch every nth element in a
-          stream without reading the whole thing. Remove every 2nd byte from a
-          stream of n bytes in a single call. This is useful if you're storing structured
-          array data like a float array and you want to down sample for instance.
+          Strided reads, writes, and removes let you touch every nth element
+          without reading the whole stream. Useful for structured array data —
+          reading a single field out of an array of packed structs, or
+          downsampling a float array.
         </li>
         <li>
-          Multiple labeled datasets per file - store n independent named
-          variables inside a single file. This project originally was a fully fledged database,
-          where it could store any number of "variables", but I pivoted to smart files. The
-          hash map of file -> data set remains though.
+          Multiple labeled datasets per file. A single Smart File can hold n
+          independent named byte streams via a top-level hash map. Default
+          behavior looks like a plain file — the named streams are opt-in.
         </li>
       </ol>
     </section>
@@ -253,7 +254,7 @@ printf ("%s\n", buf);  // The cat jumps</code></pre>
         into the middle of a file you read the tail into a buffer, write your
         new bytes, then write the tail back. That's the happy path. If the
         process dies between the second and third write, the file is corrupt.
-        Both insert and remove are <Code>O(n)</Code> in the size of the tail -
+        Both insert and remove are <Code>O(n)</Code> in the size of the tail —
         for a 1 GB file with an insert near the front you're rewriting close to
         a gigabyte of data.
       </p>
@@ -276,8 +277,8 @@ fwrite (tail, 1, tailsize, file);  /* crash here = corrupt file */</code></pre>
       </p>
       <Definition term="Atomicity">
         An operation is atomic if it either fully completes or has no effect at
-        all - there is no in-between state. UNIX files are not atomic because
-        <Code>write(2)</Code> can partially apply - the kernel flushes dirty pages
+        all — there is no in-between state. UNIX files are not atomic because
+        <Code>write(2)</Code> can partially apply — the kernel flushes dirty pages
         independently, so a crash mid-write leaves the file in a state that never
         legally existed. Smart Files are backed by a write-ahead log that guarantees
         every operation is all-or-nothing.
@@ -296,11 +297,8 @@ fwrite (tail, 1, tailsize, file);  /* crash here = corrupt file */</code></pre>
         Smart Files uses a rope algorithm optimized for disk writes to bring
         insert and remove from <Code>O(n)</Code> to <Code>O(log n)</Code>. The
         rope is tree-structured on disk so cost scales with tree depth, not file
-        size. They also inherit the same properties of B+Tree's, namely (1) they store
-        lots of data on each page and (2) they are self balanced ropes to avoid
-        inconsistent seek times. If this doesn't make sense, it's ok - essentially
-        they use the same algorithm as modern databases, just with different keys:
-        the data size.
+        size. It inherits B+Tree properties — many keys per page, self-balancing
+        — but uses byte count as the key instead of an index value.
       </p>
       <pre
           class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
@@ -347,7 +345,7 @@ smfile_premove (smf, "floats", removed, sizeof (float), 0, 2, 8);</code></pre>
       <Definition term="Stride">
         The step between elements in a strided operation. Stride 1 reads or
         writes consecutive elements. Stride 4 touches element 0, then 4, then 8
-        - skipping 3 between each access. Useful for reading a single field out
+        — skipping 3 between each access. Useful for reading a single field out
         of an array of packed structs without pulling everything into memory.
       </Definition>
 
@@ -367,9 +365,9 @@ smfile_pinsert (smf, "humidity",     humidity, 0, sizeof (humidity));
 
     <footer class="mt-12 pt-6 border-t border-border">
       <p class="text-muted italic text-sm">
-        Smart Files is in beta. I'd love contributors and users - it's fully open
-        source. More samples ship with the library covering named variables,
-        multithreaded access, and crash recovery.
+        Smart Files is in beta. It's fully open source and I'd love contributors
+        and early users. More samples ship with the library covering named
+        variables, multithreaded access, and crash recovery.
       </p>
     </footer>
   </article>
