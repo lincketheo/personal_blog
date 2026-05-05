@@ -4,6 +4,16 @@ export const meta: MetaInformation = {
   blog: {
     posts: [
       {
+        title: "Smart Files is Working Towards Thread Safety",
+        date: new Date("2026-05-05"),
+        entry: () => import("@/blog/posts/11_smart_files_is_concurrent/AnnouncingConcurrency.vue"),
+        route: "/blog/11_smart_files_is_concurrent",
+        description: "Smart Files is working towards thread safety. Here is a description of the pager and how it uses lock free and wait free design patterns to enable high speed page loads and evictions",
+        name: "smart_files_is_concurrent",
+        popular: true,
+        tags: ["Databases", "C", "Algorithms"],
+      },
+      {
         title: "Releasing Smart Files",
         date: new Date("2026-04-20"),
         entry: () => import("@/blog/posts/10_smart_files_release/SmartFiles.vue"),

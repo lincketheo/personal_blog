@@ -21,7 +21,7 @@ import GithubBanner from "@/components/GithubBanner.vue";
       <br>
       <p class="text-lg text-text/70 leading-relaxed indent-10">
         Text editors don't write directly to disk on every keystroke. They
-        maintain a rope or gap buffer in memory, then flush periodically —
+        maintain a rope or gap buffer in memory, then flush periodically -
         because inserting a character into the middle of a flat file means
         rewriting everything that follows it. Collaborative editors add CRDTs
         on top of that to handle concurrent edits. All of this infrastructure
@@ -35,7 +35,7 @@ import GithubBanner from "@/components/GithubBanner.vue";
           <span class="text-text font-semibold">Not atomic.</span>
           <code>fwrite</code> does not guarantee bytes hit disk. The kernel
           flushes dirty pages on its own schedule, so a crash mid-write leaves
-          your file in a state that never legally existed — with no path to
+          your file in a state that never legally existed - with no path to
           recovery. Wrapping writes in a retry loop helps with short reads, but
           it doesn't help if the process dies halfway through that loop.
         </li>
@@ -57,7 +57,7 @@ import GithubBanner from "@/components/GithubBanner.vue";
         <li class="pl-4">
           <span class="text-text font-semibold">Transactions.</span>
           Every mutation goes through a write-ahead log. Each write either
-          commits fully or rolls back — a crash mid-write leaves nothing
+          commits fully or rolls back - a crash mid-write leaves nothing
           corrupt. The recovery algorithm is
           <a href="https://cs.stanford.edu/people/chrismre/cs345/rl/aries.pdf">ARIES</a>,
           which has the unusual property of being fault-tolerant even while it
@@ -66,7 +66,7 @@ import GithubBanner from "@/components/GithubBanner.vue";
         <li class="pl-4">
           <span class="text-text font-semibold">Inner mutations.</span>
           Insert or remove bytes anywhere in the stream in O(log n) time. The
-          index is a self-balancing rope — same concept as a B+Tree, but keyed
+          index is a self-balancing rope - same concept as a B+Tree, but keyed
           on byte count rather than index values. Insert and remove are native
           operations, not workarounds.
         </li>
@@ -80,7 +80,7 @@ import GithubBanner from "@/components/GithubBanner.vue";
           <span class="text-text font-semibold">Multiple named streams.</span>
           A single Smart File can hold as many named byte streams as you want.
           Each stream is independent. Default behavior looks exactly like a
-          plain file — the named streams are a power-user feature.
+          plain file - the named streams are a power-user feature.
         </li>
       </ol>
 
@@ -91,7 +91,7 @@ import GithubBanner from "@/components/GithubBanner.vue";
         <li class="pl-4">
           <span class="text-text font-semibold">Genomics and bioinformatics.</span>
           DNA sequence data is a large byte stream that gets edited at arbitrary
-          positions — insertions, deletions, substitutions. FASTA/FASTQ and
+          positions - insertions, deletions, substitutions. FASTA/FASTQ and
           BAM/CRAM are flat formats with no transactional semantics. A crashed
           pipeline can silently corrupt an index with no recovery path.
         </li>
@@ -111,14 +111,14 @@ import GithubBanner from "@/components/GithubBanner.vue";
           <span class="text-text font-semibold">Collaborative document editing.</span>
           Google Docs and VS Code implement operational transforms or CRDTs in
           memory to handle concurrent edits, then flush diffs to a database. The
-          file on disk is always a snapshot. A text document is a byte stream —
+          file on disk is always a snapshot. A text document is a byte stream -
           Smart Files make it a crash-safe one where every edit is an atomic
           inner mutation.
         </li>
         <li class="pl-4">
           <span class="text-text font-semibold">Scientific computing.</span>
           Climate models and fluid simulations produce multi-dimensional arrays
-          read in strides — every nth timestep, every other spatial slice. HDF5
+          read in strides - every nth timestep, every other spatial slice. HDF5
           and NetCDF are the current standard but neither is transactional. A
           crashed simulation write can corrupt the output file with no recovery.
         </li>
@@ -215,7 +215,7 @@ printf ("%s\n", buf);  // The cat jumps</code></pre>
       <ol class="list-decimal list-outside pl-5 space-y-2 text-text/75 leading-relaxed mb-4">
         <li>
           Inner mutations are first-class operations. The index is a
-          self-balancing rope on disk — same idea as a B+Tree, but keyed on byte
+          self-balancing rope on disk - same idea as a B+Tree, but keyed on byte
           count rather than index values. Insert and remove are O(log n)
           regardless of where in the stream the edit lands.
         </li>
@@ -227,14 +227,14 @@ printf ("%s\n", buf);  // The cat jumps</code></pre>
         </li>
         <li>
           Strided reads, writes, and removes let you touch every nth element
-          without reading the whole stream. Useful for structured array data —
+          without reading the whole stream. Useful for structured array data -
           reading a single field out of an array of packed structs, or
           downsampling a float array.
         </li>
         <li>
           Multiple labeled datasets per file. A single Smart File can hold n
           independent named byte streams via a top-level hash map. Default
-          behavior looks like a plain file — the named streams are opt-in.
+          behavior looks like a plain file - the named streams are opt-in.
         </li>
       </ol>
     </section>
@@ -254,7 +254,7 @@ printf ("%s\n", buf);  // The cat jumps</code></pre>
         into the middle of a file you read the tail into a buffer, write your
         new bytes, then write the tail back. That's the happy path. If the
         process dies between the second and third write, the file is corrupt.
-        Both insert and remove are <Code>O(n)</Code> in the size of the tail —
+        Both insert and remove are <Code>O(n)</Code> in the size of the tail -
         for a 1 GB file with an insert near the front you're rewriting close to
         a gigabyte of data.
       </p>
@@ -277,8 +277,8 @@ fwrite (tail, 1, tailsize, file);  /* crash here = corrupt file */</code></pre>
       </p>
       <Definition term="Atomicity">
         An operation is atomic if it either fully completes or has no effect at
-        all — there is no in-between state. UNIX files are not atomic because
-        <Code>write(2)</Code> can partially apply — the kernel flushes dirty pages
+        all - there is no in-between state. UNIX files are not atomic because
+        <Code>write(2)</Code> can partially apply - the kernel flushes dirty pages
         independently, so a crash mid-write leaves the file in a state that never
         legally existed. Smart Files are backed by a write-ahead log that guarantees
         every operation is all-or-nothing.
@@ -297,8 +297,8 @@ fwrite (tail, 1, tailsize, file);  /* crash here = corrupt file */</code></pre>
         Smart Files uses a rope algorithm optimized for disk writes to bring
         insert and remove from <Code>O(n)</Code> to <Code>O(log n)</Code>. The
         rope is tree-structured on disk so cost scales with tree depth, not file
-        size. It inherits B+Tree properties — many keys per page, self-balancing
-        — but uses byte count as the key instead of an index value.
+        size. It inherits B+Tree properties - many keys per page, self-balancing
+        - but uses byte count as the key instead of an index value.
       </p>
       <pre
           class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
@@ -345,7 +345,7 @@ smfile_premove (smf, "floats", removed, sizeof (float), 0, 2, 8);</code></pre>
       <Definition term="Stride">
         The step between elements in a strided operation. Stride 1 reads or
         writes consecutive elements. Stride 4 touches element 0, then 4, then 8
-        — skipping 3 between each access. Useful for reading a single field out
+        - skipping 3 between each access. Useful for reading a single field out
         of an array of packed structs without pulling everything into memory.
       </Definition>
 
