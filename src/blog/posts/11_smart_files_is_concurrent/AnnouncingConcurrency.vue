@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import Code from "@/components/Code.vue";
+import Definition from "@/components/Definition.vue";
+import GithubBanner from "@/components/GithubBanner.vue";
 </script>
 
 <template>
@@ -8,14 +10,32 @@ import Code from "@/components/Code.vue";
     <!-- Header -->
     <header class="mb-10">
       <h1 class="text-4xl font-bold text-text leading-tight mb-4">
-        A Lock Free Database Pager
+        A Lock Free - Wait Free - Steal - No Force Database Pager
       </h1>
+
+      <GithubBanner name="Smart Files" owner="lincketheo" url="https://github.com/lincketheo/smartfiles" language="C" license="Apache 2.0" version="v0.0.3"/>
+
       <p class="text-lg text-text/70 leading-relaxed">
-        A common pattern for building databases is to use a paging schema. Pages in databases are easy to reason about
-        because they make the UNDO / REDO protocol really easy to implement and they drastically simplify your database
-        conceptually. With pages, all you have to do to express a "change" to your database is a page before image, and
-        after image and a page number.
+        A common pattern for building databases is to use a paging schema. Pages in databases are
+        easy to reason about because they make the UNDO / REDO protocol really easy to implement and they
+        drastically simplify your database conceptually. With pages, all you have to do to express a "change"
+        to your database is a page before image, and after image and a page number. Because Smart Files is a
+        steal no force database, it's helpful to ensure that our buffer pool evicts pages and allows for
+        in memory buffer pool pages to not have an owner.
       </p>
+      <Definition term="Steal">
+        A steal policy means the buffer manager is allowed to evict dirty pages belonging to an uncommitted
+        transaction out to disk. This is actually really important for most page oriented databases. If it were not
+        a steal policy, the database may modify millions of pages, ensuring that millions of pages stay in memory.
+        A steal policy ensures we limit our memory for long running transactions.
+      </Definition>
+      <Definition term="No Force">
+        A no-force policy means the buffer manager is not required to flush all of a transaction's dirty pages
+        to disk at commit time. Pages can remain in the buffer pool and be written lazily. This improves commit
+        latency because a commit just ensures that the WAL is up to date and doesn't need to flush all it's
+        committed pages, but it means committed data may not survive a crash unless a redo log exists. Smart Files handles
+        this with the REDO phase of ARIES.
+      </Definition>
     </header>
 
     <!-- Table of Contents -->
