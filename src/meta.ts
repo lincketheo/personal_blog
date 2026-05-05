@@ -4,11 +4,11 @@ export const meta: MetaInformation = {
   blog: {
     posts: [
       {
-        title: "Smart Files is Working Towards Thread Safety",
+        title: "A Lock Free - Wait Free - Steal - No Force Database Pager",
         date: new Date("2026-05-05"),
         entry: () => import("@/blog/posts/11_smart_files_is_concurrent/AnnouncingConcurrency.vue"),
         route: "/blog/11_smart_files_is_concurrent",
-        description: "Smart Files is working towards thread safety. Here is a description of the pager and how it uses lock free and wait free design patterns to enable high speed page loads and evictions",
+        description: "A common pattern for building databases is to use a paging schema. Pages in databases are easy to reason about because they make the UNDO / REDO protocol really easy to implement and they drastically simplify your...",
         name: "smart_files_is_concurrent",
         popular: true,
         tags: ["Databases", "C", "Algorithms"],
