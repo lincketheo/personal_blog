@@ -143,7 +143,7 @@ import GithubBanner from "@/components/GithubBanner.vue";
         <h3 class="text-base font-bold text-text mt-8 mb-2">2.1.0 - Page Already in Memory</h3>
         <p class="text-text/75 leading-relaxed mb-4">
           GET is easy if we've already loaded a page into memory. The top hash table represents the fact that
-          previously, we loaded page 25 into memory and it lives at index 1.
+          previously, we loaded page 25 into memory and it lives at hash index 1 and page frame index 0.
         </p>
         <p class="text-text/75 leading-relaxed mb-4">
           Here's a before image of the GET call:
@@ -152,7 +152,7 @@ import GithubBanner from "@/components/GithubBanner.vue";
         <img src="@/assets/11/2.png" class="border bg-white" alt="2"/>
 
         <p class="text-text/75 leading-relaxed mb-4">
-          Note that page 25 hashes to index 1 (25 % 4 == 1), but it contains page 0. So the index is in hash bucket 1
+          Note that page 25 hashes to index 1 (25 % 4 == 1), but it contains page frame 0. So the index is in hash bucket 1
           and points to 0. I won't talk about hash collisions here. I use robin hood hashing.
         </p>
         <p class="text-text/75 leading-relaxed mb-4">
