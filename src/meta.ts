@@ -8,7 +8,7 @@ export const meta: MetaInformation = {
         date: new Date("2026-05-05"),
         entry: () => import("@/blog/posts/11_smart_files_is_concurrent/AnnouncingConcurrency.vue"),
         route: "/blog/11_smart_files_is_concurrent",
-git stau        description: "A common pattern for building databases is to use a paging schema. Pages in databases are easy to reason about because they make the UNDO / REDO protocol really easy to implement and they drastically simplify your...",
+        description: "A common pattern for building databases is to use a paging schema. Pages in databases are easy to reason about because they make the UNDO / REDO protocol really easy to implement and they drastically simplify your...",
         name: "smart_files_is_concurrent",
         popular: true,
         tags: ["Databases", "C", "Algorithms"],
