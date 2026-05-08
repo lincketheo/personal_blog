@@ -4,6 +4,16 @@ export const meta: MetaInformation = {
   blog: {
     posts: [
       {
+        title: "How to Delete a WAL in a single file database",
+        date: new Date("2026-05-08"),
+        entry: () => import("@/blog/posts/12_wal_deleting/DeletingAWal.vue"),
+        route: "/blog/12_wal_deleting",
+        description: "In a WAL, you have a stream of log entries. Each one describes a change that was made to the database. The problem is that for a single file database, I don't want a historic WAL for every single...",
+        name: "deleting_a_wal",
+        popular: true,
+        tags: ["Databases", "C", "Algorithms", "WAL"],
+      },
+      {
         title: "A Lock Free - Wait Free - Steal - No Force Database Pager",
         date: new Date("2026-05-05"),
         entry: () => import("@/blog/posts/11_smart_files_is_concurrent/AnnouncingConcurrency.vue"),
