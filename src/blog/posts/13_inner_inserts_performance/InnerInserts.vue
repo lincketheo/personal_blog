@@ -14,8 +14,13 @@ import Definition from "@/components/Definition.vue";
 
       <p class="text-lg text-text/70 leading-relaxed">
         I'll be starting a performance series on Numstore (specifically the SmartFiles
-        pattern) and why SmartFiles - although not written to optimize for performance
-        - far surpasses regular vanilla reads and writes in some contexts for file I/O.
+        pattern) and why SmartFiles can far surpasse regular vanilla reads and writes 
+        in some contexts for file I/O.
+      </p>
+
+      <p class="text-lg text-text/70 leading-relaxed">
+        You can run all of these performance tests using the 
+        tests in <a href="https://github.com/NumstoreDB/Numstore-Workbench" class="underline hover:text-text" target="_blank" rel="noopener">the Numstore Workbench Repo</a>
       </p>
 
       <p class="text-lg text-text/70 leading-relaxed mt-4">
