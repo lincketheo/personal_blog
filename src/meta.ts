@@ -4,6 +4,16 @@ export const meta: MetaInformation = {
   blog: {
     posts: [
       {
+        title: "Performance analysis of inner file inserts",
+        date: new Date("2026-06-15"),
+        entry: () => import("@/blog/posts/13_inner_inserts_performance/InnerInserts.vue"),
+        route: "/blog/13_inner_inserts",
+        description: "For this first performance analysis, I'll talk about inner mutations - specifically inserting data into the middle of a file. Later I'll talk about inner removals, which completes the 'inner mutation' operations analysis.",
+        name: "inner_inserts",
+        popular: true,
+        tags: ["Databases", "C", "Algorithms", "Performance"],
+      },
+      {
         title: "How to Delete a WAL in a single file database",
         date: new Date("2026-05-08"),
         entry: () => import("@/blog/posts/12_wal_deleting/DeletingAWal.vue"),
