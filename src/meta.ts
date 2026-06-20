@@ -6,9 +6,11 @@ export const meta: MetaInformation = {
       {
         title: "Performance analysis of inner file inserts",
         date: new Date("2026-06-15"),
-        entry: () => import("@/blog/posts/13_inner_inserts_performance/InnerInserts.vue"),
+        entry: () =>
+          import("@/blog/posts/13_inner_inserts_performance/InnerInserts.vue"),
         route: "/blog/13_inner_inserts",
-        description: "For this first performance analysis, I'll talk about inner mutations - specifically inserting data into the middle of a file. Later I'll talk about inner removals, which completes the 'inner mutation' operations analysis.",
+        description:
+          "For this first performance analysis, I'll talk about inner mutations - specifically inserting data into the middle of a file. Later I'll talk about inner removals, which completes the 'inner mutation' operations analysis.",
         name: "inner_inserts",
         popular: true,
         tags: ["Databases", "C", "Algorithms", "Performance"],
@@ -18,7 +20,8 @@ export const meta: MetaInformation = {
         date: new Date("2026-05-08"),
         entry: () => import("@/blog/posts/12_wal_deleting/DeletingAWal.vue"),
         route: "/blog/12_wal_deleting",
-        description: "In a WAL, you have a stream of log entries. Each one describes a change that was made to the database. The problem is that for a single file database, I don't want a historic WAL for every single...",
+        description:
+          "In a WAL, you have a stream of log entries. Each one describes a change that was made to the database. The problem is that for a single file database, I don't want a historic WAL for every single...",
         name: "deleting_a_wal",
         popular: true,
         tags: ["Databases", "C", "Algorithms", "WAL"],
@@ -26,9 +29,11 @@ export const meta: MetaInformation = {
       {
         title: "A Lock Free - Wait Free - Steal - No Force Database Pager",
         date: new Date("2026-05-05"),
-        entry: () => import("@/blog/posts/11_smart_files_is_concurrent/AnnouncingConcurrency.vue"),
+        entry: () =>
+          import("@/blog/posts/11_smart_files_is_concurrent/AnnouncingConcurrency.vue"),
         route: "/blog/11_smart_files_is_concurrent",
-        description: "A common pattern for building databases is to use a paging schema. Pages in databases are easy to reason about because they make the UNDO / REDO protocol really easy to implement and they drastically simplify your...",
+        description:
+          "A common pattern for building databases is to use a paging schema. Pages in databases are easy to reason about because they make the UNDO / REDO protocol really easy to implement and they drastically simplify your...",
         name: "smart_files_is_concurrent",
         popular: true,
         tags: ["Databases", "C", "Algorithms"],
@@ -36,9 +41,11 @@ export const meta: MetaInformation = {
       {
         title: "Releasing Smart Files",
         date: new Date("2026-04-20"),
-        entry: () => import("@/blog/posts/10_smart_files_release/SmartFiles.vue"),
+        entry: () =>
+          import("@/blog/posts/10_smart_files_release/SmartFiles.vue"),
         route: "/blog/10_smart_files_release",
-        description: "The concept of a file has had the same definition for the past 50 years. Today I'm announcing the launch of Smart Files, a new API that gets past the hurdles of old school linear, non-transactional system files.\n",
+        description:
+          "The concept of a file has had the same definition for the past 50 years. Today I'm announcing the launch of Smart Files, a new API that gets past the hurdles of old school linear, non-transactional system files.\n",
         name: "smart_files_release",
         popular: true,
         tags: ["Databases", "C"],

@@ -19,7 +19,8 @@ interface Program {
 const programs: Program[] = [
   {
     name: "Smart Files",
-    description: "A new \"Smart\" file with first class transaction support and inner mutations",
+    description:
+      'A new "Smart" file with first class transaction support and inner mutations',
     version: "0.0.3",
     repo: "https://github.com/lincketheo/smartfiles",
     postRoute: "/blog/10_smart_files_release",
