@@ -6,6 +6,17 @@
     <link rel="icon" type="image/x-icon" href="/favico.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Theo Lincke</title>
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$']],
+          displayMath: [['$$', '$$']],
+          processEscapes: true,
+        },
+        options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] },
+      };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
   <body class="bg-background dark:bg-background-dark text-on-background dark:text-on-background-dark min-h-screen">
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
