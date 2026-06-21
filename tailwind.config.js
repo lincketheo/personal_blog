@@ -7,29 +7,38 @@ module.exports = {
 	theme: {
 		extend: {
 			colors: {
-				// Page background — near-black with a hint of green
-				bg:        '#111111',
-				// Card / raised surface
-				surface:   '#222222',
-				// Subtle borders and dividers
-				border:    '#000000',
+				bg:           '#111111',
+				surface:      '#1a1a1a',
+				elevated:     '#242424',
+				border:       '#2a2a2a',
 
-				// Body text — warm off-white
-				text:      '#EDE9D0',
-				// Muted text — dates, captions, labels
-				muted:     '#7A7B62',
+				fg:           '#EDE9D0',
+				text:         '#EDE9D0',
+				muted:        '#7A7B62',
 
-				// Accent red — links, CTAs
-				red:       '#D52429',
-				// Hover state for red
-				'red-hot': '#F1602C',
-				// Amber — secondary accent if needed
-				amber:     '#EC8922',
+				accent:       '#D52429',
+				'accent-soft':'#F1602C',
+				red:          '#D52429',
+				'red-hot':    '#F1602C',
+				amber:        '#EC8922',
 			},
 			fontFamily: {
-				sans:  ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-				serif: ['Georgia', 'Times New Roman', 'serif'],
-				mono:  ['ui-monospace', 'Cascadia Code', 'Source Code Pro', 'monospace'],
+				sans:    ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+				display: ['Space Grotesk', 'Inter', 'ui-sans-serif', 'sans-serif'],
+				serif:   ['Space Grotesk', 'Inter', 'ui-sans-serif', 'sans-serif'],
+				mono:    ['JetBrains Mono', 'ui-monospace', 'Cascadia Code', 'monospace'],
+			},
+			maxWidth: {
+				container: '72rem',
+			},
+			keyframes: {
+				'fade-in-up': {
+					'0%':   { opacity: '0', transform: 'translateY(16px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' },
+				},
+			},
+			animation: {
+				'fade-in-up': 'fade-in-up 0.4s ease-out forwards',
 			},
 		},
 	},

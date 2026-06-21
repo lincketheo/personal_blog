@@ -4,9 +4,9 @@ import NavigationBar from "@/navigation/NavigationBar.vue";
 </script>
 
 <template>
-  <div class="font-mono">
+  <div class="font-sans">
     <NavigationBar />
-    <div class="flex flex-row justify-center bg-bg text-text min-h-screen">
+    <div class="flex flex-row justify-center bg-bg text-fg min-h-screen">
       <div class="w-full max-w-4xl px-4 sm:px-6">
         <RouterView />
       </div>
