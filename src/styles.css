@@ -73,6 +73,25 @@
     @apply inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium uppercase tracking-widest text-muted;
   }
 
+  .prose {
+    --tw-prose-body:        theme('colors.fg');
+    --tw-prose-headings:    theme('colors.fg');
+    --tw-prose-lead:        theme('colors.muted');
+    --tw-prose-links:       theme('colors.accent.soft');
+    --tw-prose-bold:        theme('colors.fg');
+    --tw-prose-counters:    theme('colors.muted');
+    --tw-prose-bullets:     theme('colors.muted');
+    --tw-prose-hr:          theme('colors.border');
+    --tw-prose-quotes:      theme('colors.fg');
+    --tw-prose-quote-borders: theme('colors.secondary.DEFAULT');
+    --tw-prose-captions:    theme('colors.muted');
+    --tw-prose-code:        theme('colors.secondary.soft');
+    --tw-prose-pre-code:    theme('colors.fg');
+    --tw-prose-pre-bg:      theme('colors.surface');
+    --tw-prose-th-borders:  theme('colors.border');
+    --tw-prose-td-borders:  theme('colors.border');
+  }
+
   .reveal {
     @apply opacity-0;
   }

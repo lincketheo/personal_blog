@@ -20,7 +20,7 @@ fetch(props.route).then(async (it) => {
   </p>
   <div class="flex-row justify-center">
     <article
-      class="prose max-w-none text-on-background dark:text-on-background-dark"
+      class="prose prose-invert max-w-none"
       v-html="mkhtml"
     ></article>
   </div>
