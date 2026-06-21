@@ -56,19 +56,19 @@ function formatDate(date: Date | string) {
       <h2 class="font-serif text-2xl font-bold leading-snug mb-3">
         <a
           :href="post.route"
-          class="text-text no-underline hover:text-red-hot transition-colors duration-150"
+          class="text-fg no-underline hover:text-secondary-hot transition-colors duration-150"
         >
           {{ post.title }}
         </a>
       </h2>
 
-      <p class="text-base leading-relaxed text-text/70 mb-4">
+      <p class="text-base leading-relaxed text-fg/70 mb-4">
         {{ post.description }}
       </p>
 
       <a
         :href="post.route"
-        class="text-sm font-semibold text-red hover:text-red-hot hover:underline"
+        class="text-sm font-semibold text-secondary hover:text-secondary-hot hover:underline"
       >
         Continue reading →
       </a>

@@ -7,28 +7,28 @@ import Definition from "@/components/Definition.vue";
   <article class="max-w-4xl mx-auto px-6 py-12 font-serif">
     <!-- Header -->
     <header class="mb-10">
-      <h1 class="text-4xl font-bold text-text leading-tight mb-4">
+      <h1 class="text-4xl font-bold text-fg leading-tight mb-4">
         SmartFiles Performance: Inner Inserts
       </h1>
 
-      <p class="text-lg text-text/70 leading-relaxed">
+      <p class="text-lg text-fg/70 leading-relaxed">
         I'll be starting a performance series on Numstore (specifically the
         SmartFiles pattern) and why SmartFiles can far surpasse regular vanilla
         reads and writes in some contexts for file I/O.
       </p>
 
-      <p class="text-lg text-text/70 leading-relaxed">
+      <p class="text-lg text-fg/70 leading-relaxed">
         You can run all of these performance tests using the tests in
         <a
           href="https://github.com/NumstoreDB/Numstore-Workbench"
-          class="underline hover:text-text"
+          class="underline hover:text-fg"
           target="_blank"
           rel="noopener"
           >the Numstore Workbench Repo</a
         >
       </p>
 
-      <p class="text-lg text-text/70 leading-relaxed mt-4">
+      <p class="text-lg text-fg/70 leading-relaxed mt-4">
         For this series, I want to stay truthful and humble about what Numstore
         can and can't do. To stay truthful, I'm breaking down performance into
         small, self-contained use cases. I'll explore each use case fully and
@@ -37,7 +37,7 @@ import Definition from "@/components/Definition.vue";
         conceal the limitations of Numstore.
       </p>
 
-      <p class="text-lg text-text/70 leading-relaxed mt-4">
+      <p class="text-lg text-fg/70 leading-relaxed mt-4">
         I did all these performance analyses on an 8-core Intel i9 Dell Inspiron
         2019 laptop. I slowed down my system by turning off any daemons and
         heavy running processes. I ran all tests 3 times overnight, wrapped by
@@ -69,13 +69,13 @@ import Definition from "@/components/Definition.vue";
 
     <!-- Abstract -->
     <section class="mb-10">
-      <h2 class="text-xl font-bold text-text mt-10 mb-4">Abstract</h2>
+      <h2 class="text-xl font-bold text-fg mt-10 mb-4">Abstract</h2>
 
       There were three main take aways from this performance analysis of
       Numstore:
 
       <ol
-        class="space-y-4 text-text/70 leading-relaxed list-decimal list-inside marker:text-muted marker:font-mono marker:text-sm"
+        class="space-y-4 text-fg/70 leading-relaxed list-decimal list-inside marker:text-muted marker:font-mono marker:text-sm"
       >
         <li class="pl-3">
           Generally, with naive file I/O, the longer your file, the longer it
@@ -126,13 +126,13 @@ import Definition from "@/components/Definition.vue";
           class="w-full border border-text/10 bg-text/[0.03] rounded items-center justify-center"
           style="min-height: 240px; display: none"
         >
-          <span class="font-mono text-xs text-text/30 tracking-widest uppercase"
+          <span class="font-mono text-xs text-fg/30 tracking-widest uppercase"
             >p2_time_vs_insert_size_linear.png</span
           >
         </div>
-        <p class="mt-2 text-text/50 text-sm leading-relaxed">
+        <p class="mt-2 text-fg/50 text-sm leading-relaxed">
           <span
-            class="font-mono text-xs tracking-widest uppercase text-text/30 mr-2"
+            class="font-mono text-xs tracking-widest uppercase text-fg/30 mr-2"
             >Figure 0</span
           >
           Time vs. file size with a fixed offset and file size (both relatively
@@ -145,9 +145,9 @@ import Definition from "@/components/Definition.vue";
 
     <!-- Inner Inserts -->
     <section class="mb-10">
-      <h2 class="text-xl font-bold text-text mt-10 mb-4">Inner Inserts</h2>
+      <h2 class="text-xl font-bold text-fg mt-10 mb-4">Inner Inserts</h2>
 
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         For this first performance analysis, I'll talk about inner mutations -
         specifically inserting data into the middle of a file. Later I'll talk
         about inner removals, which completes the "inner mutation" operations
@@ -156,21 +156,21 @@ import Definition from "@/components/Definition.vue";
 
       <!-- Definition -->
       <section>
-        <h3 class="text-base font-bold text-text mt-8 mb-2">
+        <h3 class="text-base font-bold text-fg mt-8 mb-2">
           Definition: Inner Insert
         </h3>
-        <p class="text-text/75 leading-relaxed mb-4">
+        <p class="text-fg/75 leading-relaxed mb-4">
           Say I have a file where each byte is just its location on disk. Byte 0
           has value 0, byte 1 has value 1:
         </p>
 
         <pre
-          class="font-mono text-sm text-text/80 bg-text/[0.03] border border-text/10 rounded px-4 py-3 mb-4 overflow-x-auto"
+          class="font-mono text-sm text-fg/80 bg-text/[0.03] border border-text/10 rounded px-4 py-3 mb-4 overflow-x-auto"
         >
 [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]</pre
         >
 
-        <p class="text-text/75 leading-relaxed mb-4">
+        <p class="text-fg/75 leading-relaxed mb-4">
           Normal files provide first-class support for <em>inner writes</em>. So
           let's say I want to write from index 1 to 3 with new data
           <Code>[ 9 | 10 | 11 ]</Code>. After a traditional "write" system call,
@@ -178,17 +178,17 @@ import Definition from "@/components/Definition.vue";
         </p>
 
         <pre
-          class="font-mono text-sm text-text/80 bg-text/[0.03] border border-text/10 rounded px-4 py-3 mb-4 overflow-x-auto"
+          class="font-mono text-sm text-fg/80 bg-text/[0.03] border border-text/10 rounded px-4 py-3 mb-4 overflow-x-auto"
         >
 [ 0 | 9 | 10 | 11 | 4 | 5 | 6 | 7 | 8 ]</pre
         >
 
-        <p class="text-text/75 leading-relaxed mb-4">
+        <p class="text-fg/75 leading-relaxed mb-4">
           Notice how 1, 2, and 3 were overwritten by 9, 10, and 11. This is what
           I'll call an "inner write."
         </p>
 
-        <p class="text-text/75 leading-relaxed mb-4">
+        <p class="text-fg/75 leading-relaxed mb-4">
           What if I want to insert data at index 1? This is actually a really
           common use case. So now I want to insert the same data (<Code
             >[ 9 | 10 | 11 ]</Code
@@ -196,12 +196,12 @@ import Definition from "@/components/Definition.vue";
         </p>
 
         <pre
-          class="font-mono text-sm text-text/80 bg-text/[0.03] border border-text/10 rounded px-4 py-3 mb-4 overflow-x-auto"
+          class="font-mono text-sm text-fg/80 bg-text/[0.03] border border-text/10 rounded px-4 py-3 mb-4 overflow-x-auto"
         >
 [ 0 | 9 | 10 | 11 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]</pre
         >
 
-        <p class="text-text/75 leading-relaxed mb-4">
+        <p class="text-fg/75 leading-relaxed mb-4">
           This is what I will call an "inner insert" (as opposed to an "inner
           write").
         </p>
@@ -209,37 +209,37 @@ import Definition from "@/components/Definition.vue";
 
       <!-- Problem Space -->
       <section>
-        <h3 class="text-base font-bold text-text mt-8 mb-2">
+        <h3 class="text-base font-bold text-fg mt-8 mb-2">
           The Problem Space
         </h3>
-        <p class="text-text/75 leading-relaxed mb-4">
+        <p class="text-fg/75 leading-relaxed mb-4">
           For the sake of measuring performance, an inner insert has the
           following parameters:
         </p>
         <ul
-          class="space-y-1 text-text/70 font-mono text-sm leading-relaxed list-none mb-4"
+          class="space-y-1 text-fg/70 font-mono text-sm leading-relaxed list-none mb-4"
         >
           <li>
-            <span class="text-text">fsize</span> - Original File Size. The size
+            <span class="text-fg">fsize</span> - Original File Size. The size
             of the file before we make an insert.
           </li>
           <li>
-            <span class="text-text">isize</span> - Desired Data Insert Length.
+            <span class="text-fg">isize</span> - Desired Data Insert Length.
             The size of the data we want to insert into the file.
           </li>
           <li>
-            <span class="text-text">offst</span> - Desired Data Offset. The
+            <span class="text-fg">offst</span> - Desired Data Offset. The
             location in the original file we want to insert the data into.
           </li>
         </ul>
-        <p class="text-text/75 leading-relaxed mb-2">
+        <p class="text-fg/75 leading-relaxed mb-2">
           One more term to help frame the problem:
         </p>
         <ul
-          class="space-y-1 text-text/70 font-mono text-sm leading-relaxed list-none mb-4"
+          class="space-y-1 text-fg/70 font-mono text-sm leading-relaxed list-none mb-4"
         >
           <li>
-            <span class="text-text">tail</span> - The remainder of the file from
+            <span class="text-fg">tail</span> - The remainder of the file from
             <Code>file[offst ... fsize]</Code>.
           </li>
         </ul>
@@ -247,15 +247,15 @@ import Definition from "@/components/Definition.vue";
 
       <!-- Naive -->
       <section>
-        <h3 class="text-base font-bold text-text mt-8 mb-2">
+        <h3 class="text-base font-bold text-fg mt-8 mb-2">
           Solving it Naively
         </h3>
-        <p class="text-text/75 leading-relaxed mb-4">
+        <p class="text-fg/75 leading-relaxed mb-4">
           Let's try to solve this without SmartFiles. In general, the pattern
           looks like this:
         </p>
         <ol
-          class="space-y-2 text-text/70 leading-relaxed list-decimal list-inside marker:text-muted marker:font-mono marker:text-sm mb-4"
+          class="space-y-2 text-fg/70 leading-relaxed list-decimal list-inside marker:text-muted marker:font-mono marker:text-sm mb-4"
         >
           <li class="pl-3">
             Read the "tail" of the file into memory, effectively splitting the
@@ -266,10 +266,10 @@ import Definition from "@/components/Definition.vue";
           </li>
           <li class="pl-3">Write the tail back to the end of the file.</li>
         </ol>
-        <p class="text-text/75 leading-relaxed mb-2">Visualized:</p>
+        <p class="text-fg/75 leading-relaxed mb-2">Visualized:</p>
 
         <pre
-          class="font-mono text-sm text-text/80 bg-text/[0.03] border border-text/10 rounded px-4 py-3 mb-4 overflow-x-auto"
+          class="font-mono text-sm text-fg/80 bg-text/[0.03] border border-text/10 rounded px-4 py-3 mb-4 overflow-x-auto"
         >
 file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
 
@@ -285,11 +285,11 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
      file = [ 0 | 9 | 10 | 11 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]</pre
         >
 
-        <p class="text-text/75 leading-relaxed mb-2">
+        <p class="text-fg/75 leading-relaxed mb-2">
           Unbuffered implementation:
         </p>
         <pre
-          class="font-mono text-sm text-text/80 bg-text/[0.03] border border-text/10 rounded px-4 py-3 mb-4 overflow-x-auto"
+          class="font-mono text-sm text-fg/80 bg-text/[0.03] border border-text/10 rounded px-4 py-3 mb-4 overflow-x-auto"
         >
 {
     pread (fd, tail, tail_size, ofst);
@@ -299,14 +299,14 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
 }</pre
         >
 
-        <p class="text-text/75 leading-relaxed mb-4">
+        <p class="text-fg/75 leading-relaxed mb-4">
           Note that this method has unbounded memory overhead. The file can be
           any size, and no matter what, we need to "touch" all the data within
           the tail of the file in some way or another. To address this, let's
           try buffering.
         </p>
 
-        <p class="text-text/75 leading-relaxed mb-4">
+        <p class="text-fg/75 leading-relaxed mb-4">
           Buffering is what <Code>FILE* fp = fopen(...)</Code> gives you over
           plain POSIX <Code>int fd = open(...)</Code>. Buffering limits memory
           overhead by maintaining a fixed-size buffer in memory. With a buffer
@@ -317,11 +317,11 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
           OS-level primitive for it. That's not ideal.
         </p>
 
-        <p class="text-text/75 leading-relaxed mb-2">
+        <p class="text-fg/75 leading-relaxed mb-2">
           Buffered implementation:
         </p>
         <pre
-          class="font-mono text-sm text-text/80 bg-text/[0.03] border border-text/10 rounded px-4 py-3 mb-4 overflow-x-auto"
+          class="font-mono text-sm text-fg/80 bg-text/[0.03] border border-text/10 rounded px-4 py-3 mb-4 overflow-x-auto"
         >
 {
   {
@@ -348,38 +348,38 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
 
       <!-- Fallocate -->
       <section>
-        <h3 class="text-base font-bold text-text mt-8 mb-2">
+        <h3 class="text-base font-bold text-fg mt-8 mb-2">
           FALLOC_FL_INSERT_RANGE: Solving it Better on Linux
         </h3>
-        <p class="text-text/75 leading-relaxed mb-4">
+        <p class="text-fg/75 leading-relaxed mb-4">
           If you're running Linux 4.1 or later with XFS, or Linux 4.2 or later
           with ext4, you can call <Code>fallocate(2)</Code> with
           <Code>FALLOC_FL_INSERT_RANGE</Code>. This is fairly restricted,
           though.
         </p>
-        <p class="text-text/75 leading-relaxed mb-2">
+        <p class="text-fg/75 leading-relaxed mb-2">
           From the
           <a
             href="https://man7.org/linux/man-pages/man2/fallocate.2.html"
-            class="underline hover:text-text"
+            class="underline hover:text-fg"
             target="_blank"
             rel="noopener"
             >man page</a
           >:
         </p>
         <blockquote
-          class="border-l-2 border-text/20 pl-4 my-4 text-text/60 font-mono text-sm leading-relaxed"
+          class="border-l-2 border-text/20 pl-4 my-4 text-fg/60 font-mono text-sm leading-relaxed"
         >
           FALLOC_FL_INSERT_RANGE requires filesystem support. Filesystems that
           support this operation include XFS (since Linux 4.1) and ext4 (since
           Linux 4.2).
         </blockquote>
-        <p class="text-text/75 leading-relaxed mb-4">
+        <p class="text-fg/75 leading-relaxed mb-4">
           On the system I tested (ext4), both the insertion length and offset
           must be a multiple of the filesystem block size. That's a significant
           constraint for a reusable program.
         </p>
-        <p class="text-text/75 leading-relaxed mb-4">
+        <p class="text-fg/75 leading-relaxed mb-4">
           Note: <Code>FALLOC_FL_COLLAPSE_RANGE</Code> is the fallocate
           equivalent to Numstore's inner remove operation.
         </p>
@@ -388,35 +388,35 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
 
     <!-- Performance -->
     <section class="mb-10">
-      <h2 class="text-xl font-bold text-text mt-10 mb-4">Performance</h2>
+      <h2 class="text-xl font-bold text-fg mt-10 mb-4">Performance</h2>
 
       <!-- Preamble -->
       <section>
-        <h3 class="text-base font-bold text-text mt-8 mb-2">
+        <h3 class="text-base font-bold text-fg mt-8 mb-2">
           Preamble: Why Numstore Is More Than Just Fast
         </h3>
-        <p class="text-text/75 leading-relaxed mb-4">
+        <p class="text-fg/75 leading-relaxed mb-4">
           Before talking about performance, I want to note that raw speed isn't
           the whole picture - but Numstore still dwarfs a normal
           system-call-based inner insert in certain use cases.
         </p>
-        <p class="text-text/75 leading-relaxed mb-2">The statement:</p>
+        <p class="text-fg/75 leading-relaxed mb-2">The statement:</p>
         <blockquote
-          class="border-l-2 border-text/20 pl-4 my-4 text-text/60 italic leading-relaxed"
+          class="border-l-2 border-text/20 pl-4 my-4 text-fg/60 italic leading-relaxed"
         >
           Numstore is a lot faster at inner mutations
         </blockquote>
-        <p class="text-text/75 leading-relaxed mb-2">
+        <p class="text-fg/75 leading-relaxed mb-2">
           ...fails to capture several things Numstore does on top of being fast.
           It's more like:
         </p>
         <blockquote
-          class="border-l-2 border-text/20 pl-4 my-4 text-text/60 italic leading-relaxed space-y-2"
+          class="border-l-2 border-text/20 pl-4 my-4 text-fg/60 italic leading-relaxed space-y-2"
         >
           <p>Numstore is a lot faster at inner mutations</p>
           <p>AND</p>
           <ol
-            class="list-decimal list-inside space-y-2 not-italic text-text/60 font-mono text-sm"
+            class="list-decimal list-inside space-y-2 not-italic text-fg/60 font-mono text-sm"
           >
             <li class="pl-2">
               Numstore is ACID - unlike plain files.
@@ -450,7 +450,7 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
             </li>
           </ol>
         </blockquote>
-        <p class="text-text/75 leading-relaxed mb-4">
+        <p class="text-fg/75 leading-relaxed mb-4">
           Points 1–3 are really significant and I don't want to gloss over them,
           but this post is about performance, so let's talk speed.
         </p>
@@ -458,12 +458,12 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
 
       <!-- Data Capturing -->
       <section>
-        <h3 class="text-base font-bold text-text mt-8 mb-2">Data Capturing</h3>
-        <p class="text-text/75 leading-relaxed mb-4">
+        <h3 class="text-base font-bold text-fg mt-8 mb-2">Data Capturing</h3>
+        <p class="text-fg/75 leading-relaxed mb-4">
           For the following methods of interior insertion:
         </p>
         <ol
-          class="space-y-1 text-text/70 leading-relaxed list-decimal list-inside marker:text-muted marker:font-mono marker:text-sm mb-4"
+          class="space-y-1 text-fg/70 leading-relaxed list-decimal list-inside marker:text-muted marker:font-mono marker:text-sm mb-4"
         >
           <li class="pl-3">Unbuffered naive file I/O</li>
           <li class="pl-3">Buffered naive file I/O</li>
@@ -472,37 +472,37 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
           </li>
           <li class="pl-3">SmartFiles</li>
         </ol>
-        <p class="text-text/75 leading-relaxed mb-2 font-semibold text-text">
+        <p class="text-fg/75 leading-relaxed mb-2 font-semibold text-fg">
           Parameters:
         </p>
         <ul
-          class="space-y-1 text-text/70 font-mono text-sm leading-relaxed list-none mb-4"
+          class="space-y-1 text-fg/70 font-mono text-sm leading-relaxed list-none mb-4"
         >
           <li>
-            <span class="text-text">File Size (KiB)</span> - Size of the
+            <span class="text-fg">File Size (KiB)</span> - Size of the
             original file before the insert.
           </li>
           <li>
-            <span class="text-text">Offset (KiB)</span> - Where in the file we
+            <span class="text-fg">Offset (KiB)</span> - Where in the file we
             want to insert data.
           </li>
           <li>
-            <span class="text-text">Insert Size (KiB)</span> - Size of the
+            <span class="text-fg">Insert Size (KiB)</span> - Size of the
             buffer we want to insert.
           </li>
           <li>
-            <span class="text-text">Chunk Size (KiB)</span> - For buffered I/O
+            <span class="text-fg">Chunk Size (KiB)</span> - For buffered I/O
             only; kept constant at system page size throughout these results.
           </li>
         </ul>
-        <p class="text-text/75 leading-relaxed mb-2 font-semibold text-text">
+        <p class="text-fg/75 leading-relaxed mb-2 font-semibold text-fg">
           Results:
         </p>
         <ul
-          class="space-y-1 text-text/70 font-mono text-sm leading-relaxed list-none mb-4"
+          class="space-y-1 text-fg/70 font-mono text-sm leading-relaxed list-none mb-4"
         >
           <li>
-            <span class="text-text">Time (ms)</span> - Wall-clock time to
+            <span class="text-fg">Time (ms)</span> - Wall-clock time to
             execute the operation.
           </li>
         </ul>
@@ -510,10 +510,10 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
 
       <!-- Round 1 -->
       <section>
-        <h3 class="text-base font-bold text-text mt-8 mb-2">
+        <h3 class="text-base font-bold text-fg mt-8 mb-2">
           Round 1: Small File, Large Insert
         </h3>
-        <p class="text-text/75 leading-relaxed mb-4">
+        <p class="text-fg/75 leading-relaxed mb-4">
           The first round keeps numbers fairly small:
         </p>
 
@@ -535,16 +535,16 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
             </thead>
             <tbody class="divide-y divide-text/5">
               <tr>
-                <td class="px-4 py-2 text-text/60">File Size</td>
-                <td class="px-4 py-2 text-text">100 KiB</td>
+                <td class="px-4 py-2 text-fg/60">File Size</td>
+                <td class="px-4 py-2 text-fg">100 KiB</td>
               </tr>
               <tr>
-                <td class="px-4 py-2 text-text/60">Offset</td>
-                <td class="px-4 py-2 text-text">4 KiB</td>
+                <td class="px-4 py-2 text-fg/60">Offset</td>
+                <td class="px-4 py-2 text-fg">4 KiB</td>
               </tr>
               <tr>
-                <td class="px-4 py-2 text-text/60">Insert Size</td>
-                <td class="px-4 py-2 text-text">9768 KiB</td>
+                <td class="px-4 py-2 text-fg/60">Insert Size</td>
+                <td class="px-4 py-2 text-fg">9768 KiB</td>
               </tr>
             </tbody>
           </table>
@@ -565,33 +565,33 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
             </thead>
             <tbody class="divide-y divide-text/5">
               <tr>
-                <td class="px-4 py-2 text-text/60">Unbuffered</td>
-                <td class="px-4 py-2 text-text">34.102</td>
+                <td class="px-4 py-2 text-fg/60">Unbuffered</td>
+                <td class="px-4 py-2 text-fg">34.102</td>
               </tr>
               <tr>
-                <td class="px-4 py-2 text-text/60">Buffered</td>
-                <td class="px-4 py-2 text-text">21.034</td>
+                <td class="px-4 py-2 text-fg/60">Buffered</td>
+                <td class="px-4 py-2 text-fg">21.034</td>
               </tr>
               <tr>
-                <td class="px-4 py-2 text-text/60">Fallocate</td>
-                <td class="px-4 py-2 text-text">20.587</td>
+                <td class="px-4 py-2 text-fg/60">Fallocate</td>
+                <td class="px-4 py-2 text-fg">20.587</td>
               </tr>
               <tr>
-                <td class="px-4 py-2 text-text/60">SmartFiles</td>
-                <td class="px-4 py-2 text-text">114.990</td>
+                <td class="px-4 py-2 text-fg/60">SmartFiles</td>
+                <td class="px-4 py-2 text-fg">114.990</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <p class="text-text/75 leading-relaxed mb-4">
+        <p class="text-fg/75 leading-relaxed mb-4">
           This result isn't very meaningful on its own. SmartFiles performs far
           worse than the other methods here. The file is relatively small (100
           KiB) and the insertion size is very large (9768 KiB), so
           <em>the bottleneck is writing the insertion data</em>, not rebalancing
           the persisted data.
         </p>
-        <p class="text-text/75 leading-relaxed mb-4">
+        <p class="text-fg/75 leading-relaxed mb-4">
           SmartFiles doesn't offer much for small files with large inserts,
           because it contains a lot of interior machinery for fault tolerance.
           Analytically, it writes 3× as much data - both an undo and a redo for
@@ -619,13 +619,13 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
             style="min-height: 240px; display: none"
           >
             <span
-              class="font-mono text-xs text-text/30 tracking-widest uppercase"
+              class="font-mono text-xs text-fg/30 tracking-widest uppercase"
               >p2_time_vs_insert_size_linear.png</span
             >
           </div>
-          <p class="mt-2 text-text/50 text-sm leading-relaxed">
+          <p class="mt-2 text-fg/50 text-sm leading-relaxed">
             <span
-              class="font-mono text-xs tracking-widest uppercase text-text/30 mr-2"
+              class="font-mono text-xs tracking-widest uppercase text-fg/30 mr-2"
               >Figure 1</span
             >
             Time vs. insertion size with a fixed offset and file size (both
@@ -644,7 +644,7 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
           >
             Take Away
           </p>
-          <p class="text-text/75 leading-relaxed">
+          <p class="text-fg/75 leading-relaxed">
             Short writes into a small database aren't the workload SmartFiles is
             designed for. If your workload is 100-byte files with 10-byte inner
             insertions, don't use Numstore. Simple as that.
@@ -654,10 +654,10 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
 
       <!-- Round 2 -->
       <section>
-        <h3 class="text-base font-bold text-text mt-8 mb-2">
+        <h3 class="text-base font-bold text-fg mt-8 mb-2">
           Round 2: Large File, Small Insert
         </h3>
-        <p class="text-text/75 leading-relaxed mb-4">
+        <p class="text-fg/75 leading-relaxed mb-4">
           Now let's crank in the other direction - instead of increasing the
           insertion size, we increase the file size:
         </p>
@@ -680,16 +680,16 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
             </thead>
             <tbody class="divide-y divide-text/5">
               <tr>
-                <td class="px-4 py-2 text-text/60">File Size</td>
-                <td class="px-4 py-2 text-text">16 GiB</td>
+                <td class="px-4 py-2 text-fg/60">File Size</td>
+                <td class="px-4 py-2 text-fg">16 GiB</td>
               </tr>
               <tr>
-                <td class="px-4 py-2 text-text/60">Offset</td>
-                <td class="px-4 py-2 text-text">4 KiB</td>
+                <td class="px-4 py-2 text-fg/60">Offset</td>
+                <td class="px-4 py-2 text-fg">4 KiB</td>
               </tr>
               <tr>
-                <td class="px-4 py-2 text-text/60">Insert Size</td>
-                <td class="px-4 py-2 text-text">4 KiB</td>
+                <td class="px-4 py-2 text-fg/60">Insert Size</td>
+                <td class="px-4 py-2 text-fg">4 KiB</td>
               </tr>
             </tbody>
           </table>
@@ -710,22 +710,22 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
             </thead>
             <tbody class="divide-y divide-text/5">
               <tr>
-                <td class="px-4 py-2 text-text/60">Buffered</td>
-                <td class="px-4 py-2 text-text">293,000.00</td>
+                <td class="px-4 py-2 text-fg/60">Buffered</td>
+                <td class="px-4 py-2 text-fg">293,000.00</td>
               </tr>
               <tr>
-                <td class="px-4 py-2 text-text/60">Fallocate</td>
-                <td class="px-4 py-2 text-text">2,461.00</td>
+                <td class="px-4 py-2 text-fg/60">Fallocate</td>
+                <td class="px-4 py-2 text-fg">2,461.00</td>
               </tr>
               <tr>
-                <td class="px-4 py-2 text-text/60">SmartFiles</td>
-                <td class="px-4 py-2 text-text">1.903</td>
+                <td class="px-4 py-2 text-fg/60">SmartFiles</td>
+                <td class="px-4 py-2 text-fg">1.903</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <p class="text-text/75 leading-relaxed mb-4">
+        <p class="text-fg/75 leading-relaxed mb-4">
           For an already-large dataset (16 GiB), inserting 4 KiB at offset 4 KiB
           is very low cost for SmartFiles. For naive file I/O, time balloons
           dramatically. Compared to fallocate, you might expect fallocate to be
@@ -733,7 +733,7 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
           has ideas why that might be, I'm happy to adjust my code and
           regenerate the results.
         </p>
-        <p class="text-text/75 leading-relaxed mb-4">
+        <p class="text-fg/75 leading-relaxed mb-4">
           In general, SmartFiles is very fast when inserting data into an
           already-large dataset.
         </p>
@@ -758,13 +758,13 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
             style="min-height: 240px; display: none"
           >
             <span
-              class="font-mono text-xs text-text/30 tracking-widest uppercase"
+              class="font-mono text-xs text-fg/30 tracking-widest uppercase"
               >p1_time_vs_file_size_linear.png</span
             >
           </div>
-          <p class="mt-2 text-text/50 text-sm leading-relaxed">
+          <p class="mt-2 text-fg/50 text-sm leading-relaxed">
             <span
-              class="font-mono text-xs tracking-widest uppercase text-text/30 mr-2"
+              class="font-mono text-xs tracking-widest uppercase text-fg/30 mr-2"
               >Figure 2</span
             >
             A linear plot of file size (x axis) vs. time to insert a fixed-size
@@ -792,13 +792,13 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
             style="min-height: 240px; display: none"
           >
             <span
-              class="font-mono text-xs text-text/30 tracking-widest uppercase"
+              class="font-mono text-xs text-fg/30 tracking-widest uppercase"
               >p1_time_vs_file_size_log.png</span
             >
           </div>
-          <p class="mt-2 text-text/50 text-sm leading-relaxed">
+          <p class="mt-2 text-fg/50 text-sm leading-relaxed">
             <span
-              class="font-mono text-xs tracking-widest uppercase text-text/30 mr-2"
+              class="font-mono text-xs tracking-widest uppercase text-fg/30 mr-2"
               >Figure 3</span
             >
             A logarithmic plot of the same data. SmartFiles remains relatively
@@ -826,13 +826,13 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
             style="min-height: 240px; display: none"
           >
             <span
-              class="font-mono text-xs text-text/30 tracking-widest uppercase"
+              class="font-mono text-xs text-fg/30 tracking-widest uppercase"
               >p5_heatmap_file_x_insert_log.png</span
             >
           </div>
-          <p class="mt-2 text-text/50 text-sm leading-relaxed">
+          <p class="mt-2 text-fg/50 text-sm leading-relaxed">
             <span
-              class="font-mono text-xs tracking-widest uppercase text-text/30 mr-2"
+              class="font-mono text-xs tracking-widest uppercase text-fg/30 mr-2"
               >Figure 4</span
             >
             A heat map where x and y represent file size and insertion size.
@@ -841,7 +841,7 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
           </p>
         </div>
 
-        <p class="text-text/75 leading-relaxed mb-4">
+        <p class="text-fg/75 leading-relaxed mb-4">
           As the y axis grows (larger insertion sizes), all three methods take
           longer - a longer insertion means a longer <Code>write</Code> system
           call, which is expected. The notable feature is that as the x axis
@@ -857,7 +857,7 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
           >
             Take Away
           </p>
-          <p class="text-text/75 leading-relaxed">
+          <p class="text-fg/75 leading-relaxed">
             For large databases (on the order of gigabytes), interior inserts do
             not scale in SmartFiles - they stay relatively level. This workload
             traditionally blows up naive file I/O, and appears to blow up
@@ -869,11 +869,11 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
 
     <!-- Flamegraphs -->
     <section class="mb-10">
-      <h2 class="text-xl font-bold text-text mt-10 mb-4">
+      <h2 class="text-xl font-bold text-fg mt-10 mb-4">
         Where Is All the Time Going?
       </h2>
 
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         A flame graph is a useful tool for understanding which methods are
         consuming the most time within a routine. It doesn't give wall-clock
         measurements, but it breaks down the relative cost of each call.
@@ -897,13 +897,13 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
           class="w-full border border-text/10 bg-text/[0.03] rounded items-center justify-center"
           style="min-height: 200px; display: none"
         >
-          <span class="font-mono text-xs text-text/30 tracking-widest uppercase"
+          <span class="font-mono text-xs text-fg/30 tracking-widest uppercase"
             >buffered_flamegraph.png</span
           >
         </div>
-        <p class="mt-2 text-text/50 text-sm leading-relaxed">
+        <p class="mt-2 text-fg/50 text-sm leading-relaxed">
           <span
-            class="font-mono text-xs tracking-widest uppercase text-text/30 mr-2"
+            class="font-mono text-xs tracking-widest uppercase text-fg/30 mr-2"
             >Figure 5</span
           >
           Flame graph for the buffered file I/O implementation - roughly equal
@@ -930,13 +930,13 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
           class="w-full border border-text/10 bg-text/[0.03] rounded items-center justify-center"
           style="min-height: 200px; display: none"
         >
-          <span class="font-mono text-xs text-text/30 tracking-widest uppercase"
+          <span class="font-mono text-xs text-fg/30 tracking-widest uppercase"
             >unbuffered_flamegraph.png</span
           >
         </div>
-        <p class="mt-2 text-text/50 text-sm leading-relaxed">
+        <p class="mt-2 text-fg/50 text-sm leading-relaxed">
           <span
-            class="font-mono text-xs tracking-widest uppercase text-text/30 mr-2"
+            class="font-mono text-xs tracking-widest uppercase text-fg/30 mr-2"
             >Figure 6</span
           >
           Flame graph for the unbuffered file I/O implementation - the same
@@ -962,13 +962,13 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
           class="w-full border border-text/10 bg-text/[0.03] rounded items-center justify-center"
           style="min-height: 200px; display: none"
         >
-          <span class="font-mono text-xs text-text/30 tracking-widest uppercase"
+          <span class="font-mono text-xs text-fg/30 tracking-widest uppercase"
             >smartfiles_flamegraph.png</span
           >
         </div>
-        <p class="mt-2 text-text/50 text-sm leading-relaxed">
+        <p class="mt-2 text-fg/50 text-sm leading-relaxed">
           <span
-            class="font-mono text-xs tracking-widest uppercase text-text/30 mr-2"
+            class="font-mono text-xs tracking-widest uppercase text-fg/30 mr-2"
             >Figure 7</span
           >
           Flame graph for the SmartFiles timed portion. A large portion of time
@@ -981,20 +981,20 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
         </p>
       </div>
 
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         The buffered and unbuffered flame graphs make sense: we spend a lot of
         time reading and writing because we must read the tail of the dataset,
         then write our data plus that tail back. The <Code>fsync</Code> ensures
         data is durable on disk.
       </p>
 
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         The SmartFiles flame graph has some interesting properties. Here are a
         few unintended bottlenecks I discovered and plan to fix:
       </p>
 
       <ol
-        class="space-y-4 text-text/70 leading-relaxed list-decimal list-inside marker:text-muted marker:font-mono marker:text-sm mb-4"
+        class="space-y-4 text-fg/70 leading-relaxed list-decimal list-inside marker:text-muted marker:font-mono marker:text-sm mb-4"
       >
         <li class="pl-3">
           A lot of time is spent calculating checksums in
@@ -1011,7 +1011,7 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
         </li>
       </ol>
 
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         The main takeaway from the SmartFiles flame graph is that the dominant
         system call is writing to the WAL, not flushing pages to non-volatile
         storage. SmartFiles has a bottleneck tied to a single write call, rather

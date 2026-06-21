@@ -6,10 +6,10 @@ import Code from "@/components/Code.vue";
 <template>
   <article class="max-w-2xl mx-auto px-6 py-12 font-serif">
     <header class="mb-10">
-      <h1 class="text-4xl font-bold text-text leading-tight mb-4">
+      <h1 class="text-4xl font-bold text-fg leading-tight mb-4">
         Intrusive Hash Tables in C
       </h1>
-      <p class="text-lg text-text/70 leading-relaxed">
+      <p class="text-lg text-fg/70 leading-relaxed">
         I wanted to write a blog post about implementing a lock table because I
         thought it would help me debug some of my problems - I'm currently
         tracking down some bugs in Numstore with my lock table, particularly
@@ -17,7 +17,7 @@ import Code from "@/components/Code.vue";
         walk through first. If you're curious to see how this is used in
         Numstore, take a look
         <a
-          class="text-red hover:text-red-hot underline"
+          class="text-secondary hover:text-secondary-hot underline"
           href="https://github.com/lincketheo/Numstore/blob/main/lib/core/hash_table.c"
           >here</a
         >. Anyway, I always enjoy stepping back and re-examining data structures
@@ -36,10 +36,10 @@ import Code from "@/components/Code.vue";
     </Definition>
 
     <section class="mb-8">
-      <h2 class="text-xl font-bold text-text mt-10 mb-3">
+      <h2 class="text-xl font-bold text-fg mt-10 mb-3">
         Memory Management First
       </h2>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         I need a hash table in C. As a C developer, the first thing that usually
         comes to mind is: how am I going to manage memory? Someone coming from a
         higher-level language might say just scatter <Code>malloc</Code> /
@@ -57,7 +57,7 @@ import Code from "@/components/Code.vue";
         your problem.
       </Definition>
       <blockquote
-        class="border-l-4 border-muted/30 pl-5 my-5 text-text/55 italic text-[0.95rem] leading-relaxed"
+        class="border-l-4 border-muted/30 pl-5 my-5 text-fg/55 italic text-[0.95rem] leading-relaxed"
       >
         Side note: I wonder if implementing a hash table in C using
         <Code>malloc</Code> / <Code>free</Code> is actually slower than Java.
@@ -66,23 +66,23 @@ import Code from "@/components/Code.vue";
         <Code>malloc</Code> / <Code>free</Code> with extra fluff on top. Not
         sure - just a thought.
       </blockquote>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         Anyway, when I build C APIs for internal use and want to control memory,
         I tend to operate under one assumption: why don't I let the consumer of
         this API manage their own memory? That pushes me away from signatures
         like this:
       </p>
       <pre
-        class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
-      ><code class="font-mono text-sm text-text/85 leading-relaxed">struct foo *open_foo();</code></pre>
-      <p class="text-text/75 leading-relaxed mb-4">
+        class="bg-surface border-l-4 border-secondary/40 px-5 py-4 overflow-x-auto rounded-r my-5"
+      ><code class="font-mono text-sm text-fg/85 leading-relaxed">struct foo *open_foo();</code></pre>
+      <p class="text-fg/75 leading-relaxed mb-4">
         where it's implicit that <Code>open_foo</Code> is going to
         <Code>malloc</Code> somewhere - toward signatures like this:
       </p>
       <pre
-        class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
-      ><code class="font-mono text-sm text-text/85 leading-relaxed">int init_foo(struct foo *dest);</code></pre>
-      <p class="text-text/75 leading-relaxed">
+        class="bg-surface border-l-4 border-secondary/40 px-5 py-4 overflow-x-auto rounded-r my-5"
+      ><code class="font-mono text-sm text-fg/85 leading-relaxed">int init_foo(struct foo *dest);</code></pre>
+      <p class="text-fg/75 leading-relaxed">
         Now the caller can decide whether <Code>foo</Code> lives on the heap or
         the stack. The downside is that it exposes the internals of
         <Code>foo</Code>. There are ugly workarounds. You can bury the
@@ -92,20 +92,20 @@ import Code from "@/components/Code.vue";
     </section>
 
     <section class="mb-8">
-      <h2 class="text-xl font-bold text-text mt-10 mb-3">
+      <h2 class="text-xl font-bold text-fg mt-10 mb-3">
         What I Want from a Hash Table
       </h2>
-      <p class="text-text/75 leading-relaxed mb-3">Three things:</p>
+      <p class="text-fg/75 leading-relaxed mb-3">Three things:</p>
       <ol
-        class="list-decimal list-outside pl-5 space-y-3 text-text/75 leading-relaxed"
+        class="list-decimal list-outside pl-5 space-y-3 text-fg/75 leading-relaxed"
       >
         <li>
-          It should be <strong class="text-text">generic</strong> - reusable
+          It should be <strong class="text-fg">generic</strong> - reusable
           across different data types without rewriting the table.
         </li>
         <li>
           It should
-          <strong class="text-text"
+          <strong class="text-fg"
             >limit <Code>malloc</Code> / <Code>free</Code></strong
           >
           - mostly for debuggability, not speed. I respect that modern
@@ -114,7 +114,7 @@ import Code from "@/components/Code.vue";
           when something goes wrong.
         </li>
         <li>
-          It should be <strong class="text-text">unbounded</strong> - able to
+          It should be <strong class="text-fg">unbounded</strong> - able to
           grow to accommodate many entries. As a general rule, be careful with
           this assumption. A lot of the time your hash table is actually
           bounded.
@@ -123,10 +123,10 @@ import Code from "@/components/Code.vue";
     </section>
 
     <section class="mb-8">
-      <h2 class="text-xl font-bold text-text mt-10 mb-3">
+      <h2 class="text-xl font-bold text-fg mt-10 mb-3">
         Hash Chaining, Briefly
       </h2>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         Before getting to intrusive structures, let's quickly cover how hash
         chaining works, because it's the mechanism we're building on.
       </p>
@@ -149,7 +149,7 @@ import Code from "@/components/Code.vue";
         table size - a hash of 20 in a table of 10 buckets wraps to bucket 0,
         potentially colliding with a hash of 10 that also wraps there.
       </Definition>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         In general, you can't assume hash indexes are unique.
       </p>
       <Definition term="O(n) vs. Θ(1)">
@@ -161,25 +161,25 @@ import Code from "@/components/Code.vue";
         matters here, and it's something that algorithms courses often gloss
         over.
       </Definition>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         Now, the standard picture of hash chaining assumes each node owns its
         payload inline:
       </p>
       <pre
-        class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
-      ><code class="font-mono text-sm text-text/85 leading-relaxed">struct data {
+        class="bg-surface border-l-4 border-secondary/40 px-5 py-4 overflow-x-auto rounded-r my-5"
+      ><code class="font-mono text-sm text-fg/85 leading-relaxed">struct data {
     struct data *next;
     int a[30];
 };</code></pre>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         The problem is that the hash table is now <em>tied</em> to
         <Code>struct data</Code>. If you want to store something else, you need
         a new hash table. You could try to make the payload generic with a
         flexible array member:
       </p>
       <pre
-        class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
-      ><code class="font-mono text-sm text-text/85 leading-relaxed">struct data {
+        class="bg-surface border-l-4 border-secondary/40 px-5 py-4 overflow-x-auto rounded-r my-5"
+      ><code class="font-mono text-sm text-fg/85 leading-relaxed">struct data {
     struct data *next;
     uint8_t content[];
 };</code></pre>
@@ -192,7 +192,7 @@ import Code from "@/components/Code.vue";
         but it forces you back into <Code>malloc</Code> territory and requires
         casting at the call site.
       </Definition>
-      <p class="text-text/75 leading-relaxed">
+      <p class="text-fg/75 leading-relaxed">
         Variable-length arrays are fiddly, and your hash table is right back to
         being full of
         <Code>malloc</Code>s. Enter intrusive data structures.
@@ -200,7 +200,7 @@ import Code from "@/components/Code.vue";
     </section>
 
     <section class="mb-8">
-      <h2 class="text-xl font-bold text-text mt-10 mb-3">
+      <h2 class="text-xl font-bold text-fg mt-10 mb-3">
         Intrusive Data Structures
       </h2>
       <Definition term="Intrusive data structure">
@@ -213,19 +213,19 @@ import Code from "@/components/Code.vue";
         are part of the objects you already have. Linux's kernel linked list
         (<Code>struct list_head</Code>) is the canonical example.
       </Definition>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         An intrusive hash table reduces itself to as few components as possible,
         then stores pointers to embedded nodes so clients can hook their own
         structs directly into the table. We start with an <Code>hnode</Code>:
       </p>
       <pre
-        class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
-      ><code class="font-mono text-sm text-text/85 leading-relaxed">struct hnode
+        class="bg-surface border-l-4 border-secondary/40 px-5 py-4 overflow-x-auto rounded-r my-5"
+      ><code class="font-mono text-sm text-fg/85 leading-relaxed">struct hnode
 {
     struct hnode *next;
     uint32_t      hcode;
 };</code></pre>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         This is our hook. To make a struct hashable, embed one directly into
         your data structure:
       </p>
@@ -241,21 +241,21 @@ import Code from "@/components/Code.vue";
         </figcaption>
       </figure>
       <pre
-        class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
-      ><code class="font-mono text-sm text-text/85 leading-relaxed">struct word_entry
+        class="bg-surface border-l-4 border-secondary/40 px-5 py-4 overflow-x-auto rounded-r my-5"
+      ><code class="font-mono text-sm text-fg/85 leading-relaxed">struct word_entry
 {
     const char  *word;
     int          count;
     struct hnode node;  /* the hook */
 };</code></pre>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         The hash table only ever touches <Code>hnode</Code> pointers. To get
         back to the containing struct from an <Code>hnode *</Code>, we use the
         <Code>container_of</Code> macro:
       </p>
       <pre
-        class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
-      ><code class="font-mono text-sm text-text/85 leading-relaxed">#define container_of(ptr, type, member) \
+        class="bg-surface border-l-4 border-secondary/40 px-5 py-4 overflow-x-auto rounded-r my-5"
+      ><code class="font-mono text-sm text-fg/85 leading-relaxed">#define container_of(ptr, type, member) \
     ((type *)((char *)(ptr) - offsetof(type, member)))</code></pre>
       <Definition term="offsetof">
         <Code>offsetof(type, member)</Code> is a standard C macro (from
@@ -269,8 +269,8 @@ import Code from "@/components/Code.vue";
     </section>
 
     <section class="mb-8">
-      <h2 class="text-xl font-bold text-text mt-10 mb-3">The Table</h2>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <h2 class="text-xl font-bold text-fg mt-10 mb-3">The Table</h2>
+      <p class="text-fg/75 leading-relaxed mb-4">
         The table itself is an array of bucket heads - each bucket is just a
         pointer to the first
         <Code>hnode</Code> in its chain. We use a flexible array member so the
@@ -278,8 +278,8 @@ import Code from "@/components/Code.vue";
         allocation:
       </p>
       <pre
-        class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
-      ><code class="font-mono text-sm text-text/85 leading-relaxed">struct htable
+        class="bg-surface border-l-4 border-secondary/40 px-5 py-4 overflow-x-auto rounded-r my-5"
+      ><code class="font-mono text-sm text-fg/85 leading-relaxed">struct htable
 {
     uint32_t      cap;
     uint32_t      size;
@@ -297,12 +297,12 @@ htable_create (uint32_t n)
     memset (t->table, 0, n * sizeof (struct hnode *));
     return t;
 }</code></pre>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         Insert prepends to the bucket's chain - O(1), no searching:
       </p>
       <pre
-        class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
-      ><code class="font-mono text-sm text-text/85 leading-relaxed">void
+        class="bg-surface border-l-4 border-secondary/40 px-5 py-4 overflow-x-auto rounded-r my-5"
+      ><code class="font-mono text-sm text-fg/85 leading-relaxed">void
 htable_insert (struct htable *t, struct hnode *node)
 {
     uint32_t idx  = node->hcode % t->cap;
@@ -310,15 +310,15 @@ htable_insert (struct htable *t, struct hnode *node)
     t->table[idx] = node;
     t->size++;
 }</code></pre>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         Lookup returns a <em>pointer to the pointer</em> that refers to the
         matching node. The double pointer is what lets us delete in O(1) - we
         already have the exact slot to rewrite, so no second traversal is
         needed:
       </p>
       <pre
-        class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
-      ><code class="font-mono text-sm text-text/85 leading-relaxed">struct hnode **
+        class="bg-surface border-l-4 border-secondary/40 px-5 py-4 overflow-x-auto rounded-r my-5"
+      ><code class="font-mono text-sm text-fg/85 leading-relaxed">struct hnode **
 htable_lookup (struct htable *t, const struct hnode *key,
                bool (*eq) (const struct hnode *, const struct hnode *))
 {
@@ -354,18 +354,18 @@ htable_delete (struct htable *t, struct hnode **from)
     </section>
 
     <section class="mb-8">
-      <h2 class="text-xl font-bold text-text mt-10 mb-3">
+      <h2 class="text-xl font-bold text-fg mt-10 mb-3">
         Putting It Together
       </h2>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         Here's the full example. The <Code>word_entry</Code> structs live on the
         stack - no <Code>malloc</Code> required for the data itself. Only the
         table needs a heap allocation, and that's a single one for the whole
         structure.
       </p>
       <pre
-        class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
-      ><code class="font-mono text-sm text-text/85 leading-relaxed">static void
+        class="bg-surface border-l-4 border-secondary/40 px-5 py-4 overflow-x-auto rounded-r my-5"
+      ><code class="font-mono text-sm text-fg/85 leading-relaxed">static void
 hnode_init (struct hnode *n, uint32_t hcode)
 {
     n->hcode = hcode;
@@ -417,7 +417,7 @@ int main (void)
 
     htable_free (t);
 }</code></pre>
-      <p class="text-text/75 leading-relaxed mt-4 mb-4">
+      <p class="text-fg/75 leading-relaxed mt-4 mb-4">
         The hash table never needs to know the size or layout of your data. It
         only sees
         <Code>hnode</Code> pointers. Your struct owns its own storage - stack,
@@ -427,7 +427,7 @@ int main (void)
     </section>
 
     <section class="mb-8">
-      <h2 class="text-xl font-bold text-text mt-10 mb-3">Pros and Cons</h2>
+      <h2 class="text-xl font-bold text-fg mt-10 mb-3">Pros and Cons</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
         <div class="border border-border rounded p-5">
           <h3
@@ -435,9 +435,9 @@ int main (void)
           >
             Pros
           </h3>
-          <ul class="space-y-3 text-text/75 text-sm leading-relaxed">
+          <ul class="space-y-3 text-fg/75 text-sm leading-relaxed">
             <li>
-              <strong class="text-text block mb-0.5"
+              <strong class="text-fg block mb-0.5"
                 >Zero allocations for the data.</strong
               >
               Entries live wherever the caller puts them - stack, static
@@ -445,7 +445,7 @@ int main (void)
               <Code>malloc</Code>.
             </li>
             <li>
-              <strong class="text-text block mb-0.5"
+              <strong class="text-fg block mb-0.5"
                 >Generic without casting problems.</strong
               >
               The table works on any struct that embeds an <Code>hnode</Code>.
@@ -453,7 +453,7 @@ int main (void)
               <Code>void *</Code> gymnastics.
             </li>
             <li>
-              <strong class="text-text block mb-0.5">Easier to debug.</strong>
+              <strong class="text-fg block mb-0.5">Easier to debug.</strong>
               Fewer allocations means fewer things that can leak, double-free,
               or corrupt the heap.
             </li>
@@ -465,21 +465,21 @@ int main (void)
           >
             Cons
           </h3>
-          <ul class="space-y-3 text-text/75 text-sm leading-relaxed">
+          <ul class="space-y-3 text-fg/75 text-sm leading-relaxed">
             <li>
-              <strong class="text-text block mb-0.5">Exposes internals.</strong>
+              <strong class="text-fg block mb-0.5">Exposes internals.</strong>
               Your struct has to know about <Code>hnode</Code>. The data and the
               container are no longer fully decoupled.
             </li>
             <li>
-              <strong class="text-text block mb-0.5"
+              <strong class="text-fg block mb-0.5"
                 >One table per <Code>hnode</Code>.</strong
               >
               A struct can only be in one intrusive hash table at a time per
               embedded node. Two tables means two <Code>hnode</Code> fields.
             </li>
             <li>
-              <strong class="text-text block mb-0.5"
+              <strong class="text-fg block mb-0.5"
                 >Lifetime is your problem.</strong
               >
               The table holds raw pointers into your data. Free an entry while

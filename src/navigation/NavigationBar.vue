@@ -29,19 +29,19 @@ function close() {
       <div class="flex items-center gap-6">
         <a
           href="https://github.com/lincketheo"
-          class="text-muted hover:text-text transition-colors"
+          class="text-muted hover:text-fg transition-colors"
         >
           <font-awesome-icon class="text-xl" :icon="['fab', 'github']" />
         </a>
         <a
           href="https://www.linkedin.com/in/theo-lincke/"
-          class="text-muted hover:text-text transition-colors"
+          class="text-muted hover:text-fg transition-colors"
         >
           <font-awesome-icon class="text-xl" :icon="['fab', 'linkedin']" />
         </a>
         <a
           href="/"
-          class="font-mono text-sm font-bold tracking-tight text-text hover:text-red transition-colors"
+          class="font-mono text-sm font-bold tracking-tight text-fg hover:text-secondary transition-colors"
         >
           theolincke.com
         </a>
@@ -55,8 +55,8 @@ function close() {
             :aria-current="currentLink === link.name ? 'page' : undefined"
             :class="
               currentLink === link.name
-                ? 'text-red font-semibold'
-                : 'text-muted hover:text-text transition-colors'
+                ? 'text-secondary font-semibold'
+                : 'text-muted hover:text-fg transition-colors'
             "
             class="text-sm font-mono tracking-wide"
           >
@@ -68,7 +68,7 @@ function close() {
       <!-- Mobile hamburger button -->
 
       <button
-        class="sm:hidden text-text hover:text-red transition-colors p-1"
+        class="sm:hidden text-fg hover:text-secondary transition-colors p-1"
         :aria-expanded="open"
         aria-label="Toggle navigation"
         @click="toggle"
@@ -92,8 +92,8 @@ function close() {
             :aria-current="currentLink === link.name ? 'page' : undefined"
             :class="
               currentLink === link.name
-                ? 'text-red font-semibold'
-                : 'text-muted hover:text-text transition-colors'
+                ? 'text-secondary font-semibold'
+                : 'text-muted hover:text-fg transition-colors'
             "
             class="text-sm font-mono tracking-wide"
             @click="close"

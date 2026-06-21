@@ -7,7 +7,7 @@ import GithubBanner from "@/components/GithubBanner.vue";
 <template>
   <article class="max-w-2xl mx-auto px-6 py-12 font-serif">
     <header class="mb-10">
-      <h1 class="text-4xl font-bold text-text leading-tight mb-4">
+      <h1 class="text-4xl font-bold text-fg leading-tight mb-4">
         Announcing Smart Files
       </h1>
       <GithubBanner
@@ -19,14 +19,14 @@ import GithubBanner from "@/components/GithubBanner.vue";
         version="v0.0.3"
       />
 
-      <p class="text-lg text-text/70 leading-relaxed">
+      <p class="text-lg text-fg/70 leading-relaxed">
         Files have had the same definition for 50 years: an array of bytes that
         grows, shrinks, and seeks. Smart Files extends that model with
         transactions, O(log n) inner mutations, strided access, and multiple
         named streams per file.
       </p>
       <br />
-      <p class="text-lg text-text/70 leading-relaxed indent-10">
+      <p class="text-lg text-fg/70 leading-relaxed indent-10">
         Text editors don't write directly to disk on every keystroke. They
         maintain a rope or gap buffer in memory, then flush periodically -
         because inserting a character into the middle of a flat file means
@@ -40,10 +40,10 @@ import GithubBanner from "@/components/GithubBanner.vue";
         The shortcomings of standard files
       </p>
       <ol
-        class="space-y-3 text-lg text-text/70 leading-relaxed list-decimal list-inside marker:text-muted marker:font-mono marker:text-sm"
+        class="space-y-3 text-lg text-fg/70 leading-relaxed list-decimal list-inside marker:text-muted marker:font-mono marker:text-sm"
       >
         <li class="pl-4">
-          <span class="text-text font-semibold">Not atomic.</span>
+          <span class="text-fg font-semibold">Not atomic.</span>
           <code>fwrite</code> does not guarantee bytes hit disk. The kernel
           flushes dirty pages on its own schedule, so a crash mid-write leaves
           your file in a state that never legally existed - with no path to
@@ -51,7 +51,7 @@ import GithubBanner from "@/components/GithubBanner.vue";
           it doesn't help if the process dies halfway through that loop.
         </li>
         <li class="pl-4">
-          <span class="text-text font-semibold">No inner mutations.</span>
+          <span class="text-fg font-semibold">No inner mutations.</span>
           There is no <code>finsert</code>. Splicing bytes into the middle of a
           file means reading the tail into a buffer, writing your new bytes,
           then writing the tail back. That's O(n) in the size of the tail, and
@@ -67,10 +67,10 @@ import GithubBanner from "@/components/GithubBanner.vue";
         Smart Files fixes both, and adds two more things:
       </p>
       <ol
-        class="space-y-3 text-lg text-text/70 leading-relaxed list-decimal list-inside marker:text-muted marker:font-mono marker:text-sm"
+        class="space-y-3 text-lg text-fg/70 leading-relaxed list-decimal list-inside marker:text-muted marker:font-mono marker:text-sm"
       >
         <li class="pl-4">
-          <span class="text-text font-semibold">Transactions.</span>
+          <span class="text-fg font-semibold">Transactions.</span>
           Every mutation goes through a write-ahead log. Each write either
           commits fully or rolls back - a crash mid-write leaves nothing
           corrupt. The recovery algorithm is
@@ -80,20 +80,20 @@ import GithubBanner from "@/components/GithubBanner.vue";
           it is itself recovering.
         </li>
         <li class="pl-4">
-          <span class="text-text font-semibold">Inner mutations.</span>
+          <span class="text-fg font-semibold">Inner mutations.</span>
           Insert or remove bytes anywhere in the stream in O(log n) time. The
           index is a self-balancing rope - same concept as a B+Tree, but keyed
           on byte count rather than index values. Insert and remove are native
           operations, not workarounds.
         </li>
         <li class="pl-4">
-          <span class="text-text font-semibold">Stride access.</span>
+          <span class="text-fg font-semibold">Stride access.</span>
           Read, write, and remove at regular intervals without manual offset
           arithmetic. If you're storing float arrays and want every 2nd element,
           one call handles it. No read-everything, discard-most-of-it loop.
         </li>
         <li class="pl-4">
-          <span class="text-text font-semibold">Multiple named streams.</span>
+          <span class="text-fg font-semibold">Multiple named streams.</span>
           A single Smart File can hold as many named byte streams as you want.
           Each stream is independent. Default behavior looks exactly like a
           plain file - the named streams are a power-user feature.
@@ -106,10 +106,10 @@ import GithubBanner from "@/components/GithubBanner.vue";
         Where this matters
       </p>
       <ol
-        class="space-y-3 text-lg text-text/70 leading-relaxed list-decimal list-inside marker:text-muted marker:font-mono marker:text-sm"
+        class="space-y-3 text-lg text-fg/70 leading-relaxed list-decimal list-inside marker:text-muted marker:font-mono marker:text-sm"
       >
         <li class="pl-4">
-          <span class="text-text font-semibold"
+          <span class="text-fg font-semibold"
             >Genomics and bioinformatics.</span
           >
           DNA sequence data is a large byte stream that gets edited at arbitrary
@@ -118,7 +118,7 @@ import GithubBanner from "@/components/GithubBanner.vue";
           pipeline can silently corrupt an index with no recovery path.
         </li>
         <li class="pl-4">
-          <span class="text-text font-semibold"
+          <span class="text-fg font-semibold"
             >Seismic and geophysical data.</span
           >
           Seismic surveys produce interleaved arrays of sensor readings sampled
@@ -127,13 +127,13 @@ import GithubBanner from "@/components/GithubBanner.vue";
           file.
         </li>
         <li class="pl-4">
-          <span class="text-text font-semibold">Audio and video editing.</span>
+          <span class="text-fg font-semibold">Audio and video editing.</span>
           Non-linear editors maintain edit decision lists and proxy formats
           precisely to avoid rewriting raw media on every cut. That
           infrastructure exists because files don't support inner mutations.
         </li>
         <li class="pl-4">
-          <span class="text-text font-semibold"
+          <span class="text-fg font-semibold"
             >Collaborative document editing.</span
           >
           Google Docs and VS Code implement operational transforms or CRDTs in
@@ -143,28 +143,28 @@ import GithubBanner from "@/components/GithubBanner.vue";
           inner mutation.
         </li>
         <li class="pl-4">
-          <span class="text-text font-semibold">Scientific computing.</span>
+          <span class="text-fg font-semibold">Scientific computing.</span>
           Climate models and fluid simulations produce multi-dimensional arrays
           read in strides - every nth timestep, every other spatial slice. HDF5
           and NetCDF are the current standard but neither is transactional. A
           crashed simulation write can corrupt the output file with no recovery.
         </li>
         <li class="pl-4">
-          <span class="text-text font-semibold">Financial market data.</span>
+          <span class="text-fg font-semibold">Financial market data.</span>
           High-frequency trading systems record tick data as a continuous
           timestamped byte stream, then query it in strides. The industry uses
           custom binary formats and kdb+/q, both of which require significant
           supporting infrastructure.
         </li>
         <li class="pl-4">
-          <span class="text-text font-semibold">AI training pipelines.</span>
+          <span class="text-fg font-semibold">AI training pipelines.</span>
           Feature stores, embedding tables, and weight checkpoints are strided,
           byte-shaped, and large. PyTorch checkpoint serialization, Parquet,
           Redis, and vector databases each solve one piece of this. None of it
           is atomic at the file level.
         </li>
         <li class="pl-4">
-          <span class="text-text font-semibold">Medical imaging.</span>
+          <span class="text-fg font-semibold">Medical imaging.</span>
           DICOM stores multi-dimensional image arrays with no transactional
           semantics. A failed write during acquisition or transfer can corrupt a
           scan.
@@ -174,11 +174,11 @@ import GithubBanner from "@/components/GithubBanner.vue";
 
     <!-- For the lazy ---------------------------------------------------------->
     <section class="mb-10">
-      <h2 class="text-xl font-bold text-text mt-10 mb-1">Example</h2>
+      <h2 class="text-xl font-bold text-fg mt-10 mb-1">Example</h2>
       <p class="text-muted font-mono text-xs tracking-widest uppercase mb-5">
         A quick preview of what Smart Files do
       </p>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         For more samples, see the
         <a
           class="underline"
@@ -186,10 +186,10 @@ import GithubBanner from "@/components/GithubBanner.vue";
           >github repository</a
         >.
       </p>
-      <p class="text-text/75 leading-relaxed mb-4">Insert in the middle:</p>
+      <p class="text-fg/75 leading-relaxed mb-4">Insert in the middle:</p>
       <pre
-        class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
-      ><code class="font-mono text-sm text-text/85 leading-relaxed">// Open a smart file by pointing it to the disk ("myfile")
+        class="bg-surface border-l-4 border-secondary/40 px-5 py-4 overflow-x-auto rounded-r my-5"
+      ><code class="font-mono text-sm text-fg/85 leading-relaxed">// Open a smart file by pointing it to the disk ("myfile")
 smfile_t *smf = smfile_open ("myfile");
 
 // Insert "The fox jumps" starting at offset 0, with 13 bytes
@@ -205,25 +205,25 @@ buf[n] = '\0';
 printf ("%s\n", buf);  // "The quick fox jumps"
 
 smfile_close (smf);</code></pre>
-      <p class="text-text/75 leading-relaxed mb-4">Remove from the middle:</p>
+      <p class="text-fg/75 leading-relaxed mb-4">Remove from the middle:</p>
       <pre
-        class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
-      ><code class="font-mono text-sm text-text/85 leading-relaxed">// file contains "The quick fox jumps"
+        class="bg-surface border-l-4 border-secondary/40 px-5 py-4 overflow-x-auto rounded-r my-5"
+      ><code class="font-mono text-sm text-fg/85 leading-relaxed">// file contains "The quick fox jumps"
 smfile_remove (smf, NULL, 4, 6);  // cut "quick " at offset 4
 
 sb_size n = smfile_read (smf, buf, 0, SMF_END);
 buf[n] = '\0';
 printf ("%s\n", buf);  // The fox jumps</code></pre>
-      <p class="text-text/75 leading-relaxed mb-4">Write in the middle:</p>
+      <p class="text-fg/75 leading-relaxed mb-4">Write in the middle:</p>
       <pre
-        class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
-      ><code class="font-mono text-sm text-text/85 leading-relaxed">// file contains "The fox jumps"
+        class="bg-surface border-l-4 border-secondary/40 px-5 py-4 overflow-x-auto rounded-r my-5"
+      ><code class="font-mono text-sm text-fg/85 leading-relaxed">// file contains "The fox jumps"
 smfile_write (smf, "cat", 4, 3);  // overwrite "fox" with "cat"
 
 sb_size n = smfile_read (smf, buf, 0, SMF_END);
 buf[n] = '\0';
 printf ("%s\n", buf);  // The cat jumps</code></pre>
-      <p class="text-text/75 leading-relaxed">
+      <p class="text-fg/75 leading-relaxed">
         None of those corrupt the file if you crash mid-operation. Wrap multiple
         calls in <Code>smfile_begin</Code> / <Code>smfile_commit</Code> if you
         need them to land together.
@@ -232,14 +232,14 @@ printf ("%s\n", buf);  // The cat jumps</code></pre>
 
     <!-- Four extensions ------------------------------------------------------>
     <section class="mb-10">
-      <h2 class="text-xl font-bold text-text mt-10 mb-1">
+      <h2 class="text-xl font-bold text-fg mt-10 mb-1">
         Four extensions on traditional files
       </h2>
       <p class="text-muted font-mono text-xs tracking-widest uppercase mb-5">
         What's actually new
       </p>
       <ol
-        class="list-decimal list-outside pl-5 space-y-2 text-text/75 leading-relaxed mb-4"
+        class="list-decimal list-outside pl-5 space-y-2 text-fg/75 leading-relaxed mb-4"
       >
         <li>
           Inner mutations are first-class operations. The index is a
@@ -269,15 +269,15 @@ printf ("%s\n", buf);  // The cat jumps</code></pre>
 
     <!-- The problem with ISO C files ----------------------------------------->
     <section class="mb-10">
-      <h2 class="text-xl font-bold text-text mt-10 mb-1">
+      <h2 class="text-xl font-bold text-fg mt-10 mb-1">
         The problem with ISO C files
       </h2>
       <p class="text-muted font-mono text-xs tracking-widest uppercase mb-5">
         Why this needed to exist
       </p>
 
-      <h3 class="text-base font-bold text-text mb-2">Inner mutations</h3>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <h3 class="text-base font-bold text-fg mb-2">Inner mutations</h3>
+      <p class="text-fg/75 leading-relaxed mb-4">
         There's no <Code>finsert</Code> in the standard library. To splice data
         into the middle of a file you read the tail into a buffer, write your
         new bytes, then write the tail back. That's the happy path. If the
@@ -287,16 +287,16 @@ printf ("%s\n", buf);  // The cat jumps</code></pre>
         a gigabyte of data.
       </p>
       <pre
-        class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
-      ><code class="font-mono text-sm text-text/85 leading-relaxed">tailsize = file.size - offset;
+        class="bg-surface border-l-4 border-secondary/40 px-5 py-4 overflow-x-auto rounded-r my-5"
+      ><code class="font-mono text-sm text-fg/85 leading-relaxed">tailsize = file.size - offset;
 tail     = malloc (tailsize);
 fseek  (file, offset);
 fread  (tail, 1, tailsize, file);
 fwrite (newdata, 1, newlength, file);
 fwrite (tail, 1, tailsize, file);  /* crash here = corrupt file */</code></pre>
 
-      <h3 class="text-base font-bold text-text mb-2">Atomicity</h3>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <h3 class="text-base font-bold text-fg mb-2">Atomicity</h3>
+      <p class="text-fg/75 leading-relaxed mb-4">
         ISO C files are a thin wrapper over <Code>read(2)</Code> and
         <Code>write(2)</Code>. The kernel makes no atomicity promises. A write
         can be partially applied and a crash mid-write leaves you with bytes in
@@ -315,17 +315,17 @@ fwrite (tail, 1, tailsize, file);  /* crash here = corrupt file */</code></pre>
 
     <!-- How Smart Files solves this ------------------------------------------>
     <section class="mb-10">
-      <h2 class="text-xl font-bold text-text mt-10 mb-1">
+      <h2 class="text-xl font-bold text-fg mt-10 mb-1">
         How Smart Files solves this
       </h2>
       <p class="text-muted font-mono text-xs tracking-widest uppercase mb-5">
         Under the hood
       </p>
 
-      <h3 class="text-base font-bold text-text mb-2">
+      <h3 class="text-base font-bold text-fg mb-2">
         A rope-backed storage engine
       </h3>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         Smart Files uses a rope algorithm optimized for disk writes to bring
         insert and remove from <Code>O(n)</Code> to <Code>O(log n)</Code>. The
         rope is tree-structured on disk so cost scales with tree depth, not file
@@ -333,8 +333,8 @@ fwrite (tail, 1, tailsize, file);  /* crash here = corrupt file */</code></pre>
         - but uses byte count as the key instead of an index value.
       </p>
       <pre
-        class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
-      ><code class="font-mono text-sm text-text/85 leading-relaxed">smfile_insert (smf, newdata, offset, length);</code></pre>
+        class="bg-surface border-l-4 border-secondary/40 px-5 py-4 overflow-x-auto rounded-r my-5"
+      ><code class="font-mono text-sm text-fg/85 leading-relaxed">smfile_insert (smf, newdata, offset, length);</code></pre>
       <Definition term="Rope">
         A tree-based data structure for storing a sequence of bytes. Instead of
         one contiguous buffer, a rope splits the sequence across tree nodes.
@@ -342,10 +342,10 @@ fwrite (tail, 1, tailsize, file);  /* crash here = corrupt file */</code></pre>
         is why they're O(log n) instead of O(n).
       </Definition>
 
-      <h3 class="text-base font-bold text-text mb-2">
+      <h3 class="text-base font-bold text-fg mb-2">
         Full transaction support
       </h3>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         Every individual operation is already atomic. Wrap a sequence in
         <Code>smfile_begin</Code> / <Code>smfile_commit</Code> when you need
         multiple operations to land together or not at all.
@@ -353,22 +353,22 @@ fwrite (tail, 1, tailsize, file);  /* crash here = corrupt file */</code></pre>
         <Code>begin</Code>.
       </p>
       <pre
-        class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
-      ><code class="font-mono text-sm text-text/85 leading-relaxed">smfile_begin (smf);
+        class="bg-surface border-l-4 border-secondary/40 px-5 py-4 overflow-x-auto rounded-r my-5"
+      ><code class="font-mono text-sm text-fg/85 leading-relaxed">smfile_begin (smf);
 smfile_insert (smf, header, 0,  sizeof (header));
 smfile_insert (smf, body,   8,  sizeof (body));
 smfile_insert (smf, footer, 72, sizeof (footer));
 smfile_commit (smf);  /* all three land, or none of them do */</code></pre>
 
-      <h3 class="text-base font-bold text-text mb-2">Strided operations</h3>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <h3 class="text-base font-bold text-fg mb-2">Strided operations</h3>
+      <p class="text-fg/75 leading-relaxed mb-4">
         Read, write, and remove all accept a <Code>stride</Code> parameter.
         Stride 1 is contiguous; stride <Code>n</Code> touches every nth element.
         No read-everything, discard-most-of-it loop.
       </p>
       <pre
-        class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
-      ><code class="font-mono text-sm text-text/85 leading-relaxed">/* stride=2: read elements 0, 2, 4, 6, ... */
+        class="bg-surface border-l-4 border-secondary/40 px-5 py-4 overflow-x-auto rounded-r my-5"
+      ><code class="font-mono text-sm text-fg/85 leading-relaxed">/* stride=2: read elements 0, 2, 4, 6, ... */
 smfile_pread (smf, "floats", evens, sizeof (float), 0, 2, 8);
 
 /* stride=2: overwrite elements 1, 3, 5, 7, ... */
@@ -383,18 +383,18 @@ smfile_premove (smf, "floats", removed, sizeof (float), 0, 2, 8);</code></pre>
         of an array of packed structs without pulling everything into memory.
       </Definition>
 
-      <h3 class="text-base font-bold text-text mb-2">
+      <h3 class="text-base font-bold text-fg mb-2">
         Multiple variables per file
       </h3>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         A single Smart File can hold as many named variables as you want.
         Default behaviour looks exactly like a plain file. The
         <Code>p</Code>-prefixed functions (<Code>smfile_pinsert</Code>,
         <Code>smfile_pread</Code>, etc.) take a name argument.
       </p>
       <pre
-        class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
-      ><code class="font-mono text-sm text-text/85 leading-relaxed">smfile_pinsert (smf, "temperatures", temps,    0, sizeof (temps));
+        class="bg-surface border-l-4 border-secondary/40 px-5 py-4 overflow-x-auto rounded-r my-5"
+      ><code class="font-mono text-sm text-fg/85 leading-relaxed">smfile_pinsert (smf, "temperatures", temps,    0, sizeof (temps));
 smfile_pinsert (smf, "humidity",     humidity, 0, sizeof (humidity));
 /* two independent byte sequences, one file */</code></pre>
     </section>

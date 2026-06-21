@@ -24,7 +24,7 @@ defineProps<Props>();
       />
       <div class="min-w-0">
         <p class="m-0 font-mono text-xs text-muted truncate">{{ owner }} /</p>
-        <p class="m-0 font-mono text-sm font-bold text-text truncate">
+        <p class="m-0 font-mono text-sm font-bold text-fg truncate">
           {{ name }}
         </p>
       </div>
@@ -36,7 +36,7 @@ defineProps<Props>();
         >
           language
         </p>
-        <p class="m-0 font-mono text-xs text-text">{{ language }}</p>
+        <p class="m-0 font-mono text-xs text-fg">{{ language }}</p>
       </div>
       <div class="w-px h-8 bg-border hidden sm:block" />
       <div class="text-right">
@@ -45,7 +45,7 @@ defineProps<Props>();
         >
           license
         </p>
-        <p class="m-0 font-mono text-xs text-text">{{ license }}</p>
+        <p class="m-0 font-mono text-xs text-fg">{{ license }}</p>
       </div>
       <div class="w-px h-8 bg-border hidden sm:block" />
       <div class="text-right">
@@ -54,7 +54,7 @@ defineProps<Props>();
         >
           version
         </p>
-        <p class="m-0 font-mono text-xs text-text">{{ version }}</p>
+        <p class="m-0 font-mono text-xs text-fg">{{ version }}</p>
       </div>
     </div>
   </a>

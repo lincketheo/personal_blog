@@ -91,12 +91,12 @@ function formatDate(date: Date | string) {
 <template>
   <main class="max-w-2xl mx-auto px-6 py-12">
     <header class="mb-12 border-b border-border pb-8">
-      <h1 class="text-4xl font-bold text-text font-serif mb-3">Programs</h1>
-      <p class="text-text/60 text-base leading-relaxed">
+      <h1 class="text-4xl font-bold text-fg font-serif mb-3">Programs</h1>
+      <p class="text-fg/60 text-base leading-relaxed">
         Open source software I've built. Source is on
         <a
           href="https://github.com/lincketheo"
-          class="text-red hover:text-red-hot underline"
+          class="text-secondary hover:text-secondary-hot underline"
           >GitHub</a
         >. Report issues or follow development there.
       </p>
@@ -111,7 +111,7 @@ function formatDate(date: Date | string) {
         <!-- Top: name, version, source link -->
         <div class="flex items-start justify-between gap-4 px-6 pt-6 pb-4">
           <div>
-            <h2 class="text-xl font-bold text-text font-serif">
+            <h2 class="text-xl font-bold text-fg font-serif">
               {{ program.name }}
             </h2>
             <span class="text-muted font-mono text-xs tracking-wide"
@@ -122,7 +122,7 @@ function formatDate(date: Date | string) {
             :href="program.repo"
             target="_blank"
             rel="noopener noreferrer"
-            class="flex items-center gap-2 text-muted hover:text-text transition-colors text-sm font-mono shrink-0 pt-1"
+            class="flex items-center gap-2 text-muted hover:text-fg transition-colors text-sm font-mono shrink-0 pt-1"
           >
             <font-awesome-icon :icon="['fab', 'github']" />
             <span>Source</span>
@@ -130,7 +130,7 @@ function formatDate(date: Date | string) {
         </div>
 
         <!-- Description -->
-        <p class="text-text/70 text-sm leading-relaxed font-serif px-6 pb-5">
+        <p class="text-fg/70 text-sm leading-relaxed font-serif px-6 pb-5">
           {{ program.description }}
         </p>
 
@@ -146,14 +146,14 @@ function formatDate(date: Date | string) {
           </p>
           <a
             :href="getPost(program.postRoute)!.route"
-            class="text-text font-serif font-bold hover:text-red-hot transition-colors block leading-snug mb-1"
+            class="text-fg font-serif font-bold hover:text-secondary-hot transition-colors block leading-snug mb-1"
           >
             {{ getPost(program.postRoute)!.title }}
           </a>
           <p class="text-xs font-mono text-muted mb-2">
             {{ formatDate(getPost(program.postRoute)!.date) }}
           </p>
-          <p class="text-sm text-text/60 leading-relaxed font-serif">
+          <p class="text-sm text-fg/60 leading-relaxed font-serif">
             {{ getPost(program.postRoute)!.description }}
           </p>
         </div>
@@ -172,7 +172,7 @@ function formatDate(date: Date | string) {
               :href="release.url"
               target="_blank"
               rel="noopener noreferrer"
-              class="flex items-center gap-2 px-4 py-2 border border-border rounded text-sm font-mono text-text/75 hover:border-red/50 hover:text-text transition-colors"
+              class="flex items-center gap-2 px-4 py-2 border border-border rounded text-sm font-mono text-fg/75 hover:border-secondary/50 hover:text-fg transition-colors"
             >
               <font-awesome-icon
                 :icon="platformIcon[release.platform]"
@@ -189,7 +189,7 @@ function formatDate(date: Date | string) {
             :href="`${program.repo}/releases`"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-xs font-mono text-muted hover:text-red transition-colors"
+            class="text-xs font-mono text-muted hover:text-secondary transition-colors"
           >
             All releases and changelogs →
           </a>

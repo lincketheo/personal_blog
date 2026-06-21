@@ -6,10 +6,10 @@ import Code from "@/components/Code.vue";
 <template>
   <article class="max-w-2xl mx-auto px-6 py-12 font-serif">
     <header class="mb-10">
-      <h1 class="text-4xl font-bold text-text leading-tight mb-4">
+      <h1 class="text-4xl font-bold text-fg leading-tight mb-4">
         Building a Crude UNDO Database in Java
       </h1>
-      <p class="text-lg text-text/70 leading-relaxed">
+      <p class="text-lg text-fg/70 leading-relaxed">
         I've been working on a new database for contiguous bytes, and I wanted
         to do some basic prototyping in Java for a front end I'm building. I
         built a really crude UNDO based database and wanted to share the basic
@@ -19,17 +19,17 @@ import Code from "@/components/Code.vue";
     </header>
 
     <section class="mb-8">
-      <h2 class="text-xl font-bold text-text mt-10 mb-3">The Data Model</h2>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <h2 class="text-xl font-bold text-fg mt-10 mb-3">The Data Model</h2>
+      <p class="text-fg/75 leading-relaxed mb-4">
         Our data is just a hash map of files inside of a folder:
       </p>
       <pre
-        class="bg-surface border-l-4 border-red/40 px-5 py-4 overflow-x-auto rounded-r my-5"
-      ><code class="font-mono text-sm text-text/85 leading-relaxed">Database\
+        class="bg-surface border-l-4 border-secondary/40 px-5 py-4 overflow-x-auto rounded-r my-5"
+      ><code class="font-mono text-sm text-fg/85 leading-relaxed">Database\
     File1
     File2
     File3</code></pre>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         These files can contain any information in them. It's literally just a
         key value system for bytes with transactional semantics. The key is the
         file name and the value is the bytes in that file.
@@ -44,10 +44,10 @@ import Code from "@/components/Code.vue";
     </section>
 
     <section class="mb-8">
-      <h2 class="text-xl font-bold text-text mt-10 mb-3">
+      <h2 class="text-xl font-bold text-fg mt-10 mb-3">
         Handling Concurrency: Just Lock the Whole Thing
       </h2>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         Let's eliminate concurrency problems by just locking the database for
         every transaction. I could lock every file individually and do two phase
         locking, but that's hard.
@@ -66,10 +66,10 @@ import Code from "@/components/Code.vue";
     </section>
 
     <section class="mb-8">
-      <h2 class="text-xl font-bold text-text mt-10 mb-3">
+      <h2 class="text-xl font-bold text-fg mt-10 mb-3">
         The DO UNDO REDO Protocol
       </h2>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         The core idea behind most transactional systems is the
         <em>DO UNDO REDO</em> protocol. Before you modify anything, you save
         enough information to reverse the change (UNDO). After you commit, you
@@ -98,14 +98,14 @@ import Code from "@/components/Code.vue";
     </section>
 
     <section class="mb-8">
-      <h2 class="text-xl font-bold text-text mt-10 mb-3">
+      <h2 class="text-xl font-bold text-fg mt-10 mb-3">
         How a Transaction Works
       </h2>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         A transaction modifies files by doing the following:
       </p>
       <ol
-        class="list-decimal list-outside pl-5 space-y-2 text-text/75 leading-relaxed mb-4"
+        class="list-decimal list-outside pl-5 space-y-2 text-fg/75 leading-relaxed mb-4"
       >
         <li>
           Make a backup file called <Code>File1.undo</Code> if there isn't
@@ -125,9 +125,9 @@ import Code from "@/components/Code.vue";
     </section>
 
     <section class="mb-8">
-      <h2 class="text-xl font-bold text-text mt-10 mb-3">Commit</h2>
+      <h2 class="text-xl font-bold text-fg mt-10 mb-3">Commit</h2>
       <ol
-        class="list-decimal list-outside pl-5 space-y-2 text-text/75 leading-relaxed mb-4"
+        class="list-decimal list-outside pl-5 space-y-2 text-fg/75 leading-relaxed mb-4"
       >
         <li>
           When you're done, write a single <Code>commit</Code> file that says
@@ -148,9 +148,9 @@ import Code from "@/components/Code.vue";
     </section>
 
     <section class="mb-8">
-      <h2 class="text-xl font-bold text-text mt-10 mb-3">Rollback</h2>
+      <h2 class="text-xl font-bold text-fg mt-10 mb-3">Rollback</h2>
       <ol
-        class="list-decimal list-outside pl-5 space-y-2 text-text/75 leading-relaxed"
+        class="list-decimal list-outside pl-5 space-y-2 text-fg/75 leading-relaxed"
       >
         <li>
           Swap all the <Code>.undo</Code> files for their base counterparts
@@ -161,8 +161,8 @@ import Code from "@/components/Code.vue";
     </section>
 
     <section class="mb-8">
-      <h2 class="text-xl font-bold text-text mt-10 mb-3">Why This Is Atomic</h2>
-      <p class="text-text/75 leading-relaxed">
+      <h2 class="text-xl font-bold text-fg mt-10 mb-3">Why This Is Atomic</h2>
+      <p class="text-fg/75 leading-relaxed">
         This is atomic because we keep track of all the original files (UNDO
         files) and we either finish writing the commit file or we don't. If we
         don't write that commit record, we must undo our changes by swapping the
@@ -172,10 +172,10 @@ import Code from "@/components/Code.vue";
     </section>
 
     <section class="mb-8">
-      <h2 class="text-xl font-bold text-text mt-10 mb-3">Recovery</h2>
-      <p class="text-text/75 leading-relaxed mb-4">Recovery is simple:</p>
+      <h2 class="text-xl font-bold text-fg mt-10 mb-3">Recovery</h2>
+      <p class="text-fg/75 leading-relaxed mb-4">Recovery is simple:</p>
       <ol
-        class="list-decimal list-outside pl-5 space-y-2 text-text/75 leading-relaxed mb-4"
+        class="list-decimal list-outside pl-5 space-y-2 text-fg/75 leading-relaxed mb-4"
       >
         <li>If there's a commit record, just cleanup - we're done</li>
         <li>
@@ -198,13 +198,13 @@ import Code from "@/components/Code.vue";
     </section>
 
     <section class="mb-8">
-      <h2 class="text-xl font-bold text-text mt-10 mb-3">Log Compaction</h2>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <h2 class="text-xl font-bold text-fg mt-10 mb-3">Log Compaction</h2>
+      <p class="text-fg/75 leading-relaxed mb-4">
         It's pretty simple. More generally, it's a hash map with an undo entry
         for every update. You save the change before you do it. Note, you only
         need one because updates are compacted.
       </p>
-      <p class="text-text/75 leading-relaxed mb-4">
+      <p class="text-fg/75 leading-relaxed mb-4">
         I originally (naively) made a log of all the files I changed. If I
         modified
         <Code>File1</Code> twice, I'd have <Code>File1.undo.1</Code> and
@@ -222,7 +222,7 @@ import Code from "@/components/Code.vue";
         <Code>File1.undo</Code> always holds the pre-transaction image, and
         <Code>File1</Code> is the current working state.
       </Definition>
-      <p class="text-text/75 leading-relaxed mt-4">
+      <p class="text-fg/75 leading-relaxed mt-4">
         Also, we don't really need sequentiality because all logs are disjoint -
         each file has its own undo record and they don't depend on each other.
       </p>
