@@ -18,6 +18,31 @@ interface Program {
 
 const programs: Program[] = [
   {
+    name: "Numstore",
+    description:
+      'A database for arrays',
+    version: "1.1.3",
+    repo: "https://github.com/NumstoreDB/Numstore",
+    postRoute: "/blog/13_inner_inserts",
+    releases: [
+      {
+        platform: "linux",
+        label: "Linux x86_64",
+        url: "https://github.com/NumstoreDB/Numstore/releases/download/v1.1.3/numstore-1.1.3-Linux.tar.gz",
+      },
+      {
+        platform: "macos",
+        label: "macOS arm64",
+        url: "https://github.com/NumstoreDB/Numstore/releases/download/v1.1.3/numstore-1.1.3-Darwin.tar.gz",
+      },
+      {
+        platform: "windows",
+        label: "Windows x64",
+        url: "https://github.com/NumstoreDB/Numstore/releases/download/v1.1.3/numstore-1.1.3-win64.zip",
+      },
+    ],
+  },
+  {
     name: "Smart Files",
     description:
       'A new "Smart" file with first class transaction support and inner mutations',

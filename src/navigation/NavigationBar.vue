@@ -28,6 +28,12 @@ function close() {
       <!-- Left: social icons + site name -->
       <div class="flex items-center gap-6">
         <a
+          href="https://x.com/lincke_theo"
+          class="text-muted hover:text-fg transition-colors"
+        >
+          <font-awesome-icon class="text-xl" :icon="['fab', 'github']" />
+        </a>
+        <a
           href="https://github.com/lincketheo"
           class="text-muted hover:text-fg transition-colors"
         >
