@@ -31,7 +31,7 @@ function close() {
           href="https://x.com/lincke_theo"
           class="text-muted hover:text-fg transition-colors"
         >
-          <font-awesome-icon class="text-xl" :icon="['fab', 'github']" />
+          <font-awesome-icon class="text-xl" :icon="['fab', 'x-twitter']" />
         </a>
         <a
           href="https://github.com/lincketheo"
