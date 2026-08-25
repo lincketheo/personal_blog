@@ -209,9 +209,7 @@ import Definition from "@/components/Definition.vue";
 
       <!-- Problem Space -->
       <section>
-        <h3 class="text-base font-bold text-fg mt-8 mb-2">
-          The Problem Space
-        </h3>
+        <h3 class="text-base font-bold text-fg mt-8 mb-2">The Problem Space</h3>
         <p class="text-fg/75 leading-relaxed mb-4">
           For the sake of measuring performance, an inner insert has the
           following parameters:
@@ -220,12 +218,12 @@ import Definition from "@/components/Definition.vue";
           class="space-y-1 text-fg/70 font-mono text-sm leading-relaxed list-none mb-4"
         >
           <li>
-            <span class="text-fg">fsize</span> - Original File Size. The size
-            of the file before we make an insert.
+            <span class="text-fg">fsize</span> - Original File Size. The size of
+            the file before we make an insert.
           </li>
           <li>
-            <span class="text-fg">isize</span> - Desired Data Insert Length.
-            The size of the data we want to insert into the file.
+            <span class="text-fg">isize</span> - Desired Data Insert Length. The
+            size of the data we want to insert into the file.
           </li>
           <li>
             <span class="text-fg">offst</span> - Desired Data Offset. The
@@ -317,9 +315,7 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
           OS-level primitive for it. That's not ideal.
         </p>
 
-        <p class="text-fg/75 leading-relaxed mb-2">
-          Buffered implementation:
-        </p>
+        <p class="text-fg/75 leading-relaxed mb-2">Buffered implementation:</p>
         <pre
           class="font-mono text-sm text-fg/80 bg-text/[0.03] border border-text/10 rounded px-4 py-3 mb-4 overflow-x-auto"
         >
@@ -479,16 +475,16 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
           class="space-y-1 text-fg/70 font-mono text-sm leading-relaxed list-none mb-4"
         >
           <li>
-            <span class="text-fg">File Size (KiB)</span> - Size of the
-            original file before the insert.
+            <span class="text-fg">File Size (KiB)</span> - Size of the original
+            file before the insert.
           </li>
           <li>
             <span class="text-fg">Offset (KiB)</span> - Where in the file we
             want to insert data.
           </li>
           <li>
-            <span class="text-fg">Insert Size (KiB)</span> - Size of the
-            buffer we want to insert.
+            <span class="text-fg">Insert Size (KiB)</span> - Size of the buffer
+            we want to insert.
           </li>
           <li>
             <span class="text-fg">Chunk Size (KiB)</span> - For buffered I/O
@@ -502,8 +498,8 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
           class="space-y-1 text-fg/70 font-mono text-sm leading-relaxed list-none mb-4"
         >
           <li>
-            <span class="text-fg">Time (ms)</span> - Wall-clock time to
-            execute the operation.
+            <span class="text-fg">Time (ms)</span> - Wall-clock time to execute
+            the operation.
           </li>
         </ul>
       </section>
@@ -618,8 +614,7 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
             class="w-full border border-text/10 bg-text/[0.03] rounded items-center justify-center"
             style="min-height: 240px; display: none"
           >
-            <span
-              class="font-mono text-xs text-fg/30 tracking-widest uppercase"
+            <span class="font-mono text-xs text-fg/30 tracking-widest uppercase"
               >p2_time_vs_insert_size_linear.png</span
             >
           </div>
@@ -757,8 +752,7 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
             class="w-full border border-text/10 bg-text/[0.03] rounded items-center justify-center"
             style="min-height: 240px; display: none"
           >
-            <span
-              class="font-mono text-xs text-fg/30 tracking-widest uppercase"
+            <span class="font-mono text-xs text-fg/30 tracking-widest uppercase"
               >p1_time_vs_file_size_linear.png</span
             >
           </div>
@@ -791,8 +785,7 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
             class="w-full border border-text/10 bg-text/[0.03] rounded items-center justify-center"
             style="min-height: 240px; display: none"
           >
-            <span
-              class="font-mono text-xs text-fg/30 tracking-widest uppercase"
+            <span class="font-mono text-xs text-fg/30 tracking-widest uppercase"
               >p1_time_vs_file_size_log.png</span
             >
           </div>
@@ -825,8 +818,7 @@ file = [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ]
             class="w-full border border-text/10 bg-text/[0.03] rounded items-center justify-center"
             style="min-height: 240px; display: none"
           >
-            <span
-              class="font-mono text-xs text-fg/30 tracking-widest uppercase"
+            <span class="font-mono text-xs text-fg/30 tracking-widest uppercase"
               >p5_heatmap_file_x_insert_log.png</span
             >
           </div>

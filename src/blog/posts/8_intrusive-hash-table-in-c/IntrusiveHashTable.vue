@@ -114,10 +114,9 @@ import Code from "@/components/Code.vue";
           when something goes wrong.
         </li>
         <li>
-          It should be <strong class="text-fg">unbounded</strong> - able to
-          grow to accommodate many entries. As a general rule, be careful with
-          this assumption. A lot of the time your hash table is actually
-          bounded.
+          It should be <strong class="text-fg">unbounded</strong> - able to grow
+          to accommodate many entries. As a general rule, be careful with this
+          assumption. A lot of the time your hash table is actually bounded.
         </li>
       </ol>
     </section>
@@ -354,9 +353,7 @@ htable_delete (struct htable *t, struct hnode **from)
     </section>
 
     <section class="mb-8">
-      <h2 class="text-xl font-bold text-fg mt-10 mb-3">
-        Putting It Together
-      </h2>
+      <h2 class="text-xl font-bold text-fg mt-10 mb-3">Putting It Together</h2>
       <p class="text-fg/75 leading-relaxed mb-4">
         Here's the full example. The <Code>word_entry</Code> structs live on the
         stack - no <Code>malloc</Code> required for the data itself. Only the

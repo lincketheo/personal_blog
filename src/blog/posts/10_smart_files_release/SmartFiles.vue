@@ -342,9 +342,7 @@ fwrite (tail, 1, tailsize, file);  /* crash here = corrupt file */</code></pre>
         is why they're O(log n) instead of O(n).
       </Definition>
 
-      <h3 class="text-base font-bold text-fg mb-2">
-        Full transaction support
-      </h3>
+      <h3 class="text-base font-bold text-fg mb-2">Full transaction support</h3>
       <p class="text-fg/75 leading-relaxed mb-4">
         Every individual operation is already atomic. Wrap a sequence in
         <Code>smfile_begin</Code> / <Code>smfile_commit</Code> when you need

@@ -1,39 +1,19 @@
 import type { RouteRecordRaw } from "vue-router";
 
 export interface MetaInformation {
-  blog: Topic;
+  blog: { posts: Post[] };
 }
 
-interface Topic {
-  route: string;
-  prefix: string;
-  entry: any;
-  nav_title: string;
-  name: string;
-  posts: Post[];
-}
-
-interface Post {
+export interface Post {
   title: string;
   date: Date;
   entry: any;
   route: string;
   description: string;
   name: string;
-  popular: boolean;
-  tags: string[];
 }
 
-//////////////////// UI Layer
-export function topicToVueRoute(topic: Topic): RouteRecordRaw {
-  return {
-    path: topic.route,
-    component: topic.entry,
-    name: topic.name,
-  };
-}
-
-export function postToVueRoute(post: Post, topic: Topic): RouteRecordRaw {
+export function postToVueRoute(post: Post): RouteRecordRaw {
   return {
     path: post.route,
     component: post.entry,

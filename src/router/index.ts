@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeIndex from "@/home/HomeIndex.vue";
 import { meta } from "@/meta";
-import { postToVueRoute, topicToVueRoute } from "@/models";
+import { postToVueRoute } from "@/models";
 import AboutIndex from "@/about/AboutIndex.vue";
 import ProgramsIndex from "@/programs/ProgramsIndex.vue";
 
@@ -21,7 +21,7 @@ const routes = [
     component: ProgramsIndex,
     name: "programs",
   },
-  ...meta.blog.posts.map((it) => postToVueRoute(it, meta.blog)),
+  ...meta.blog.posts.map(postToVueRoute),
 ];
 
 const router = createRouter({

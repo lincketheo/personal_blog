@@ -125,9 +125,7 @@ import Definition from "@/components/Definition.vue";
 
     <!-- 1.0.0 The Problem -->
     <section id="section-1" class="mb-10">
-      <h2 class="text-xl font-bold text-fg mt-10 mb-1">
-        1.0.0 - The Problem
-      </h2>
+      <h2 class="text-xl font-bold text-fg mt-10 mb-1">1.0.0 - The Problem</h2>
       <p class="text-muted font-mono text-xs tracking-widest uppercase mb-5">
         Why we can't just keep appending forever
       </p>
